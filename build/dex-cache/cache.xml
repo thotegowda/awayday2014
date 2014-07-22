@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/thotego/work/awayday/AwayDay2014/app/build/pre-dexed/debug/android-support-v4-a80f3b749ee7e4474f61db6757a1dde06cc38798.jar"
+        jar="/Users/thotego/work/awayday/AwayDay2014/app/libs/android-support-v4.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3e1409c5f5c4cdf9fd41db4b22a3eec5b3b10d96"/>
+    <item
+        dex="/Users/thotego/work/awayday/AwayDay2014/app/build/pre-dexed/debug/twitter4j-core-4.0.2-1319e06663425ebc257b8d845c966a310a33766e.jar"
+        jar="/Users/thotego/work/awayday/AwayDay2014/app/libs/twitter4j-core-4.0.2.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="381cf31e9200c2902782f17248d2af18e2ab4c56"/>
+    <item
+        dex="/Users/thotego/work/awayday/AwayDay2014/app/build/pre-dexed/debug/joda-time-2.3-4b1cc4f840a1dc388796bdc97e37ea941a3615bb.jar"
+        jar="/Users/thotego/work/awayday/AwayDay2014/app/libs/joda-time-2.3.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="56498efd17752898cfcc3868c1b6211a07b12b8f"/>
+
+</pre-dex-items>

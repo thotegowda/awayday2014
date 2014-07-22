@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/tw_background"
+              tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/fragment_home_background">
+
+        <TextView
+            android:id="@+id/count_down_timer"
+            style="@style/Widget.TextView.VeryBig"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:id="@+id/count_down_days"
+            style="@style/Widget.TextView.Medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/days"/>
+
+    </LinearLayout>
+
+</FrameLayout>
