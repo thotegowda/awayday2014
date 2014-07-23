@@ -3,16 +3,22 @@ package com.twi.awayday2014;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.*;
-import android.widget.*;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 import com.twi.awayday2014.fragments.*;
-
-import java.util.Locale;
 
 
 public class HomeActivity extends Activity {
@@ -31,12 +37,15 @@ public class HomeActivity extends Activity {
 
         mTitle = mDrawerTitle = (String) getTitle();
         mPlanetTitles = getResources().getStringArray(R.array.navigation_array);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.navigation_item, mPlanetTitles));
+
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,7 +115,15 @@ public class HomeActivity extends Activity {
     private void selectItem(int position) {
         Fragment fragment = getFragment(position);
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, fragment).commit();
+
+        if (fragmentManager.getBackStackEntryCount() <= 1) {
+            transaction.addToBackStack(null);
+        } else {
+            fragmentManager.popBackStack();
+            transaction.addToBackStack(null);
+        }
 
         mDrawerList.setItemChecked(position, true);
         setTitle(mPlanetTitles[position]);
@@ -132,17 +149,42 @@ public class HomeActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen()) {
+            mDrawerLayout.closeDrawer();
+        } else {
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager.getBackStackEntryCount() > 1) {
+                fragmentManager.popBackStack();
+            } else {
+                fragmentManager.popBackStack();
+                super.onBackPressed();
+            }
+
+        }
+    }
+
+
     public Fragment getFragment(int position) {
-        switch(position) {
+        switch (position) {
             default:
-            case 0:return HomeFragment.newInstance(position);
-            case 1:return AgendaFragment.newInstance(position);
-            case 2:return SpeakersFragment.newInstance(position);
-            case 3:return BreakoutFragment.newInstance(position);
-            case 4:return MyScheduleFragment.newInstance(position);
-            case 5:return VideosFragment.newInstance(position);
-            case 6:return SocializeFragment.newInstance(position);
-            case 7:return MapFragment.newInstance(position);
+            case 0:
+                return HomeFragment.newInstance(position);
+            case 1:
+                return AgendaFragment.newInstance(position);
+            case 2:
+                return SpeakersFragment.newInstance(position);
+            case 3:
+                return BreakoutFragment.newInstance(position);
+            case 4:
+                return MyScheduleFragment.newInstance(position);
+            case 5:
+                return VideosFragment.newInstance(position);
+            case 6:
+                return SocializeFragment.newInstance(position);
+            case 7:
+                return MapFragment.newInstance(position);
         }
 
     }
