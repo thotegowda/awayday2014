@@ -15,4 +15,6 @@
         android:text="@string/coming_soon"
         android:background="@color/fragment_home_background"/>
 
+
+
 </LinearLayout>

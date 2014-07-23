@@ -5,23 +5,29 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.twi.awayday2014.fragments.*;
-
+import com.twi.awayday2014.models.Tweeter;
 
 public class HomeActivity extends Activity {
+
+    private static final int HOME_FRAGMENT = 0;
+    private static final int AGENDA_FRAGMENT = 1;
+    private static final int SPEAKERS_FRAGMENT = 2;
+    private static final int BREAKOUT_FRAGMENT = 3;
+    private static final int MY_SCHEDULE_FRAGMENT = 4;
+    private static final int VIDEOS_FRAGMENT = 5;
+    private static final int SOCIALIZE_FRAGMENT = 6;
+    private static final int MAP_FRAGMENT = 7;
 
     private String mTitle;
     private String mDrawerTitle;
@@ -29,6 +35,12 @@ public class HomeActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private static final Tweeter tweeter = new Tweeter();
+
+    public static Tweeter getTweeter() {
+        return tweeter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +68,7 @@ public class HomeActivity extends Activity {
                 mDrawerLayout,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
-                R.string.drawer_close
-        ) {
+                R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
@@ -70,12 +81,15 @@ public class HomeActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
-            selectItem(0);
+
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL)) {
+            selectItem(SOCIALIZE_FRAGMENT);
+        } else if (savedInstanceState == null) {
+            selectItem(HOME_FRAGMENT);
         }
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,10 +127,18 @@ public class HomeActivity extends Activity {
     }
 
     private void selectItem(int position) {
+        startFragment(position);
+
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mPlanetTitles[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    private void startFragment(int position) {
         Fragment fragment = getFragment(position);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_frame, fragment).commit();
+        transaction.replace(R.id.content_frame, fragment);
 
         if (fragmentManager.getBackStackEntryCount() <= 1) {
             transaction.addToBackStack(null);
@@ -124,10 +146,7 @@ public class HomeActivity extends Activity {
             fragmentManager.popBackStack();
             transaction.addToBackStack(null);
         }
-
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        transaction.commit();
     }
 
     @Override
@@ -135,7 +154,6 @@ public class HomeActivity extends Activity {
         mTitle = (String) title;
         getActionBar().setTitle(mTitle);
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -151,8 +169,8 @@ public class HomeActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen()) {
-            mDrawerLayout.closeDrawer();
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
         } else {
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager.getBackStackEntryCount() > 1) {
@@ -161,32 +179,28 @@ public class HomeActivity extends Activity {
                 fragmentManager.popBackStack();
                 super.onBackPressed();
             }
-
         }
     }
-
 
     public Fragment getFragment(int position) {
         switch (position) {
             default:
-            case 0:
+            case HOME_FRAGMENT:
                 return HomeFragment.newInstance(position);
-            case 1:
+            case AGENDA_FRAGMENT:
                 return AgendaFragment.newInstance(position);
-            case 2:
+            case SPEAKERS_FRAGMENT:
                 return SpeakersFragment.newInstance(position);
-            case 3:
+            case BREAKOUT_FRAGMENT:
                 return BreakoutFragment.newInstance(position);
-            case 4:
+            case MY_SCHEDULE_FRAGMENT:
                 return MyScheduleFragment.newInstance(position);
-            case 5:
+            case VIDEOS_FRAGMENT:
                 return VideosFragment.newInstance(position);
-            case 6:
+            case SOCIALIZE_FRAGMENT:
                 return SocializeFragment.newInstance(position);
-            case 7:
+            case MAP_FRAGMENT:
                 return MapFragment.newInstance(position);
         }
-
     }
-
 }

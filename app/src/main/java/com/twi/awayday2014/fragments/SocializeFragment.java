@@ -1,14 +1,24 @@
 package com.twi.awayday2014.fragments;
 
 import android.app.ListFragment;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.TextView;
+import com.twi.awayday2014.HomeActivity;
+import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
-import twitter4j.*;
-import twitter4j.conf.ConfigurationBuilder;
-import android.app.Fragment;
+import com.twi.awayday2014.models.Tweeter;
+import twitter4j.Status;
+import twitter4j.TwitterException;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class SocializeFragment extends ListFragment {
 
@@ -16,9 +26,10 @@ public class SocializeFragment extends ListFragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TWITTER_SEARCH_TERM = "ThoughtWorks";
 
-    private Twitter twitter;
+    private Tweeter tweeter = HomeActivity.getTweeter();
     private TweetsAdapter tweetsAdapter;
-    private QueryResult lastResponse;
+    private View rootView;
+    private View tweetButton;
 
     public static SocializeFragment newInstance(int sectionNumber) {
         SocializeFragment fragment = new SocializeFragment();
@@ -35,9 +46,6 @@ public class SocializeFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        twitter = setupTwitter();
-        asyncSearch(TWITTER_SEARCH_TERM);
-
         tweetsAdapter = new TweetsAdapter(this.getActivity(), new ArrayList<Status>());
         setListAdapter(tweetsAdapter);
 
@@ -51,58 +59,112 @@ public class SocializeFragment extends ListFragment {
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
                 int padding = 5;
                 if (totalCount > 10 && shouldLoadMore(firstVisible, visibleCount, totalCount, padding)) {
-                    if (lastResponse == null) {
-                        asyncSearch(TWITTER_SEARCH_TERM);
-                    } else {
-                        asyncSearch(lastResponse.nextQuery());
-                    }
+                    twitterSearchNext();
                 }
             }
         });
+
+        twitterSearch(TWITTER_SEARCH_TERM);
+
+        Uri uri = getActivity().getIntent().getData();
+        if (uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL)) {
+            ((TextView)tweetButton).setText("Tweet");
+            saveAccessToken(uri);
+        } else {
+            ((TextView) tweetButton).setText("LogIn");
+        }
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_socialize, container, false);
+        tweetButton = rootView.findViewById(R.id.signin);
+        tweetButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (tweeter.isTwitterLoggedInAlready()) {
+                        tweet();
+                    } else {
+                        loginToTwitter();
+                    }
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Exception : " + e.getErrorMessage());
+                }
+            }
+        });
+        return rootView;
     }
 
     private boolean shouldLoadMore(int firstVisible, int visibleCount, int totalCount, int padding) {
         return firstVisible + visibleCount + padding >= totalCount;
     }
 
-    private void asyncSearch(final String term) {
-       asyncSearch(new Query(term));
+
+    private void tweet() {
+        tweeter.tweet();
     }
 
-    private void asyncSearch(final Query query) {
-        new AsyncTask<Void, Void, QueryResult>() {
+    private void loginToTwitter() throws TwitterException {
+        new AsyncTask<Void, Void, Void>() {
+
             @Override
-            protected QueryResult doInBackground(Void... voids) {
-                return searchTwitter(query);
+            protected Void doInBackground(Void... voids) {
+                try {
+                    tweeter.login(SocializeFragment.this.getActivity());
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
+    }
+
+    public void saveAccessToken(final Uri uri ) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    tweeter.retrieveAccessToken(uri);
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
+    }
+
+    private void twitterSearch(final String searchTerm) {
+        new AsyncTask<Void, Void, List<Status>>() {
+            @Override
+            protected List<twitter4j.Status> doInBackground(Void... voids) {
+                return tweeter.search(searchTerm);
             }
 
             @Override
-            protected void onPostExecute(QueryResult result) {
-                lastResponse = result;
-                tweetsAdapter.append(result.getTweets());
+            protected void onPostExecute(List<twitter4j.Status> tweets) {
+                tweetsAdapter.append(tweets);
             }
         }.execute();
     }
 
-    private QueryResult searchTwitter(Query query) {
-        QueryResult result = null;
-        try {
-            result = twitter.search(query);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
+    private void twitterSearchNext() {
+        new AsyncTask<Void, Void, List<Status>>() {
+            @Override
+            protected List<twitter4j.Status> doInBackground(Void... voids) {
+                return tweeter.searchNext();
+            }
 
-        return result;
+            @Override
+            protected void onPostExecute(List<twitter4j.Status> tweets) {
+                tweetsAdapter.append(tweets);
+            }
+        }.execute();
     }
-
-    private Twitter setupTwitter() {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("hJs1Fhwwmg3QDMBKX0TgaINuq")
-                .setOAuthConsumerSecret("PITREV1N69WxEn7U9c685a661ffjVIdWOgdDNJCUehEw6mCfM3")
-                .setOAuthAccessToken("97134656-9tMIEXQosam5TZMIrR7NA2DYIn14dsaSKvIfTlEMU")
-                .setOAuthAccessTokenSecret("y1nMS5ricaXRjjNH4kUxpgl9EtppjdkUOM98eYcQ3KWnM");
-        return new TwitterFactory(cb.build()).getInstance();
-    }
-
 }

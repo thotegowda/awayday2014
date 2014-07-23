@@ -15,4 +15,6 @@
     <color name="navigation_bar_bg">@color/transparent_purple</color>
     <color name="navigation_bar_text">@color/white</color>
     <color name="action_bar_background">@color/pink</color>
+    <color name="twitter_list_bg">@color/transparent_purple</color>
+    <color name="twitter_list_text">@color/white</color>
 </resources>

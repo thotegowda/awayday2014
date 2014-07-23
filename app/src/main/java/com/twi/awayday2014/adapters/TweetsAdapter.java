@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.twi.awayday2014.R;
 import twitter4j.Status;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TweetsAdapter extends BaseAdapter {
 
@@ -50,9 +53,12 @@ public class TweetsAdapter extends BaseAdapter {
        }
 
         //((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(tweets.get(i).thumbnail());
-        ((TextView)view.findViewById(R.id.tweeted_by)).setText(tweets.get(i).getUser().getScreenName());
-        ((TextView)view.findViewById(R.id.tweet_text)).setText(tweets.get(i).getText());
-        view.setTag(tweets.get(i));
+        Status tweet = tweets.get(i);
+        ((TextView)view.findViewById(R.id.tweeted_by)).setText(tweet.getUser().getScreenName());
+        ((TextView)view.findViewById(R.id.tweet_text)).setText(tweet.getText());
+        String date = new SimpleDateFormat("dd/MM/yy hh:mm", Locale.US).format(tweet.getCreatedAt());
+        ((TextView)view.findViewById(R.id.tweet_time)).setText(date);
+        view.setTag(tweet);
         return view;
     }
 }
