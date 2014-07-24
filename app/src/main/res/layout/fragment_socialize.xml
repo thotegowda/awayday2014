@@ -2,10 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@drawable/other_page_background"
              android:orientation="vertical"
              tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
-
 
     <ListView
             android:id="@android:id/list"
@@ -14,8 +12,8 @@
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
-
+            android:dividerHeight="@dimen/list_divider_height"
+            android:background="@color/twitter_list_bg"/>
 
     <Button
             android:id="@+id/signin"
@@ -23,8 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_gravity="bottom|right"
-            android:textColor="@color/twitter_list_text"
-            android:background="@color/twitter_list_bg"
+            android:textColor="@color/tweet_btn_text"
+            android:background="@color/tweet_btn_bg"
             android:text="Sign in"/>
-
 </FrameLayout>

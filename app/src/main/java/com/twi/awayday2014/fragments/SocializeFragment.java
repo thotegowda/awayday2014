@@ -24,7 +24,7 @@ public class SocializeFragment extends ListFragment {
 
     private static final String TAG = "AwayDay";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String TWITTER_SEARCH_TERM = "ThoughtWorks";
+    private static final String TWITTER_SEARCH_TERM = "NationalGeographic";
 
     private Tweeter tweeter = HomeActivity.getTweeter();
     private TweetsAdapter tweetsAdapter;

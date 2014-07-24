@@ -43,6 +43,7 @@ public class Tweeter {
     private QueryResult lastQueryResult;
 
     public Tweeter() {
+        // TODO : remove one twitter
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.setOAuthConsumerKey(CONSUMER_KEY);
         configurationBuilder.setOAuthConsumerSecret(CONSUMER_SECRET);

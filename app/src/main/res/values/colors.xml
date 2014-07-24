@@ -5,6 +5,7 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="pink">#ef5ba1</color>
+    <color name="gray">#ffEAEAEA</color>
     <color name="transparent_black">#aa000000</color>
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
@@ -15,6 +16,9 @@
     <color name="navigation_bar_bg">@color/transparent_purple</color>
     <color name="navigation_bar_text">@color/white</color>
     <color name="action_bar_background">@color/pink</color>
-    <color name="twitter_list_bg">@color/transparent_purple</color>
+    <color name="twitter_list_bg">@color/gray</color>
+    <color name="twitter_list_item_bg">@color/white</color>
     <color name="twitter_list_text">@color/white</color>
+    <color name="tweet_btn_text">@color/white</color>
+    <color name="tweet_btn_bg">@color/transparent_purple</color>
 </resources>
