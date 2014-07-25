@@ -181,8 +181,15 @@ public class HomeActivity extends Activity {
             }
         }
     }
-
     public Fragment getFragment(int position) {
+        Fragment fragment = getFragmentManager().findFragmentById(position);
+        if (fragment == null) {
+            fragment = createFragment(position);
+        }
+        return fragment;
+    }
+
+    public Fragment createFragment(int position) {
         switch (position) {
             default:
             case HOME_FRAGMENT:

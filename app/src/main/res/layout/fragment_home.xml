@@ -1,29 +1,41 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/tw_background"
-              tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/tw_background"
+             tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/fragment_home_background">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/fragment_home_background">
 
         <TextView
-            android:id="@+id/count_down_timer"
-            style="@style/Widget.TextView.VeryBig"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"/>
+                android:id="@+id/count_down_timer"
+                style="@style/Widget.TextView.VeryBig"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="25"
+                android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/count_down_days"
-            style="@style/Widget.TextView.Medium"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/days"/>
+                android:id="@+id/count_down_days"
+                style="@style/Widget.TextView.Medium"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:text="@string/days_to_go"/>
+
+        <ListView
+                android:id="@+id/notification_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="65"
+                android:layout_margin="10dp"
+                android:background="@android:color/transparent">
+
+        </ListView>
 
     </LinearLayout>
 

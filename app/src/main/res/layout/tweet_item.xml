@@ -11,7 +11,7 @@
             android:id="@+id/profile_thumbnail"
             android:layout_width="0dp"
             android:layout_height="@dimen/tweet_list_item_height"
-            android:layout_weight="15"
+            android:layout_weight="20"
             android:layout_gravity="top"
             android:padding="5dp"
             android:scaleType="fitCenter"
@@ -20,7 +20,7 @@
     <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/tweet_list_item_height"
-            android:layout_weight="85"
+            android:layout_weight="80"
             android:padding="5dp">
 
         <TextView

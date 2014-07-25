@@ -21,4 +21,8 @@
     <color name="twitter_list_text">@color/white</color>
     <color name="tweet_btn_text">@color/white</color>
     <color name="tweet_btn_bg">@color/transparent_purple</color>
+
+    <color name="notification_item_bg">@color/transparent_black</color>
+    <color name="notification_item_text">@color/white</color>
+
 </resources>

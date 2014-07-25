@@ -4,18 +4,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.*;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.SwipeDismissListViewTouchListener;
+import com.twi.awayday2014.adapters.NotificationsAdapter;
+import com.twi.awayday2014.models.ShortNotification;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import android.app.Fragment;
 
+import java.util.Arrays;
+
+import static com.twi.awayday2014.SwipeDismissListViewTouchListener.DismissCallbacks;
+
 public class HomeFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static String AWAY_DAY_DATE = "19/09/2014 08:00:00";
+    private ListView listView;
+    private SwipeDismissListViewTouchListener swipeListener;
+    private NotificationsAdapter adapter;
 
     public static HomeFragment newInstance(int sectionNumber) {
         HomeFragment fragment = new HomeFragment();
@@ -32,8 +42,45 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
         setupTime((TextView) rootView.findViewById(R.id.count_down_timer));
+
+        listView = (ListView) rootView.findViewById(R.id.notification_layout);
+
+        setupNotifications();
+
         return rootView;
+    }
+
+    private void setupNotifications() {
+        adapter = new NotificationsAdapter(getActivity(), Arrays.asList(
+                new ShortNotification("Cool news: Android app is getting ready to help you experience away day better", "now"),
+                new ShortNotification("Away day starts on 19th Sep", "2 min ago"),
+                new ShortNotification("Away day lasts till 21st Sep", "10 min ago"),
+                new ShortNotification("This time away day happens at Hyderabad", "4 hours ago"),
+                new ShortNotification("Travelling plans are: going by train, coming back by Air", "10 days ago")
+        ));
+        listView.setAdapter(adapter);
+
+        swipeListener = new SwipeDismissListViewTouchListener(listView, new DismissCallbacks() {
+
+            @Override
+            public boolean canDismiss(int position) {
+                return true;
+            }
+
+            @Override
+            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                for (int position : reverseSortedPositions) {
+                    adapter.remove(position);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        listView.setOnTouchListener(swipeListener);
+        listView.setOnScrollListener(swipeListener.makeScrollListener());
+
     }
 
     private void setupTime(TextView countDownTimer) {
