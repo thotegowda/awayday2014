@@ -15,10 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.parse.*;
 import com.twi.awayday2014.fragments.*;
 import com.twi.awayday2014.models.Tweeter;
 
 public class HomeActivity extends Activity {
+
+    private static final String YOUR_APPLICATION_ID = "yiKETlRYko1LrZEgrilwJbp2XHmFeVSpAFkrOGGK";
+    private static final String YOUR_CLIENT_KEY = "kR3esD6RWpRixzwKblqQux73nMRVXRqBkprv80rU";
 
     private static final int HOME_FRAGMENT = 0;
     private static final int AGENDA_FRAGMENT = 1;
@@ -88,7 +92,6 @@ public class HomeActivity extends Activity {
         } else if (savedInstanceState == null) {
             selectItem(HOME_FRAGMENT);
         }
-
     }
 
     @Override
