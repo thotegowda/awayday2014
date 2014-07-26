@@ -4,7 +4,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              android:weightSum="100">
+              android:weightSum="100"
+              android:background="@drawable/listview_purple_background">
 
     <ImageView
         android:id="@+id/video_thumbnail"
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
+            android:textColor="@color/white"
             android:textSize="20sp"/>
 
         <TextView
@@ -32,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
+            android:textColor="@color/white"
             android:textSize="14sp"/>
     </LinearLayout>
 </LinearLayout>

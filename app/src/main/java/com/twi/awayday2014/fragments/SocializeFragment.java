@@ -40,6 +40,7 @@ public class SocializeFragment extends ListFragment {
     }
 
     public SocializeFragment() {
+
     }
 
     @Override
@@ -58,7 +59,8 @@ public class SocializeFragment extends ListFragment {
             @Override
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
                 int padding = 5;
-                if (totalCount > 10 && shouldLoadMore(firstVisible, visibleCount, totalCount, padding)) {
+                if (totalCount > 10
+                        && shouldLoadMore(firstVisible, visibleCount, totalCount, padding)) {
                     twitterSearchNext();
                 }
             }
@@ -155,6 +157,10 @@ public class SocializeFragment extends ListFragment {
     }
 
     private void twitterSearchNext() {
+        if (!tweeter.hasMoreResults()) {
+            return;
+        }
+
         new AsyncTask<Void, Void, List<Status>>() {
             @Override
             protected List<twitter4j.Status> doInBackground(Void... voids) {

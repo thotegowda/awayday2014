@@ -106,10 +106,21 @@ public class Tweeter {
         return EMPTY_STATUS;
     }
 
+    public boolean hasMoreResults() {
+        return lastQueryResult != null;
+    }
+
     public List<Status> searchNext() {
         try {
-            lastQueryResult = searchTwitter(lastQueryResult.nextQuery());
-            return lastQueryResult.getTweets();
+            Query query = lastQueryResult.nextQuery();
+            if (query != null) {
+                lastQueryResult = searchTwitter(query);
+                return lastQueryResult.getTweets();
+            } else {
+                lastQueryResult = null;
+                return new ArrayList<Status>();
+            }
+
         } catch (TwitterException e) {
             e.printStackTrace();
         }

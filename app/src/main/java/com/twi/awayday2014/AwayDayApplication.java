@@ -7,6 +7,7 @@ public class AwayDayApplication extends Application {
 
     private static final String YOUR_APPLICATION_ID = "yiKETlRYko1LrZEgrilwJbp2XHmFeVSpAFkrOGGK";
     private static final String YOUR_CLIENT_KEY = "kR3esD6RWpRixzwKblqQux73nMRVXRqBkprv80rU";
+    private static final String CHANNEL_AWAYDAY = "AwayDay";
 
     @Override
     public void onCreate() {
@@ -24,7 +25,8 @@ public class AwayDayApplication extends Application {
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
-        PushService.subscribe(this, "AwayDay", HomeActivity.class);
+
+        PushService.subscribe(this, CHANNEL_AWAYDAY, HomeActivity.class);
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
