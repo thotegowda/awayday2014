@@ -38,6 +38,8 @@ public class HomeActivity extends Activity {
 
     private static final Tweeter tweeter = new Tweeter();
 
+    private int mCurrentPosition = -1;
+
     public static Tweeter getTweeter() {
         return tweeter;
     }
@@ -121,6 +123,11 @@ public class HomeActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (mCurrentPosition == position) {
+                mDrawerLayout.closeDrawer(mDrawerList);
+                return;
+            }
+            mCurrentPosition = position;
             selectItem(position);
         }
     }
@@ -130,6 +137,7 @@ public class HomeActivity extends Activity {
 
         mDrawerList.setItemChecked(position, true);
         setTitle(mPlanetTitles[position]);
+
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
