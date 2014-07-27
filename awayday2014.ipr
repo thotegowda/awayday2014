@@ -188,7 +188,11 @@
   </component>
   <component name="ProjectCodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
-      <value />
+      <value>
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
+      </value>
     </option>
     <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default (1)" />
   </component>
@@ -219,6 +223,13 @@
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/build/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar!/" />
         <root url="file://$PROJECT_DIR$/build/exploded-aar/com.android.support/appcompat-v7/19.1.0/res" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="google-play-services">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/app/libs/google-play-services.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
