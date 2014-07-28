@@ -25,5 +25,6 @@
     <string name="push_header">Push the notification</string>
     <string name="push">Push</string>
     <string name="playerview_text">Youtube Video</string>
+    <string name="diplay_notification">Display Notification?</string>
 
 </resources>

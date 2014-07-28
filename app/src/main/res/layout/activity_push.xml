@@ -19,6 +19,11 @@
             android:layout_width="fill_parent"
             android:layout_height="100dp"/>
 
+    <CheckBox
+            android:id="@+id/display_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diplay_notification"/>
     <Button
             android:id="@+id/push_it"
             android:layout_width="wrap_content"

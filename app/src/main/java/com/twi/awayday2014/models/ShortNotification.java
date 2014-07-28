@@ -1,9 +1,15 @@
 package com.twi.awayday2014.models;
 
-public class ShortNotification {
+import com.orm.SugarRecord;
 
-    private final String message;
-    private final String arrivalTime;
+public class ShortNotification extends SugarRecord<ShortNotification> {
+
+    String message;
+    String arrivalTime;
+
+    public ShortNotification() {
+
+    }
 
     public ShortNotification(String msg, String arrivalTime) {
         this.message = msg;
