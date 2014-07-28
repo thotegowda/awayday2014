@@ -121,9 +121,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
 
     private LatLng location() {
         Location location = locator.getLocation();
-        Log.d(TAG, " current Location: " + location.toString());
-        Log.d(TAG, " current address: " + locator.getCurrentAddress().size());
-        return new LatLng(location.getLatitude(), location.getLongitude());
+        if (location != null) {
+            Log.d(TAG, " current Location: " + location.toString());
+            Log.d(TAG, " current address: " + locator.getCurrentAddress().size());
+            return new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        return THOUGHTWORKS_BANGALORE;
     }
 
     private void showCurrentLocationOnMap() {
