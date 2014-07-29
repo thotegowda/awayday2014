@@ -30,7 +30,7 @@
             android:id="@+id/notification_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7"
+            android:layout_weight="8"
             android:gravity="left"
             android:padding="5dp"
             style="@style/Widget.TextView.Medium"
@@ -47,7 +47,7 @@
                 android:id="@+id/notification_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="65"
+                android:layout_weight="64"
                 android:divider="@android:color/white"
                 android:dividerHeight="1dp"
                 android:background="@android:color/transparent">

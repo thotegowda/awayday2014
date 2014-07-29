@@ -11,9 +11,9 @@
             android:scaleType="fitCenter"/>
 
     <RelativeLayout
+            android:id="@+id/session_text_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/listview_purple_background"
             android:focusable="true"
             android:clickable="true">
 

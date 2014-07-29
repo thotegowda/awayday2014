@@ -12,9 +12,18 @@ import java.util.List;
 
 public class SessionsAdapter extends BaseAdapter {
 
+    public static int[] backgroundResources = {
+            R.drawable.listview_purple_background,
+            R.drawable.listview_red_background,
+            R.drawable.listview_pink_background,
+            R.drawable.listview_green_background,
+            R.drawable.listview_blue_background
+    };
+
     private final Context context;
     private List<Presentation> keynotes;
     private List<Presentation> sessions;
+    private int currentBackgroundResourceIndex = 0;
 
     public SessionsAdapter(Context context, List<Presentation> keynotes, List<Presentation> sessions) {
         this.context = context;
@@ -58,16 +67,25 @@ public class SessionsAdapter extends BaseAdapter {
         return view;
     }
 
-    private void setupSession(View leftView, Presentation presentation) {
+    private void setupSession(View sessionView, Presentation presentation) {
         if (presentation == null) {
             return;
         }
 
-        ((ImageView)leftView.findViewById(R.id.profile_image)).setImageResource(presentation.presenter().profileResource());
-        ((TextView)leftView.findViewById(R.id.presenter_title)).setText(presentation.title());
-        ((TextView)leftView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
-        ((TextView)leftView.findViewById(R.id.presentation_date)).setText(presentation.formatedDate());
+        sessionView.findViewById(R.id.session_text_layout).setBackgroundResource(getNextBackgroundResource());
+        ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(presentation.presenter().profileResource());
+        ((TextView)sessionView.findViewById(R.id.presenter_title)).setText(presentation.title());
+        ((TextView)sessionView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
+        ((TextView)sessionView.findViewById(R.id.presentation_date)).setText(presentation.formatedDate());
     }
+
+    private int getNextBackgroundResource() {
+        if (currentBackgroundResourceIndex < 0 || currentBackgroundResourceIndex > backgroundResources.length - 1) {
+            currentBackgroundResourceIndex = 0;
+        }
+        return backgroundResources[currentBackgroundResourceIndex++];
+    }
+
 
     private void convertToKeynoteView(View leftView, View rightView) {
         leftView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 2));

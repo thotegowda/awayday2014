@@ -10,6 +10,9 @@
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
     <color name="transparent_purple">#aa6A2569</color>
+    <color name="transparent_pink">#aaef5ba1</color>
+    <color name="transparent_red">#aaff4444</color>
+    <color name="transparent_green">#aa33ff33</color>
 
     <color name="count_down_timer_text">@color/white</color>
     <color name="fragment_home_background">@color/transparent_blue</color>
