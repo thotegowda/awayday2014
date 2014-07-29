@@ -8,7 +8,9 @@
     <dimen name="tweet_text_size">11dp</dimen>
     <dimen name="tweet_time_text_size">11dp</dimen>
     <dimen name="list_divider_height">1dp</dimen>
-    <dimen name="notification_item_height">50dp</dimen>
+    <dimen name="notification_item_height">65dp</dimen>
     <dimen name="session_text_view_height">25dp</dimen>
     <dimen name="session_row_height">250dp</dimen>
+    <dimen name="navigation_title_text_size">25sp</dimen>
+    <dimen name="navigation_item_text_size">20sp</dimen>
 </resources>

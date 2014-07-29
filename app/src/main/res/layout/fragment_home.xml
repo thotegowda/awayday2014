@@ -16,23 +16,40 @@
                 style="@style/Widget.TextView.VeryBig"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="25"
-                android:layout_marginTop="10dp"/>
+                android:layout_weight="25"/>
 
         <TextView
                 android:id="@+id/count_down_days"
                 style="@style/Widget.TextView.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="10"
+                android:layout_weight="8"
                 android:text="@string/days_to_go"/>
+
+        <TextView
+            android:id="@+id/notification_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:gravity="left"
+            android:padding="5dp"
+            style="@style/Widget.TextView.Medium"
+            android:background="@color/notification_item_bg"
+            android:text="@string/notifications_title" />
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:scaleType="fitXY"
+                android:src="@android:color/white"/>
 
         <ListView
                 android:id="@+id/notification_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="65"
-                android:layout_margin="10dp"
+                android:divider="@android:color/white"
+                android:dividerHeight="1dp"
                 android:background="@android:color/transparent">
 
         </ListView>

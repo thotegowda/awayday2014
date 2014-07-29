@@ -1,4 +1,4 @@
-package com.twi.awayday2014;
+package com.twi.awayday2014.models;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -12,10 +12,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.twi.awayday2014.fragments.*;
 import com.twi.awayday2014.models.Tweeter;
 
@@ -34,13 +31,13 @@ public class HomeActivity extends Activity {
     private String mDrawerTitle;
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
-    private static final Tweeter tweeter = new Tweeter();
-
     private int mCurrentPosition = -1;
 
+    private LinearLayout navigationLayout;
+    private ListView navigationList;
+
+    private static final Tweeter tweeter = new Tweeter();
     public static Tweeter getTweeter() {
         return tweeter;
     }
@@ -48,20 +45,21 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
 
         mTitle = mDrawerTitle = (String) getTitle();
         mPlanetTitles = getResources().getStringArray(R.array.navigation_array);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        navigationLayout = (LinearLayout) findViewById(R.id.navigation_layout);
+        navigationList = (ListView) navigationLayout.findViewById(R.id.navigation_list);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+        navigationList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.navigation_item, mPlanetTitles));
-
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        navigationList.setOnItemClickListener(new DrawerItemClickListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -102,7 +100,7 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(navigationLayout);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -125,7 +123,7 @@ public class HomeActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mCurrentPosition == position) {
-                mDrawerLayout.closeDrawer(mDrawerList);
+                mDrawerLayout.closeDrawer(navigationList);
                 return;
             }
             mCurrentPosition = position;
@@ -136,10 +134,10 @@ public class HomeActivity extends Activity {
     private void selectItem(int position) {
         startFragment(position);
 
-        mDrawerList.setItemChecked(position, true);
+        navigationList.setItemChecked(position, true);
         setTitle(mPlanetTitles[position]);
 
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(navigationLayout);
     }
 
     private void startFragment(int position) {

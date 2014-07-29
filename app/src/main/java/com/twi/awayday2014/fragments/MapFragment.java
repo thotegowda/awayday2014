@@ -3,17 +3,12 @@ package com.twi.awayday2014.fragments;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.*;
-import com.twi.awayday2014.Locator;
+import com.twi.awayday2014.models.Locator;
 import com.twi.awayday2014.R;
-import android.app.Fragment;
 
 import static com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 

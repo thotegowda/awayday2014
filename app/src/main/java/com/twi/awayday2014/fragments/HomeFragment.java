@@ -39,35 +39,17 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
         setupTime((TextView) rootView.findViewById(R.id.count_down_timer));
-
         listView = (ListView) rootView.findViewById(R.id.notification_layout);
-
         setupNotifications();
-
         return rootView;
     }
 
     private void setupNotifications() {
-//        adapter = new NotificationsAdapter(getActivity(), Arrays.asList(
-//                new ShortNotification("Cool news: Android app is getting ready to help you experience away day better", "now"),
-//                new ShortNotification("We'd like to welcome you to the 2014 India Away Day group on myThoughtWorks!", "25 Mins ago"),
-//                new ShortNotification("We're super excited to announce the Away Day 2014 Logo Competition! That's right." +
-//                        "We want YOUR imagination and creativity for a fabulous logo for  Away Day!", "1 hour ago"),
-//        new ShortNotification("Travelling plans are: going by train, coming back by Air", "10 hours ago"),
-//                new ShortNotification("This time away day happens at Hyderabad", "5 days ago"),
-//                new ShortNotification("Away day starts on 19th Sep and lasts lasts till 21st Sep", "12 days ago")
-//        ));
-
-
         adapter = new NotificationsAdapter(getActivity(), ShortNotification.listAll(ShortNotification.class));
-
         listView.setAdapter(adapter);
-
         swipeListener = new SwipeDismissListViewTouchListener(listView, new DismissCallbacks() {
 
             @Override
