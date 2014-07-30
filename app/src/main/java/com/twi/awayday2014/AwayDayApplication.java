@@ -1,11 +1,9 @@
 package com.twi.awayday2014;
 
-import android.app.Application;
 import com.orm.SugarApp;
 import com.parse.*;
 import com.twi.awayday2014.models.ShortNotification;
-
-import java.util.Iterator;
+import com.twi.awayday2014.view.HomeActivity;
 
 import static com.twi.awayday2014.models.ShortNotification.*;
 

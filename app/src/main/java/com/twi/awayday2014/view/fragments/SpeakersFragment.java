@@ -1,4 +1,4 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.widget.ListView;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
 import com.twi.awayday2014.models.Speaker;
-import android.app.Fragment;
+
 import java.util.Arrays;
 
 public class SpeakersFragment extends ListFragment {

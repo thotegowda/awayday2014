@@ -1,4 +1,4 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +14,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import android.app.Fragment;
-
-import java.util.Arrays;
 
 import static com.twi.awayday2014.SwipeDismissListViewTouchListener.DismissCallbacks;
 

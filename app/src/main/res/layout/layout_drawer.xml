@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingTop="?android:actionBarSize">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_image_height">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/awayday_2013_background" />
+
+        <TextView
+            android:id="@+id/countryYearText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_selection_buttons_layout_height"
+            android:background="@color/transparent_black"
+            android:textColor="@android:color/white"
+            android:layout_gravity="bottom"
+            android:gravity="left"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:textSize="18sp"
+            android:text="India 2014"
+            android:drawableRight="@drawable/ic_action_expand"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_small"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/agenda"
+            style="@style/DrawerListTextView"
+            android:text="Agenda"
+            android:drawableLeft="@drawable/ic_agenda"/>
+
+        <View
+            style="@style/HorizontalDivider"
+            android:background="@color/light_gray1"/>
+
+        <TextView
+            android:id="@+id/mySchedule"
+            style="@style/DrawerListTextView"
+            android:text="My Schedule"
+            android:drawableLeft="@drawable/ic_my_schedule"/>
+        <View
+            style="@style/HorizontalDivider"
+            android:layout_height="1dp"
+            android:background="@color/light_gray2"/>
+
+        <TextView
+            android:id="@+id/speakers"
+            style="@style/DrawerListTextView"
+            android:text="Speakers"
+            android:drawableLeft="@drawable/ic_speakers"/>
+
+        <View
+            style="@style/HorizontalDivider"
+            android:background="@color/light_gray1"/>
+
+        <TextView
+            android:id="@+id/breakoutSessions"
+            style="@style/DrawerListTextView"
+            android:text="Breakout Sessions"
+            android:drawableLeft="@drawable/ic_sessions"/>
+        <View
+            style="@style/HorizontalDivider"
+            android:layout_height="1dp"
+            android:background="@color/light_gray2"/>
+
+        <TextView
+            android:id="@+id/videos"
+            style="@style/DrawerListTextView"
+            android:text="Videos"
+            android:drawableLeft="@drawable/ic_videos"/>
+
+        <View
+            style="@style/HorizontalDivider"
+            android:background="@color/light_gray1"/>
+
+        <TextView
+            android:id="@+id/tags"
+            style="@style/DrawerListTextView"
+            android:text="Tags"
+            android:drawableLeft="@drawable/ic_tags"/>
+        <View
+            style="@style/HorizontalDivider"
+            android:layout_height="1dp"
+            android:background="@color/light_gray2"/>
+    </LinearLayout>
+</LinearLayout>
+
+

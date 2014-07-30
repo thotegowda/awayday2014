@@ -1,4 +1,4 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
 import android.app.ListFragment;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
-import com.twi.awayday2014.HomeActivity;
+import com.twi.awayday2014.view.HomeActivity;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.models.Tweeter;
@@ -26,7 +26,7 @@ public class SocializeFragment extends ListFragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TWITTER_SEARCH_TERM = "Bangalore";
 
-    private Tweeter tweeter = HomeActivity.getTweeter();
+    private Tweeter tweeter = new Tweeter();
     private TweetsAdapter tweetsAdapter;
     private View rootView;
     private View tweetButton;

@@ -1,4 +1,4 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

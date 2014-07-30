@@ -1,22 +1,29 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
+
 import com.twi.awayday2014.R;
-import android.app.Fragment;
 import com.twi.awayday2014.adapters.SessionsAdapter;
+import com.twi.awayday2014.listeners.ScrollListener;
+import com.twi.awayday2014.listeners.Scrollable;
 import com.twi.awayday2014.models.Presentation;
 import com.twi.awayday2014.models.Presenter;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AgendaFragment extends ListFragment {
+public class AgendaFragment extends Fragment implements Scrollable {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private ListView agendaListView;
+    private ScrollListener scrollListener;
 
     public static AgendaFragment newInstance(int sectionNumber) {
         AgendaFragment fragment = new AgendaFragment();
@@ -26,15 +33,48 @@ public class AgendaFragment extends ListFragment {
         return fragment;
     }
 
-    public AgendaFragment() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        agendaListView = (ListView) inflater.inflate(R.layout.fragment_list, container, false);
+        agendaListView.addHeaderView(inflater.inflate(R.layout.view_fake_header, agendaListView, false));
+        agendaListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(scrollListener != null){
+                    scrollListener.onScrollChanged(getScrollY());
+                }
+            }
+        });
+        return agendaListView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        agendaListView.setAdapter(new SessionsAdapter(this.getActivity(), getKeynotes(), getPresentations()));
+    }
 
-        setListAdapter(new SessionsAdapter(this.getActivity(), getKeynotes(), getPresentations()));
+    private int getScrollY() {
+        View c = agendaListView.getChildAt(0);
+        if (c == null) {
+            return 0;
+        }
+
+        int firstVisiblePosition = agendaListView.getFirstVisiblePosition();
+        int top = c.getTop();
+
+        int headerHeight = 0;
+        if (firstVisiblePosition >= 1) {
+            headerHeight = (int) getResources().getDimension(R.dimen.home_activity_header_height);
+        }
+
+        return -top + firstVisiblePosition * c.getHeight() + headerHeight;
     }
 
     private List<Presentation> getKeynotes() {
@@ -61,10 +101,13 @@ public class AgendaFragment extends ListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-        return rootView;
+    public void addListener(ScrollListener listener) {
+        scrollListener = listener;
+    }
+
+    @Override
+    public void removeListener(ScrollListener listener) {
+        scrollListener = null;
     }
 
 }

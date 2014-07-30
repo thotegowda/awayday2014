@@ -1,8 +1,7 @@
-package com.twi.awayday2014.fragments;
+package com.twi.awayday2014.view.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;

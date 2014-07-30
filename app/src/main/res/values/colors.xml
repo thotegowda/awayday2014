@@ -5,8 +5,10 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="pink">#ef5ba1</color>
-    <color name="gray">#ffEAEAEA</color>
-    <color name="transparent_black">#aa000000</color>
+    <color name="gray">#ffb3b3b3</color>
+    <color name="light_gray1">#fff5f5f5</color>
+    <color name="light_gray2">#ffd3d3d3</color>
+    <color name="transparent_black">#99000000</color>
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
     <color name="transparent_purple">#aa6A2569</color>
@@ -24,5 +26,7 @@
 
     <color name="notification_item_bg">@color/transparent_black</color>
     <color name="notification_item_text">@color/white</color>
+
+    <color name="actionbar_color">#66000000</color>
 
 </resources>

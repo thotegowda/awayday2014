@@ -39,7 +39,7 @@
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.twi.awayday2014" />
 
         <activity
-            android:name="com.twi.awayday2014.HomeActivity"
+            android:name=".view.HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -61,7 +61,7 @@
 
 
         <activity
-                android:name="com.twi.awayday2014.PushActivity"
+                android:name=".view.PushActivity"
                 android:label="@string/title_activity_push" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

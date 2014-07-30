@@ -9,11 +9,11 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.fragments.VideosFragment;
+import com.twi.awayday2014.view.fragments.VideosFragment;
 
 import java.util.List;
 
-import static com.twi.awayday2014.fragments.VideosFragment.*;
+import static com.twi.awayday2014.view.fragments.VideosFragment.*;
 
 public class YoutubeThumbnailAdapter extends BaseAdapter {
 
