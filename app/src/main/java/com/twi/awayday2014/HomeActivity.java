@@ -123,7 +123,7 @@ public class HomeActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mCurrentPosition == position) {
-                mDrawerLayout.closeDrawer(navigationList);
+                mDrawerLayout.closeDrawer(navigationLayout);
                 return;
             }
             mCurrentPosition = position;
@@ -181,6 +181,7 @@ public class HomeActivity extends Activity {
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager.getBackStackEntryCount() > 1) {
                 fragmentManager.popBackStack();
+                mCurrentPosition = 0;
             } else {
                 fragmentManager.popBackStack();
                 super.onBackPressed();

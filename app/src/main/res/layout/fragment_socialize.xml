@@ -15,13 +15,81 @@
             android:dividerHeight="@dimen/list_divider_height"
             android:background="@color/twitter_list_bg"/>
 
-    <Button
-            android:id="@+id/signin"
-            android:layout_width="wrap_content"
+    <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="bottom|right"
-            android:textColor="@color/tweet_btn_text"
-            android:background="@color/tweet_btn_bg"
-            android:text="Sign in"/>
+            android:layout_gravity="bottom">
+
+        <Button
+                android:id="@+id/signInOrTweet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:textColor="@color/tweet_btn_text"
+                android:background="@drawable/blue_gradient_background"
+                android:text="@string/sign_in"/>
+
+        <Button
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/tweet_btn_text"
+                android:background="@drawable/blue_gradient_background"
+                android:text="@string/refresh"/>
+
+        <RelativeLayout
+                android:id="@+id/tweet_message_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/transparent_black"
+                android:visibility="gone">
+
+            <EditText
+                    android:id="@+id/tweet_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:paddingLeft="10dp"
+                    android:minLines="5"
+                    android:gravity="left|top"
+                    android:background="@drawable/pink_background"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tweet_message"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                <Button
+                        android:id="@+id/tweet"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="@string/tweet"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/blue_button_background"/>
+
+                <Button
+                        android:id="@+id/cancel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="@string/cancel"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/blue_button_background"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

@@ -13,11 +13,11 @@ import java.util.List;
 public class SessionsAdapter extends BaseAdapter {
 
     public static int[] backgroundResources = {
-            R.drawable.listview_purple_background,
-            R.drawable.listview_red_background,
-            R.drawable.listview_pink_background,
-            R.drawable.listview_green_background,
-            R.drawable.listview_blue_background
+            R.drawable.purple_gradient_background,
+            R.drawable.red_gradient_background,
+            R.drawable.pink_gradient_background,
+            R.drawable.green_gradient_background,
+            R.drawable.blue_gradient_background
     };
 
     private final Context context;

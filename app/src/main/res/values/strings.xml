@@ -26,5 +26,9 @@
     <string name="playerview_text">Youtube Video</string>
     <string name="diplay_notification">Display Notification?</string>
     <string name="notifications_title">Notifications</string>
+    <string name="tweet">Tweet</string>
+    <string name="cancel">Cancel</string>
+    <string name="refresh">Refresh</string>
+    <string name="sign_in">Sign in</string>
 
 </resources>

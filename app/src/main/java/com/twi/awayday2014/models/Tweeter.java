@@ -1,18 +1,12 @@
 package com.twi.awayday2014.models;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-import com.twi.awayday2014.adapters.TweetsAdapter;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.BasicAuthorization;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -111,27 +105,46 @@ public class Tweeter {
     }
 
     public List<Status> searchNext() {
+        List<Status> tweets =  EMPTY_STATUS;
         try {
-            Query query = lastQueryResult.nextQuery();
-            if (query != null) {
-                lastQueryResult = searchTwitter(query);
-                return lastQueryResult.getTweets();
-            } else {
-                lastQueryResult = null;
-                return new ArrayList<Status>();
-            }
 
+            if (lastQueryResult != null && lastQueryResult.hasNext()) {
+                Query query = lastQueryResult.nextQuery();
+                if (query != null) {
+
+                    lastQueryResult = searchTwitter(query);
+                    tweets = lastQueryResult.getTweets();
+
+                }
+            }
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-        return EMPTY_STATUS;
+        return tweets;
     }
 
     private QueryResult searchTwitter(Query query) throws TwitterException {
         return searchTwitter.search(query);
     }
 
-    public void tweet() {
+    public void tweet(String tweetText) {
+        try {
+            twitter.updateStatus(tweetText);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public List<Status> getRecentTweets(String searchTerm) {
+        try {
+            Query query = new Query(searchTerm);
+            query.setSinceId(lastQueryResult.getSinceId());
+            lastQueryResult = searchTwitter(query);
+            return lastQueryResult.getTweets();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return EMPTY_STATUS;
     }
 }

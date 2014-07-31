@@ -80,7 +80,7 @@ public class MyScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_socialize, container, false);
-        rootView.findViewById(R.id.signin).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.signInOrTweet).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
