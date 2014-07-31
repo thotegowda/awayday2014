@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
+import com.twi.awayday2014.DeveloperKeys;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.fragments.VideosFragment;
 
@@ -47,7 +48,7 @@ public class YoutubeThumbnailAdapter extends BaseAdapter {
             view = View.inflate(context, R.layout.youtube_thumbnail_item, null);
             YouTubeThumbnailView thumbnailView = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail_view);
 
-            thumbnailView.initialize(DEVELOPER_KEY, new YoutubeInitializer(videos.get(i)));
+            thumbnailView.initialize(DeveloperKeys.YOUTUBE_DEVELOPER_KEY, new YoutubeInitializer(videos.get(i)));
        }
 
         //YouTubeThumbnailView thumbnailView = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail_view);

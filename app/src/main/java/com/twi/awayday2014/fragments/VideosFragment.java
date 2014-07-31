@@ -17,6 +17,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.twi.awayday2014.DeveloperKeys;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.YoutubeThumbnailAdapter;
 
@@ -29,7 +30,6 @@ public class VideosFragment
     private static final int REQ_START_STANDALONE_PLAYER = 1;
     private static final String TAG = "Youtube";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 10;
-    public static final String DEVELOPER_KEY = "AIzaSyCxTiSWZmwVkud2xY8El0ePCSkJ_v3y4CI";
 
     public static class YoutubeVideo {
         private String videoKey;
@@ -140,7 +140,8 @@ public class VideosFragment
     }
 
     public void launchYoutubeVideo(YoutubeVideo video) {
-        Intent intent = YouTubeStandalonePlayer.createVideoIntent(this.getActivity(), DEVELOPER_KEY, video.key(), 0, true, false);
+        Intent intent = YouTubeStandalonePlayer.createVideoIntent(
+                this.getActivity(), DeveloperKeys.YOUTUBE_DEVELOPER_KEY, video.key(), 0, true, false);
         startActivity(intent);
     }
 

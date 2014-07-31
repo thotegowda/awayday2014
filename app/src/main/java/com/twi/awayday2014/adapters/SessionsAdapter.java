@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.RandomColorSelector;
 import com.twi.awayday2014.models.Presentation;
 
 import java.util.List;
@@ -12,24 +13,19 @@ import java.util.List;
 
 public class SessionsAdapter extends BaseAdapter {
 
-    public static int[] backgroundResources = {
-            R.drawable.purple_gradient_background,
-            R.drawable.red_gradient_background,
-            R.drawable.pink_gradient_background,
-            R.drawable.green_gradient_background,
-            R.drawable.blue_gradient_background
-    };
-
     private final Context context;
     private List<Presentation> keynotes;
     private List<Presentation> sessions;
-    private int currentBackgroundResourceIndex = 0;
+    private RandomColorSelector randomColorSelector;
 
-    public SessionsAdapter(Context context, List<Presentation> keynotes, List<Presentation> sessions) {
+    public SessionsAdapter(Context context, List<Presentation> keynotes,
+                           List<Presentation> sessions, RandomColorSelector randomColorSelector) {
         this.context = context;
         this.keynotes = keynotes;
         this.sessions = sessions;
+        this.randomColorSelector = randomColorSelector;
     }
+
     @Override
     public int getCount() {
         return (int) (keynotes.size() + Math.floor((double)sessions.size() / (double)2));
@@ -72,20 +68,12 @@ public class SessionsAdapter extends BaseAdapter {
             return;
         }
 
-        sessionView.findViewById(R.id.session_text_layout).setBackgroundResource(getNextBackgroundResource());
+        sessionView.findViewById(R.id.session_text_layout).setBackgroundResource(randomColorSelector.next());
         ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(presentation.presenter().profileResource());
         ((TextView)sessionView.findViewById(R.id.presenter_title)).setText(presentation.title());
         ((TextView)sessionView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
         ((TextView)sessionView.findViewById(R.id.presentation_date)).setText(presentation.formatedDate());
     }
-
-    private int getNextBackgroundResource() {
-        if (currentBackgroundResourceIndex < 0 || currentBackgroundResourceIndex > backgroundResources.length - 1) {
-            currentBackgroundResourceIndex = 0;
-        }
-        return backgroundResources[currentBackgroundResourceIndex++];
-    }
-
 
     private void convertToKeynoteView(View leftView, View rightView) {
         leftView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 2));

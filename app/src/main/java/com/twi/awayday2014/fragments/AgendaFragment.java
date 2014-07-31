@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.twi.awayday2014.R;
 import android.app.Fragment;
+import com.twi.awayday2014.RandomColorSelector;
 import com.twi.awayday2014.adapters.SessionsAdapter;
 import com.twi.awayday2014.models.Presentation;
 import com.twi.awayday2014.models.Presenter;
@@ -34,7 +35,7 @@ public class AgendaFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setListAdapter(new SessionsAdapter(this.getActivity(), getKeynotes(), getPresentations()));
+        setListAdapter(new SessionsAdapter(this.getActivity(), getKeynotes(), getPresentations(), new RandomColorSelector()));
     }
 
     private List<Presentation> getKeynotes() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+import com.twi.awayday2014.DeveloperKeys;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -23,11 +24,6 @@ public class Tweeter {
 
     private final Twitter searchTwitter;
 
-    private String CONSUMER_KEY = "CyqRuU77Lbyv7i9EOkDMGinSo";
-    private String CONSUMER_SECRET = "h2ElL2l13ANJG5qYCUqGacL1uGNnPKkA6mfJmWwnofOI8w6bUb";
-    private String ACCESS_KEY = "97134656-DGmVyE2Npqw5AEx6tI4r8KY2pEFBcsWkN74YnkOOX";
-    private String ACCESS_SECRET = "qoVv6SRRFHQF2CRZ0t66xTUCf3L78aY4402qjOlTmJpRp";
-
     public static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
     private Twitter twitter;
     private RequestToken requestToken;
@@ -39,17 +35,17 @@ public class Tweeter {
     public Tweeter() {
         // TODO : remove one twitter
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey(CONSUMER_KEY);
-        configurationBuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
+        configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
+        configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
         Configuration configuration = configurationBuilder.build();
         twitterFactory = new TwitterFactory(configuration);
         twitter = twitterFactory.getInstance();
 
         configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey(CONSUMER_KEY);
-        configurationBuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
-        configurationBuilder.setOAuthAccessToken(ACCESS_KEY);
-        configurationBuilder.setOAuthAccessTokenSecret(ACCESS_SECRET);
+        configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
+        configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
+        configurationBuilder.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
+        configurationBuilder.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
         configuration = configurationBuilder.build();
         searchTwitter = new TwitterFactory(configuration).getInstance();
 
