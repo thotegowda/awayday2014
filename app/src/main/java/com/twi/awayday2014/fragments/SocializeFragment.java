@@ -4,14 +4,13 @@ import android.app.ListFragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.twi.awayday2014.HomeActivity;
+import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.models.Tweeter;
@@ -28,7 +27,7 @@ public class SocializeFragment extends ListFragment {
     private static final String TWITTER_SEARCH_TERM = "Bangalore";
     private static final String AWAYDAY_TWITTER_TAG = "#awayday2014";
 
-    private Tweeter tweeter = HomeActivity.getTweeter();
+    private Tweeter tweeter;
     private TweetsAdapter tweetsAdapter;
     private View rootView;
     private View signInOrTweetButton;
@@ -54,6 +53,38 @@ public class SocializeFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        tweeter = getApplication().getTwitterService();
+
+        setupAdapter();
+
+        twitterSearch(TWITTER_SEARCH_TERM);
+
+        if (tweeter.isTwitterLoggedInAlready()) {
+            showTweetButton();
+        } else {
+            if (isLaunchedFromTwitterCallbackUrl(getActivity().getIntent().getData())) {
+                showTweetButton();
+                retrieveAccessToken(getActivity().getIntent().getData());
+                //showTweetPopup();
+            } else {
+                showLoginButton();
+            }
+        }
+    }
+
+    private boolean isLaunchedFromTwitterCallbackUrl(Uri uri) {
+        return uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL);
+    }
+
+    private void showLoginButton() {
+        ((TextView) signInOrTweetButton).setText("LogIn");
+    }
+
+    private void showTweetButton() {
+        ((TextView) signInOrTweetButton).setText("Tweet");
+    }
+
+    private void setupAdapter() {
         tweetsAdapter = new TweetsAdapter(this.getActivity(), new ArrayList<Status>());
         setListAdapter(tweetsAdapter);
 
@@ -72,36 +103,29 @@ public class SocializeFragment extends ListFragment {
                 }
             }
         });
+    }
 
-        twitterSearch(TWITTER_SEARCH_TERM);
-
-        Uri uri = getActivity().getIntent().getData();
-        if (uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL)) {
-            ((TextView) signInOrTweetButton).setText("Tweet");
-            saveAccessToken(uri);
-            //showTweetPopup();
-        } else {
-            ((TextView) signInOrTweetButton).setText("LogIn");
-        }
+    private AwayDayApplication getApplication() {
+        return (AwayDayApplication) getActivity().getApplication();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_socialize, container, false);
+        bindViews();
+        return rootView;
+    }
+
+    private void bindViews() {
         signInOrTweetButton = rootView.findViewById(R.id.signInOrTweet);
         signInOrTweetButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                try {
-                    if (tweeter.isTwitterLoggedInAlready()) {
-                        showTweetPopup();
-                    } else {
-                        loginToTwitter();
-                    }
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "Exception : " + e.getErrorMessage());
+                if (tweeter.isTwitterLoggedInAlready()) {
+                    showTweetPopup();
+                } else {
+                    loginToTwitter();
                 }
             }
         });
@@ -142,7 +166,6 @@ public class SocializeFragment extends ListFragment {
                 tweetMessageLayout.setVisibility(View.GONE);
             }
         });
-        return rootView;
     }
 
     private void showTweetPopup() {
@@ -154,7 +177,7 @@ public class SocializeFragment extends ListFragment {
         return firstVisible + visibleCount + padding >= totalCount;
     }
 
-    private void loginToTwitter() throws TwitterException {
+    private void loginToTwitter() {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -170,7 +193,7 @@ public class SocializeFragment extends ListFragment {
 
     }
 
-    public void saveAccessToken(final Uri uri) {
+    public void retrieveAccessToken(final Uri uri) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override

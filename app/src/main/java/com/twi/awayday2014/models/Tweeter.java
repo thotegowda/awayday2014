@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 import com.twi.awayday2014.DeveloperKeys;
+import com.twi.awayday2014.Properties;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -21,49 +22,59 @@ public class Tweeter {
 
     public static final String TWITTER_CALLBACK_URL = "oauth://thoughtworks.Twitter_oAuth";
     static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
-
-    private final Twitter searchTwitter;
-
     public static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
+
+    private Twitter searchTwitter;
     private Twitter twitter;
     private RequestToken requestToken;
     private TwitterFactory twitterFactory;
     private boolean isLoggedIn = false;
 
     private QueryResult lastQueryResult;
+    private Properties properties;
 
-    public Tweeter() {
-        // TODO : remove one twitter
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
-        configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
-        Configuration configuration = configurationBuilder.build();
-        twitterFactory = new TwitterFactory(configuration);
-        twitter = twitterFactory.getInstance();
+    public Tweeter(Properties properties) {
+        this.properties = properties;
+        
+        setup();
+    }
 
-        configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
-        configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
-        configurationBuilder.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
-        configurationBuilder.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
-        configuration = configurationBuilder.build();
-        searchTwitter = new TwitterFactory(configuration).getInstance();
+    private void setup() {
+        
+        if (properties.alreadyLoggedIn()) {
+            isLoggedIn = true;
 
+            twitter = new TwitterFactory().getInstance();
+            twitter.setOAuthConsumer(DeveloperKeys.TWITTER_CONSUMER_KEY, DeveloperKeys.TWITTER_CONSUMER_SECRET);
+            twitter.setOAuthAccessToken(properties.loadAccessToken());
+            searchTwitter = twitter;
+        } else {
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
+            configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
+            Configuration configuration = configurationBuilder.build();
+            twitterFactory = new TwitterFactory(configuration);
+            twitter = twitterFactory.getInstance();
+
+            // This is to show search results even when user is not logged in
+            configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
+            configurationBuilder.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
+            configurationBuilder.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
+            configurationBuilder.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
+            searchTwitter = new TwitterFactory(configurationBuilder.build()).getInstance();
+         }
     }
 
     public void login(final Context context) throws TwitterException {
         if (!isTwitterLoggedInAlready()) {
-            getAccessToken();
+            requestToken = getRequestToken();
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
-        } else {
-            Toast.makeText(context, "Already Logged into twitter", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void getAccessToken() throws TwitterException {
-        requestToken = twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
-        Log.d(TAG, "Request token: " + requestToken.getToken());
-        Log.d(TAG, "Request token secret: " + requestToken.getTokenSecret());
+    private RequestToken getRequestToken() throws TwitterException {
+        return twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
     }
 
     public void retrieveAccessToken(Uri uri) throws TwitterException {
@@ -77,14 +88,12 @@ public class Tweeter {
     }
 
     private void saveAccessToken(AccessToken accessToken) {
-        Log.d(TAG, "Access token: " + accessToken.getToken());
-        Log.d(TAG, "Access token secret: " + accessToken.getTokenSecret());
+        properties.saveAccessToken(accessToken);
     }
 
     public boolean isTwitterLoggedInAlready() {
         return isLoggedIn;
     }
-
 
     public List<Status> search(String searchTerm) {
         try {

@@ -37,11 +37,6 @@ public class HomeActivity extends Activity {
     private LinearLayout navigationLayout;
     private ListView navigationList;
 
-    private static final Tweeter tweeter = new Tweeter();
-    public static Tweeter getTweeter() {
-        return tweeter;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
