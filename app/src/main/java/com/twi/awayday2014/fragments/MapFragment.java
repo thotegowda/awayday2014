@@ -37,8 +37,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        setUpMapIfNeeded(THOUGHTWORKS_BANGALORE);
     }
 
     private void setUpMapIfNeeded(LatLng place) {
@@ -89,6 +87,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        setUpMapIfNeeded(THOUGHTWORKS_BANGALORE);
         locator.onResume();
     }
 

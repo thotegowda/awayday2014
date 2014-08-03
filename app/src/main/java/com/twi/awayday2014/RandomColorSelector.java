@@ -9,7 +9,8 @@ public class RandomColorSelector {
             R.drawable.red_gradient_background,
             R.drawable.pink_gradient_background,
             R.drawable.green_gradient_background,
-            R.drawable.blue_gradient_background
+            R.drawable.blue_gradient_background,
+            R.drawable.light_green_gradient_background
     };
 
     public int next() {

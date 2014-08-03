@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="55dp"
+    android:layout_height="50dp"
     android:gravity="left|center_vertical"
     android:textSize="@dimen/navigation_item_text_size"
     android:textStyle="bold"
     android:paddingLeft="15dp"
-    android:textColor="@color/navigation_bar_text"/>
+    android:textColor="@color/navigation_bar_text"
+    android:background="@drawable/navigation_item_background"/>
