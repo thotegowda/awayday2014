@@ -80,7 +80,7 @@ public class SessionDetailsActivity extends Activity {
     }
 
     private void launchFeedback() {
-        startActivity(new Intent(this, FeedbackActivity.class));
+        startActivity(new Intent(this, FeedbackActivity.class).putExtra("presentation_id", String.valueOf(presentation.getId())));
     }
 
     private void addToMySchedule() {
