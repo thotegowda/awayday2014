@@ -1,5 +1,6 @@
 package com.twi.awayday2014.models;
 
+import com.twi.awayday2014.Tweeter;
 import junit.framework.TestCase;
 
 

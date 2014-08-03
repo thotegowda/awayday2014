@@ -1,6 +1,7 @@
 package com.twi.awayday2014.fragments;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -8,6 +9,8 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
 import com.twi.awayday2014.models.Speaker;
 import android.app.Fragment;
+import com.twi.awayday2014.ui.SessionDetailsActivity;
+
 import java.util.Arrays;
 
 public class SpeakersFragment extends ListFragment {
@@ -43,5 +46,7 @@ public class SpeakersFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        startActivity(new Intent(getActivity(), SessionDetailsActivity.class));
     }
 }

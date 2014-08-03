@@ -1,12 +1,17 @@
 package com.twi.awayday2014.models;
 
 
-public class Presentation {
+import com.orm.SugarRecord;
 
-    private final Presenter presenter;
-    private final String title;
-    private final String date;
-    private int profileResourceId;
+public class Presentation extends SugarRecord<Presentation> {
+
+    private Presenter presenter;
+    private String title;
+    private String date;
+
+    public Presentation() {
+
+    }
 
     public Presentation(Presenter presenter, String title, String date) {
         this.presenter = presenter;
@@ -18,11 +23,18 @@ public class Presentation {
         return presenter;
     }
 
-    public String formatedDate() {
+    public String formattedDate() {
         return date;
     }
 
     public String title() {
         return title;
+    }
+
+    public String description() {
+        return "This is the session description holder, where you can place details about the session and its where abouts" +
+                "This is the session description holder, where you can place details about the session and its where abouts" +
+                "This is the session description holder, where you can place details about the session and its where abouts" +
+                "This is the session description holder, where you can place details about the session and its where abouts";
     }
 }

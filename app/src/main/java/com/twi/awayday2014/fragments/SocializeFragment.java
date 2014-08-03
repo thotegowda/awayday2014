@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
-import com.twi.awayday2014.models.Tweeter;
+import com.twi.awayday2014.Tweeter;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 

@@ -1,4 +1,4 @@
-package com.twi.awayday2014;
+package com.twi.awayday2014.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,8 +13,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
+import com.twi.awayday2014.R;
 import com.twi.awayday2014.fragments.*;
-import com.twi.awayday2014.models.Tweeter;
+import com.twi.awayday2014.Tweeter;
 
 public class HomeActivity extends Activity {
 

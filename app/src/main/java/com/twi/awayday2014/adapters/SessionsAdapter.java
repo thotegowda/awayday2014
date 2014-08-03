@@ -1,12 +1,15 @@
 package com.twi.awayday2014.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.RandomColorSelector;
+import com.twi.awayday2014.SessionsOrganizer;
 import com.twi.awayday2014.models.Presentation;
+import com.twi.awayday2014.ui.SessionDetailsActivity;
 
 import java.util.List;
 
@@ -14,21 +17,18 @@ import java.util.List;
 public class SessionsAdapter extends BaseAdapter {
 
     private final Context context;
-    private List<Presentation> keynotes;
-    private List<Presentation> sessions;
+    private SessionsOrganizer sessionOrganizer;
     private RandomColorSelector randomColorSelector;
 
-    public SessionsAdapter(Context context, List<Presentation> keynotes,
-                           List<Presentation> sessions, RandomColorSelector randomColorSelector) {
+    public SessionsAdapter(Context context, SessionsOrganizer sessionOrganizer, RandomColorSelector randomColorSelector) {
         this.context = context;
-        this.keynotes = keynotes;
-        this.sessions = sessions;
+        this.sessionOrganizer = sessionOrganizer;
         this.randomColorSelector = randomColorSelector;
     }
 
     @Override
     public int getCount() {
-        return (int) (keynotes.size() + Math.floor((double)sessions.size() / (double)2));
+        return (int) (getKeynotes().size() + Math.floor((double) getSessions().size() / (double) 2));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SessionsAdapter extends BaseAdapter {
         View leftView = view.findViewById(R.id.left_session);
         View rightView = view.findViewById(R.id.right_session);
 
-        if (i < keynotes.size()) {
+        if (i < getKeynotes().size()) {
             convertToKeynoteView(leftView, rightView);
             setupSession(leftView, getKeynoteSession(i));
         } else {
@@ -68,11 +68,19 @@ public class SessionsAdapter extends BaseAdapter {
             return;
         }
 
-        sessionView.findViewById(R.id.session_text_layout).setBackgroundResource(randomColorSelector.next());
+        View sessionLayout = sessionView.findViewById(R.id.session_text_layout);
+        sessionLayout.setBackgroundResource(randomColorSelector.next());
+        sessionLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                launchSessionDetails();
+            }
+        });
         ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(presentation.presenter().profileResource());
-        ((TextView)sessionView.findViewById(R.id.presenter_title)).setText(presentation.title());
-        ((TextView)sessionView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
-        ((TextView)sessionView.findViewById(R.id.presentation_date)).setText(presentation.formatedDate());
+        ((TextView) sessionView.findViewById(R.id.presenter_title)).setText(presentation.title());
+        ((TextView) sessionView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
+        ((TextView) sessionView.findViewById(R.id.presentation_date)).setText(presentation.formattedDate());
     }
 
     private void convertToKeynoteView(View leftView, View rightView) {
@@ -86,16 +94,28 @@ public class SessionsAdapter extends BaseAdapter {
     }
 
     private Presentation leftSession(int position) {
-        position -= keynotes.size();
-       return (sessions.size() > 2 * position) ? sessions.get(2 * position) : null;
+        position -= getKeynotes().size();
+        return (getSessions().size() > 2 * position) ? getSessions().get(2 * position) : null;
     }
 
     public Presentation rightSession(int position) {
-        position -= keynotes.size();
-        return (sessions.size() > 2 * position + 1) ? sessions.get(2 * position + 1) : null;
+        position -= getKeynotes().size();
+        return (getSessions().size() > 2 * position + 1) ? getSessions().get(2 * position + 1) : null;
+    }
+
+    private void launchSessionDetails() {
+        context.startActivity(new Intent(context, SessionDetailsActivity.class));
+    }
+
+    private List<Presentation> getSessions() {
+        return sessionOrganizer.sessions();
     }
 
     public Presentation getKeynoteSession(int position) {
-        return keynotes.get(position);
+        return getKeynotes().get(position);
+    }
+
+    private List<Presentation> getKeynotes() {
+        return sessionOrganizer.keynotes();
     }
 }

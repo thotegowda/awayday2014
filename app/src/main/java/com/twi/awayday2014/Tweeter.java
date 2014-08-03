@@ -1,4 +1,4 @@
-package com.twi.awayday2014.models;
+package com.twi.awayday2014;
 
 import android.content.Context;
 import android.content.Intent;

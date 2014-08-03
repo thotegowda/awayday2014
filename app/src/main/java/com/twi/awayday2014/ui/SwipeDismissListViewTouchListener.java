@@ -1,4 +1,4 @@
-package com.twi.awayday2014;
+package com.twi.awayday2014.ui;
 /*
  * Copyright 2013 Google Inc.
  *

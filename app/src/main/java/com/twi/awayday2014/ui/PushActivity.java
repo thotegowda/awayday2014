@@ -1,4 +1,4 @@
-package com.twi.awayday2014;
+package com.twi.awayday2014.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import com.parse.ParsePush;
+import com.twi.awayday2014.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 

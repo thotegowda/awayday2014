@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/rate_this_session_overall"/>
+
+        <RatingBar
+                android:id="@+id/overall_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyle"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:layout_margin="5dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/how_relevant_is_content"/>
+
+        <RatingBar
+                android:id="@+id/content_rating"
+                style="?android:attr/ratingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:numStars="5"
+                android:stepSize="1.0"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/speaker_quality"/>
+
+        <RatingBar
+                android:id="@+id/speaker_quality_rating"
+                style="?android:attr/ratingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:numStars="5"
+                android:stepSize="1.0"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/anything_else_to_say"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/tell_us"
+                android:minLines="2"/>
+
+        <Button
+                android:id="@+id/submit_feedback"
+                style="@style/Widget.Button.purple"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/submit_feedback"/>
+
+    </LinearLayout>
+
+</ScrollView>

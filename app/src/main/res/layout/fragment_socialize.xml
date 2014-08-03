@@ -22,24 +22,16 @@
 
         <Button
                 android:id="@+id/signInOrTweet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Widget.Button.purple"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="10dp"
-                android:textColor="@color/tweet_btn_text"
-                android:background="@drawable/blue_gradient_background"
                 android:text="@string/sign_in"/>
 
         <Button
                 android:id="@+id/refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                style="@style/Widget.Button.purple"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/tweet_btn_text"
-                android:background="@drawable/blue_gradient_background"
                 android:text="@string/refresh"/>
 
         <RelativeLayout
@@ -70,25 +62,20 @@
 
                 <Button
                         android:id="@+id/tweet"
+                        style="@style/Widget.Button.purple"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="@string/tweet"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/blue_button_background"/>
+                        android:text="@string/tweet"/>
 
                 <Button
                         android:id="@+id/cancel"
+                        style="@style/Widget.Button.purple"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="@string/cancel"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/blue_button_background"/>
+                        android:text="@string/cancel"/>
             </LinearLayout>
-
 
         </RelativeLayout>
     </RelativeLayout>

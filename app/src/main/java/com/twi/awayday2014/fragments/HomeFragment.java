@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.SwipeDismissListViewTouchListener;
+import com.twi.awayday2014.ui.SwipeDismissListViewTouchListener;
 import com.twi.awayday2014.adapters.NotificationsAdapter;
 import com.twi.awayday2014.models.ShortNotification;
 import org.joda.time.Days;
@@ -15,9 +15,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import android.app.Fragment;
 
-import java.util.Arrays;
-
-import static com.twi.awayday2014.SwipeDismissListViewTouchListener.DismissCallbacks;
+import static com.twi.awayday2014.ui.SwipeDismissListViewTouchListener.DismissCallbacks;
 
 public class HomeFragment extends Fragment {
 
