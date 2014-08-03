@@ -14,21 +14,23 @@ import com.twi.awayday2014.ui.SessionDetailsActivity;
 import java.util.List;
 
 
-public class SessionsAdapter extends BaseAdapter {
+public class ScheduledSessionsAdapter extends BaseAdapter {
 
     private final Context context;
+    private final List<Presentation> scheduledSessions;
     private SessionsOrganizer sessionOrganizer;
     private RandomColorSelector randomColorSelector;
 
-    public SessionsAdapter(Context context, SessionsOrganizer sessionOrganizer, RandomColorSelector randomColorSelector) {
+    public ScheduledSessionsAdapter(Context context, SessionsOrganizer sessionOrganizer, RandomColorSelector randomColorSelector) {
         this.context = context;
         this.sessionOrganizer = sessionOrganizer;
         this.randomColorSelector = randomColorSelector;
+        this.scheduledSessions = sessionOrganizer.getScheduledSessions();
     }
 
     @Override
     public int getCount() {
-        return (int) (getKeynotes().size() + Math.floor((double) getSessions().size() / (double) 2));
+        return scheduledSessions.size();
     }
 
     @Override
@@ -50,14 +52,8 @@ public class SessionsAdapter extends BaseAdapter {
         View leftView = view.findViewById(R.id.left_session);
         View rightView = view.findViewById(R.id.right_session);
 
-        if (i < getKeynotes().size()) {
-            convertToKeynoteView(leftView, rightView);
-            setupSession(leftView, getKeynoteSession(i));
-        } else {
-            convertToSessionView(leftView, rightView);
-            setupSession(leftView, leftSession(i));
-            setupSession(rightView, rightSession(i));
-        }
+        convertToKeynoteView(leftView, rightView);
+        setupSession(leftView, scheduledSessions.get(i));
 
         view.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, 400));
         return view;
@@ -89,34 +85,8 @@ public class SessionsAdapter extends BaseAdapter {
         rightView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0));
     }
 
-    private void convertToSessionView(View leftView, View rightView) {
-        leftView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        rightView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-    }
-
-    private Presentation leftSession(int position) {
-        position -= getKeynotes().size();
-        return (getSessions().size() > 2 * position) ? getSessions().get(2 * position) : null;
-    }
-
-    public Presentation rightSession(int position) {
-        position -= getKeynotes().size();
-        return (getSessions().size() > 2 * position + 1) ? getSessions().get(2 * position + 1) : null;
-    }
-
     private void launchSessionDetails(Long id) {
         context.startActivity(new Intent(context, SessionDetailsActivity.class).putExtra("presentation_id", String.valueOf(id)));
     }
 
-    private List<Presentation> getSessions() {
-        return sessionOrganizer.sessions();
-    }
-
-    public Presentation getKeynoteSession(int position) {
-        return getKeynotes().get(position);
-    }
-
-    private List<Presentation> getKeynotes() {
-        return sessionOrganizer.keynotes();
-    }
 }

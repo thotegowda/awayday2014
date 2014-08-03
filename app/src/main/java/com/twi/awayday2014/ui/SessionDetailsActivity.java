@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ public class SessionDetailsActivity extends Activity {
     private TextView description;
     private LinearLayout presenters;
     private TextView duration;
+    private Presentation presentation;
+    private Button scheduleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,10 @@ public class SessionDetailsActivity extends Activity {
 
         setContentView(R.layout.activity_session_details);
         setupViews();
-        bind(new Presentation(new Presenter("Devi Prasad", R.drawable.speaker_00), "Close to metal programming in Android", "29/09/14 12.00 - 1.00" ));
+
+        String presentation_id = getIntent().getStringExtra("presentation_id");
+        presentation = Presentation.findById(Presentation.class, Long.valueOf(presentation_id));
+        bind(presentation);
     }
 
     public void setupViews() {
@@ -41,12 +47,18 @@ public class SessionDetailsActivity extends Activity {
                 launchFeedback();
             }
         });
-        findViewById(R.id.btn_add_to_my_schedule).setOnClickListener(new View.OnClickListener() {
+        scheduleButton = (Button) findViewById(R.id.btn_add_to_my_schedule);
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addToMySchedule();
+                ((Button) view).setText(getScheduleText(presentation));
             }
         });
+    }
+
+    private String getScheduleText(Presentation presentation) {
+        return presentation.isScheduled() ? "O" : "+";
     }
 
     public void bind(Presentation presentation) {
@@ -54,7 +66,7 @@ public class SessionDetailsActivity extends Activity {
         title.setText(presentation.title());
         description.setText(presentation.description());
         duration.setText(presentation.formattedDate());
-
+        scheduleButton.setText(getScheduleText(presentation));
         bind(presentation.presenter());
     }
 
@@ -72,6 +84,7 @@ public class SessionDetailsActivity extends Activity {
     }
 
     private void addToMySchedule() {
-
+        presentation.setScheduled(!presentation.isScheduled());
+        presentation.save();
     }
 }
