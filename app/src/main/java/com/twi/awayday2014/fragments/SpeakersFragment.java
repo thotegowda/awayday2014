@@ -31,7 +31,11 @@ public class SpeakersFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         setListAdapter(new SpeakersAdapter(this.getActivity(), Arrays.asList(
                 new Speaker("Sanjeev Veerawarana", "Building a successfull open source business", "detailed Message", R.drawable.speaker_00),
                 new Speaker("Kiran Chandra", "Using open source software for society's benefit", "detailed Message", R.drawable.speaker_01),
@@ -41,7 +45,6 @@ public class SpeakersFragment extends ListFragment {
                 new Speaker("Sumangala Damodaran", "Music for change", "detailed Message", R.drawable.speaker_05)
         )));
     }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

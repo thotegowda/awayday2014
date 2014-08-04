@@ -19,7 +19,7 @@ import com.twi.awayday2014.ui.SessionDetailsActivity;
 import java.util.Arrays;
 import java.util.List;
 
-public class AgendaFragment extends ListFragment {
+public class AgendaFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -36,24 +36,9 @@ public class AgendaFragment extends ListFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setListAdapter(getAdapter());
-    }
-
-    private SessionsAdapter getAdapter() {
-        return new SessionsAdapter(this.getActivity(), getApplication().getSessionOrganizer(), new RandomColorSelector());
-    }
-
-    private AwayDayApplication getApplication() {
-        return (AwayDayApplication) this.getActivity().getApplication();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_other, container, false);
         return rootView;
     }
 

@@ -34,11 +34,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
     public MapFragment() {
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     private void setUpMapIfNeeded(LatLng place) {
         if (map != null) {
             return;

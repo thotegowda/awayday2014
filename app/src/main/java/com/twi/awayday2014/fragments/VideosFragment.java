@@ -59,7 +59,11 @@ public class VideosFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         youtubeVideoAdapter = new YoutubeThumbnailAdapter(this.getActivity(), Arrays.asList(
                 new YoutubeVideo("XMhaNBO03ks"),
                 new YoutubeVideo("3DwGYCvYo9A"),
@@ -96,25 +100,25 @@ public class VideosFragment
         return rootView;
     }
 
-    public void onStop() {
-        super.onStop();
-        //Log.d(TAG, "Trying to disconnect with Google service()");
-        //mLocationClient.disconnect();
-    }
-
-    public void onPause() {
-        super.onPause();
-    }
-
-    public void onStart() {
-        super.onStart();
-        //Log.d(TAG, "Trying to connect with Google service");
-       // mLocationClient.connect();
-    }
-
-    public void onResume() {
-        super.onResume();
-    }
+//    public void onStop() {
+//        super.onStop();
+//        //Log.d(TAG, "Trying to disconnect with Google service()");
+//        //mLocationClient.disconnect();
+//    }
+//
+//    public void onPause() {
+//        super.onPause();
+//    }
+//
+//    public void onStart() {
+//        super.onStart();
+//        //Log.d(TAG, "Trying to connect with Google service");
+//       // mLocationClient.connect();
+//    }
+//
+//    public void onResume() {
+//        super.onResume();
+//    }
 
     @Override
     public void onConnected(Bundle bundle) {

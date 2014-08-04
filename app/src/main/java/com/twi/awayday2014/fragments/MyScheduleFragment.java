@@ -45,6 +45,11 @@ public class MyScheduleFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         setListAdapter(getAdapter());
     }

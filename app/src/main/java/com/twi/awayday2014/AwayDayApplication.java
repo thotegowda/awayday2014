@@ -52,42 +52,44 @@ public class AwayDayApplication extends SugarApp {
     }
 
     private void setupPresentations() {
-        Presenter.deleteAll(Presenter.class);
-        Presentation.deleteAll(Presentation.class);
+//        Presenter.deleteAll(Presenter.class);
+//        Presentation.deleteAll(Presentation.class);
+        if (!hasPresentationRecords()) {
 
-        save("Presenter name1", R.drawable.speaker_00, "keynote title1", "29/09/14 10.00 - 11.00", true);
-        save("Presenter name2", R.drawable.speaker_01, "keynote title2", "29/09/14 12.00 - 1.00", true);
-        save("Presenter name3", R.drawable.speaker_02, "keynote title3", "29/09/14 1.00 - 4.00", true);
-        save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00", true);
-        save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
-        save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
-        save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
-        save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00", true);
-        save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00", true);
+            save("Presenter name1", R.drawable.speaker_00, "keynote title1", "29/09/14 10.00 - 11.00", true);
+            save("Presenter name2", R.drawable.speaker_01, "keynote title2", "29/09/14 12.00 - 1.00", true);
+            save("Presenter name3", R.drawable.speaker_02, "keynote title3", "29/09/14 1.00 - 4.00", true);
+            save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00", true);
+            save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name1", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name2", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name3", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name4", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name5", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name6", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00");
+            save("Presenter name7", R.drawable.speaker_00, "session title1", "29/09/14 10.00 - 11.00");
+            save("Presenter name8", R.drawable.speaker_01, "session title2", "29/09/14 12.00 - 1.00");
+            save("Presenter name9", R.drawable.speaker_02, "session title3", "29/09/14 1.00 - 4.00", true);
+            save("Presenter name10", R.drawable.speaker_01, "session title3", "29/09/14 1.00 - 4.00", true);
+        }
     }
 
     public void save(String presenterName, int resourceId, String presentationTitle, String dateInfo) {
