@@ -3,7 +3,9 @@ package com.twi.awayday2014.fragments;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
@@ -44,6 +46,13 @@ public class SpeakersFragment extends ListFragment {
                 new Speaker("Dr Yogesh Jain", "Health care for underprivileged", "detailed Message", R.drawable.speaker_04),
                 new Speaker("Sumangala Damodaran", "Music for change", "detailed Message", R.drawable.speaker_05)
         )));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        return rootView;
     }
 
     @Override

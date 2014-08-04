@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="horizontal"
               android:weightSum="100"
-              android:background="@color/twitter_list_item_bg">
+              android:background="@drawable/card_background_small">
 
     <ImageView
             android:id="@+id/profile_thumbnail"
@@ -13,7 +13,7 @@
             android:layout_height="@dimen/tweet_list_item_height"
             android:layout_weight="20"
             android:layout_gravity="top"
-            android:padding="5dp"
+            android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tw_profile_placeholder"/>
 

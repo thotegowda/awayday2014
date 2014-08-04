@@ -12,10 +12,10 @@
             android:layout_weight="1"
             layout="@layout/session_item"/>
 
-    <ImageView
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:src="@color/white"/>
+    <!--<ImageView-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:src="@android:color/transparent"/>-->
 
     <include
             android:id="@+id/right_session"

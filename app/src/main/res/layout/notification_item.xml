@@ -3,9 +3,9 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/notification_item_height"
               android:weightSum="100"
-              android:padding="5dp"
+              android:padding="10dp"
               android:orientation="horizontal"
-              android:background="@color/notification_item_bg">
+              android:background="@drawable/card_background_small">
 
     <TextView
             android:id="@+id/message"
