@@ -1,6 +1,8 @@
 package com.twi.awayday2014.models;
 
-public class Speaker {
+import com.orm.SugarRecord;
+
+public class Speaker extends SugarRecord<Speaker> {
     private final String name;
     private final String shortBio;
     private final String detailedBio;

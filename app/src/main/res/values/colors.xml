@@ -6,6 +6,7 @@
     <color name="black">#ff000000</color>
     <color name="pink">#ef5ba1</color>
     <color name="gray">#ffEAEAEA</color>
+    <color name="blue">#ff1A73BA</color>
     <color name="second_grey">#ff999999</color>
     <color name="card_white">#ffffffff</color>
     <color name="card_shadow">#8c666666</color>
@@ -30,6 +31,6 @@
     <color name="tweet_btn_bg">@color/transparent_purple</color>
 
     <color name="notification_item_bg">@color/transparent_black</color>
-    <color name="notification_item_text">@color/black</color>
+    <color name="notification_item_text">@color/white</color>
 
 </resources>

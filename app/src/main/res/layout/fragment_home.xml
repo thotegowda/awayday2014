@@ -34,7 +34,8 @@
             android:gravity="left"
             android:padding="5dp"
             style="@style/Widget.TextView.Medium"
-            android:background="@color/notification_item_bg"
+            android:background="@color/blue"
+            android:textColor="@color/white"
             android:text="@string/notifications_title" />
 
         <ImageView

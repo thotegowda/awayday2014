@@ -11,11 +11,15 @@ public class DateUtil {
     public static String formatDate(LocalDateTime then) {
         LocalDateTime now = LocalDateTime.now();
 
-        int minutes = Math.abs(Minutes.minutesBetween(now, then).getMinutes());
-        if (minutes <= 1) {
+        int seconds = Math.abs(Seconds.secondsBetween(now, then).getSeconds());
+        if (seconds <= 10) {
             return "now";
         }
+        if (seconds < 60) {
+            return String.valueOf(seconds) + "s";
+        }
 
+        int minutes = Math.abs(Minutes.minutesBetween(now, then).getMinutes());
         if (minutes < 60) {
             return String.valueOf(minutes) + "m";
         }

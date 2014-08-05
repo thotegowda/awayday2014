@@ -13,7 +13,7 @@
     <dimen name="session_row_height">280dp</dimen>
     <dimen name="navigation_title_text_size">25sp</dimen>
     <dimen name="navigation_item_text_size">20sp</dimen>
-    <dimen name="card_view_gap_small">5dp</dimen>
+    <dimen name="card_view_gap_small">3dp</dimen>
     <dimen name="background_corner_radius">3dp</dimen>
     <dimen name="card_background_radius">3dp</dimen>
 </resources>

@@ -3,7 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-        android:background="@drawable/card_background_small">
+             android:background="@drawable/card_background_small">
 
     <ImageView
             android:id="@+id/profile_image"
@@ -16,7 +16,8 @@
             android:id="@+id/session_text_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="3dp"
+            android:background="@color/transparent_blue"
             android:focusable="true"
             android:clickable="true">
 
