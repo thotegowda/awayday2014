@@ -3,6 +3,8 @@ package com.twi.awayday2014.fragments;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,10 +36,25 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
     public MapFragment() {
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setUpMapIfNeeded(THOUGHTWORKS_BANGALORE);
+    }
+
     private void setUpMapIfNeeded(LatLng place) {
         if (map != null) {
             return;
         }
+
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getActivity());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            Log.d(TAG, "Play service is not available");
+        } else {
+            map = this.getMap();
+        }
+
 
         map = this.getMap();
 
@@ -83,30 +100,31 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment {
     public void onResume() {
         super.onResume();
 
-        setUpMapIfNeeded(THOUGHTWORKS_BANGALORE);
-        locator.onResume();
+        if (locator != null)
+            locator.onResume();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        locator.onStart();
+        if (locator != null)
+            locator.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        locator.onStop();
+        if (locator != null)
+            locator.onStop();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-
-        locator.onPause();
+        if (locator != null)
+            locator.onPause();
     }
 
     private LatLng location() {

@@ -24,7 +24,7 @@ public class SocializeFragment extends ListFragment {
 
     private static final String TAG = "AwayDay";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String TWITTER_SEARCH_TERM = "Bangalore";
+    private static final String TWITTER_SEARCH_TERM = "#ThoughtWorks";
     private static final String AWAYDAY_TWITTER_TAG = "#awayday2014";
 
     private Tweeter tweeter;
@@ -154,10 +154,7 @@ public class SocializeFragment extends ListFragment {
                 String text = tweetMessageView.getText().toString();
                 tweetMessageView.setText("");
                 if (text.length() > 0) {
-                    if (!text.contains(AWAYDAY_TWITTER_TAG)) {
-                        text += " " + AWAYDAY_TWITTER_TAG;
-                    }
-                    tweet(text);
+                    tweet(AddTagsIfNeeded(text));
                     tweetMessageLayout.setVisibility(View.GONE);
                 }
             }
@@ -171,6 +168,13 @@ public class SocializeFragment extends ListFragment {
                 tweetMessageLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    private String AddTagsIfNeeded(String text) {
+        if (!text.contains(AWAYDAY_TWITTER_TAG)) {
+            text += " " + AWAYDAY_TWITTER_TAG + " " + TWITTER_SEARCH_TERM;
+        }
+        return text;
     }
 
     private void showTweetPopup() {

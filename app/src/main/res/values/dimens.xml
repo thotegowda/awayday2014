@@ -15,5 +15,5 @@
     <dimen name="navigation_item_text_size">20sp</dimen>
     <dimen name="card_view_gap_small">3dp</dimen>
     <dimen name="background_corner_radius">3dp</dimen>
-    <dimen name="card_background_radius">3dp</dimen>
+    <dimen name="card_background_radius">1dp</dimen>
 </resources>
