@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.DateUtil;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.Utils;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 
@@ -22,14 +21,20 @@ import java.util.List;
 
 public class TweetsAdapter extends BaseAdapter implements View.OnClickListener {
 
+    public interface OnTweetClickListener {
+        void onPhotoClicked(View photoView, String url);
+    }
+
     private static final String TAG = "AwayDayTwitter";
     private Context context;
     private List<Status> tweets;
     private LayoutInflater inflater;
+    private OnTweetClickListener onClickListener;
 
-    public TweetsAdapter(Context context, List<Status> tweets) {
+    public TweetsAdapter(Context context, List<Status> tweets, OnTweetClickListener onClickListener) {
         this.context = context;
         this.tweets = tweets;
+        this.onClickListener = onClickListener;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -120,7 +125,7 @@ public class TweetsAdapter extends BaseAdapter implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Utils.launchPhotoViewer(context, (String) view.getTag());
+        onClickListener.onPhotoClicked(view, (String) view.getTag());
     }
 
     private class TweetViewHolder {

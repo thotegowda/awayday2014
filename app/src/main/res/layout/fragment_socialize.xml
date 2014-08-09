@@ -1,8 +1,8 @@
 <com.twi.awayday2014.ui.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                           xmlns:tools="http://schemas.android.com/tools"
-                                           android:layout_width="match_parent"
-                                           android:layout_height="match_parent"
-                                           tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
+                                                xmlns:tools="http://schemas.android.com/tools"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                tools:context="com.twi.awayday2014.fragments.SocializeFragment">
 
     <FrameLayout
             android:layout_width="match_parent"
@@ -79,6 +79,20 @@
 
             </RelativeLayout>
         </RelativeLayout>
+
+        <ImageView
+                android:id="@+id/photo_full_screen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:background="@color/transparent_black"
+                android:visibility="gone"/>
+
+        <ProgressBar android:id="@+id/loading_spinner"
+                     style="?android:progressBarStyleLarge"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center" />
 
     </FrameLayout>
 </com.twi.awayday2014.ui.MultiSwipeRefreshLayout>

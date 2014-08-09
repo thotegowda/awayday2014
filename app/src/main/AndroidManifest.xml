@@ -131,14 +131,6 @@
                 android:screenOrientation="portrait"
                 android:parentActivityName=".ui.SessionDetailsActivity"/>
 
-        <activity
-                android:theme="@style/AppTheme.FullScreen"
-                android:name=".ui.PhotoViewerActivity"
-                android:label="@string/socialize"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".ui.HomeActivity"/>
-
     </application>
 
 </manifest>

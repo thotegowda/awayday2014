@@ -37,6 +37,7 @@ public class HomeActivity extends Activity {
 
     private LinearLayout navigationLayout;
     private ListView navigationList;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +138,10 @@ public class HomeActivity extends Activity {
     }
 
     private void startFragment(int position) {
-        Fragment fragment = getFragment(position);
+        currentFragment = getFragment(position);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_frame, fragment);
+        transaction.replace(R.id.content_frame, currentFragment);
 
         if (fragmentManager.getBackStackEntryCount() <= 1) {
             transaction.addToBackStack(null);
@@ -173,6 +174,8 @@ public class HomeActivity extends Activity {
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else if (currentFragment instanceof SocializeFragment && ((SocializeFragment) currentFragment).isFullViewShowing()) {
+            ((SocializeFragment) currentFragment).hideFullView();
         } else {
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager.getBackStackEntryCount() > 1) {
