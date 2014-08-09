@@ -4,6 +4,7 @@ import android.app.ListFragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ public class SocializeFragment extends ListFragment implements MultiSwipeRefresh
 
     private View rootView;
     private View signInOrTweetButton;
-    private View refreshButton;
     private View tweetMessageLayout;
     private View tweetButton;
     private EditText tweetMessageView;
@@ -169,7 +169,15 @@ public class SocializeFragment extends ListFragment implements MultiSwipeRefresh
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
-        return isTweetWindowVisible || getListView().getFirstVisiblePosition() != 0;
+        return isTweetWindowVisible || !(isFirstTweet() && isFirstItemFullyVisible());
+    }
+
+    private boolean isFirstItemFullyVisible() {
+        return getListView().getChildAt(0) == null ? getListView().getChildAt(0).getTop() >= 0 : false;
+    }
+
+    private boolean isFirstTweet() {
+        return getListView().getFirstVisiblePosition() == 0;
     }
 
     private void refresh() {

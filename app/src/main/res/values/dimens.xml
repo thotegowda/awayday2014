@@ -1,9 +1,13 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="navigation_drawer_width">250dp</dimen>
     <dimen name="video_list_item_height">100dp</dimen>
-    <dimen name="tweet_list_item_height">100dp</dimen>
+
+    <dimen name="tweet_list_profile_pic_height">100dp</dimen>
+    <dimen name="tweet_list_item_height_normal">100dp</dimen>
+    <dimen name="tweet_list_item_image_height">140dp</dimen>
+    <dimen name="tweet_list_item_height_large">250dp</dimen>
 
     <dimen name="twitter_user_name_text_size">14dp</dimen>
     <dimen name="tweet_text_size">12dp</dimen>

@@ -9,6 +9,10 @@
         <item name="android:background">@color/action_bar_background</item>
     </style>
 
+    <style name="AppTheme.FullScreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="Widget.TextView" parent="@android:style/Widget.TextView">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/count_down_timer_text</item>
