@@ -24,16 +24,18 @@ public class AwayDayApplication extends SugarApp {
     }
 
     private void setupParse() {
+        Parse.initialize(getApplicationContext(), null, null);
         Parse.initialize(getApplicationContext(), DeveloperKeys.PARSE_APPLICATION_ID, DeveloperKeys.PARSE_CLIENT_KEY);
 
+        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         ParseUser.enableAutomaticUser();
-        ParseACL defaultACL = new ParseACL();
 
+        ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
-
-        PushService.subscribe(this, CHANNEL_AWAYDAY, HomeActivity.class);
+        PushService.setDefaultPushCallback(this, HomeActivity.class);
+        //PushService.subscribe(this, "awayDay", HomeActivity.class);
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }

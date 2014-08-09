@@ -19,8 +19,7 @@ public class PushNotificationReceiver extends BroadcastReceiver {
         try {
             String action = intent.getAction();
             String channel = intent.getExtras().getString("com.parse.Channel");
-            JSONObject json = null;
-            json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
 
             Log.d(TAG, "got action " + action + " on channel " + channel + " with:");
 
