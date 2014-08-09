@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TweetsAdapter extends BaseAdapter {
 
-    private static final String TAG = "Twitter";
+    private static final String TAG = "AwayDayTwitter";
     private Context context;
     private List<Status> tweets;
     private LayoutInflater inflater;
@@ -66,22 +66,41 @@ public class TweetsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-       if (view == null) {
-           view = inflater.inflate(R.layout.tweet_item, viewGroup, false);
-       }
+        TweetViewHolder holder;
+        if (view == null) {
+            view = inflater.inflate(R.layout.tweet_item, viewGroup, false);
+            holder = new TweetViewHolder(view);
+            view.setTag(holder);
+        } else {
+            holder = (TweetViewHolder) view.getTag();
+        }
 
         Status tweet = tweets.get(i);
-        ((TextView)view.findViewById(R.id.tweeted_by)).setText(tweet.getUser().getScreenName());
-        ((TextView)view.findViewById(R.id.tweet_text)).setText(tweet.getText());
+        holder.userView.setText(tweet.getUser().getScreenName());
+        holder.textView.setText(tweet.getText());
         String date = DateUtil.formatDate(tweet.getCreatedAt());
-        ((TextView)view.findViewById(R.id.tweet_time)).setText(date);
-        view.setTag(tweet);
+        holder.dateView.setText(date);
 
         Picasso.with(context)
                 .load(tweet.getUser().getProfileImageURL())
                 .placeholder(R.drawable.tw_profile_placeholder)
-                .into((ImageView) view.findViewById(R.id.profile_thumbnail));
+                .into(holder.profileView);
+
 
         return view;
+    }
+
+    private class TweetViewHolder {
+        public TextView userView;
+        public TextView textView;
+        public TextView dateView;
+        public ImageView profileView;
+
+        public TweetViewHolder(View tweetView) {
+            userView = (TextView) tweetView.findViewById(R.id.tweeted_by);
+            textView = (TextView) tweetView.findViewById(R.id.tweet_text);
+            dateView = (TextView) tweetView.findViewById(R.id.tweet_time);
+            profileView = (ImageView) tweetView.findViewById(R.id.profile_thumbnail);
+        }
     }
 }

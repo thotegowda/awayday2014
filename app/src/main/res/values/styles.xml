@@ -25,7 +25,10 @@
         <item name="android:textSize">100sp</item>
     </style>
 
-    <style name="Widget.Button.purple" parent="@android:style/Widget.Button">
+    <style name="Widget.Button" parent="@android:style/Widget.Button">
+    </style>
+
+    <style name="Widget.Button.purple">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/purple_button_background</item>
         <item name="android:paddingLeft">10dp</item>
@@ -33,6 +36,25 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">35dp</item>
+    </style>
+
+    <style name="Widget.Button.Blue">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/blue_button_background</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <style name="Widget.Button.Add">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/add_button_background</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
     </style>
 
     <style name="Widget.RatingBar.Feedback" parent="@android:style/Widget.RatingBar">

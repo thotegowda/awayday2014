@@ -7,28 +7,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.Tweeter;
+import com.twi.awayday2014.ui.MultiSwipeRefreshLayout;
+import com.twi.awayday2014.ui.SwipeRefreshLayout;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SocializeFragment extends ListFragment {
+public class SocializeFragment extends ListFragment implements MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
     private static final String TAG = "AwayDay";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String TWITTER_SEARCH_TERM = "#ThoughtWorks";
+    private static final String TWITTER_SEARCH_TERM = "bangalore";
     private static final String AWAYDAY_TWITTER_TAG = "#awayday2014";
 
     private Tweeter tweeter;
     private TweetsAdapter tweetsAdapter;
+
     private View rootView;
     private View signInOrTweetButton;
     private View refreshButton;
@@ -36,6 +40,13 @@ public class SocializeFragment extends ListFragment {
     private View tweetButton;
     private EditText tweetMessageView;
     private View cancelButton;
+    private MultiSwipeRefreshLayout swipeRefreshLayout;
+
+    private Animation pushInAnimation;
+    private Animation pushOutAnimation;
+
+    private boolean isTweetWindowVisible;
+    private boolean isRefreshInProgress;
 
     public static SocializeFragment newInstance(int sectionNumber) {
         SocializeFragment fragment = new SocializeFragment();
@@ -62,31 +73,120 @@ public class SocializeFragment extends ListFragment {
 
         setupAdapter();
 
-        twitterSearch(TWITTER_SEARCH_TERM);
+        handleTwitterCallback();
+    }
 
-        if (tweeter.isTwitterLoggedInAlready()) {
-            showTweetButton();
-        } else {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_socialize, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        bindViews();
+    }
+
+    private void bindViews() {
+        pushInAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.push_up_in);
+        pushOutAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.push_up_out);
+
+        trySetupSwipeRefresh();
+
+        signInOrTweetButton = rootView.findViewById(R.id.signInOrTweet);
+        signInOrTweetButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (tweeter.isTwitterLoggedInAlready()) {
+                    showTweetWindow();
+                } else {
+                    loginToTwitter();
+                }
+            }
+        });
+
+        tweetMessageLayout = rootView.findViewById(R.id.tweet_message_layout);
+        tweetMessageView = (EditText) rootView.findViewById(R.id.tweet_message);
+        tweetButton = rootView.findViewById(R.id.tweet);
+        tweetButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                hideTweetWindow();
+                tweet();
+            }
+        });
+
+        cancelButton = rootView.findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                hideTweetWindow();
+            }
+        });
+    }
+
+    private void handleTwitterCallback() {
+        if (!tweeter.isTwitterLoggedInAlready()) {
             if (isLaunchedFromTwitterCallbackUrl(getActivity().getIntent().getData())) {
-                showTweetButton();
                 retrieveAccessToken(getActivity().getIntent().getData());
-                //showTweetPopup();
-            } else {
-                showLoginButton();
+                showTweetWindow();
             }
         }
     }
 
+    private void tweet() {
+        String text = tweetMessageView.getText().toString();
+        tweetMessageView.setText("");
+        if (text.length() > 0) {
+            tweet(AddTagsIfNeeded(text));
+            tweetMessageLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void trySetupSwipeRefresh() {
+        swipeRefreshLayout = (MultiSwipeRefreshLayout) rootView;
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setColorScheme(
+                    R.color.refresh_progress_1,
+                    R.color.refresh_progress_2,
+                    R.color.refresh_progress_3,
+                    R.color.refresh_progress_4);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refresh();
+                }
+            });
+
+            swipeRefreshLayout.setCanChildScrollUpCallback(this);
+        }
+    }
+
+    @Override
+    public boolean canSwipeRefreshChildScrollUp() {
+        return isTweetWindowVisible || getListView().getFirstVisiblePosition() != 0;
+    }
+
+    private void refresh() {
+        if (!isRefreshInProgress) {
+            isRefreshInProgress = true;
+            loadRecentTweets();
+        }
+    }
+
+    private void onRefreshFinished(List<Status> tweets) {
+        tweetsAdapter.insertAtTheTop(tweets);
+        swipeRefreshLayout.setRefreshing(false);
+        isRefreshInProgress = false;
+    }
+
     private boolean isLaunchedFromTwitterCallbackUrl(Uri uri) {
         return uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL);
-    }
-
-    private void showLoginButton() {
-        ((TextView) signInOrTweetButton).setText("LogIn");
-    }
-
-    private void showTweetButton() {
-        ((TextView) signInOrTweetButton).setText("Tweet");
     }
 
     private void setupAdapter() {
@@ -108,78 +208,63 @@ public class SocializeFragment extends ListFragment {
                 }
             }
         });
+
+        twitterSearch(TWITTER_SEARCH_TERM);
+
     }
 
     private AwayDayApplication getApplication() {
         return (AwayDayApplication) getActivity().getApplication();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_socialize, container, false);
-        bindViews();
-        return rootView;
-    }
-
-    private void bindViews() {
-        signInOrTweetButton = rootView.findViewById(R.id.signInOrTweet);
-        signInOrTweetButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                if (tweeter.isTwitterLoggedInAlready()) {
-                    showTweetPopup();
-                } else {
-                    loginToTwitter();
-                }
-            }
-        });
-
-        refreshButton = rootView.findViewById(R.id.refresh);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                leadRecentTweets();
-            }
-        });
-
-        tweetMessageLayout = rootView.findViewById(R.id.tweet_message_layout);
-        tweetMessageView = (EditText) rootView.findViewById(R.id.tweet_message);
-        tweetButton = rootView.findViewById(R.id.tweet);
-        tweetButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                String text = tweetMessageView.getText().toString();
-                tweetMessageView.setText("");
-                if (text.length() > 0) {
-                    tweet(AddTagsIfNeeded(text));
-                    tweetMessageLayout.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        cancelButton = rootView.findViewById(R.id.cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                tweetMessageLayout.setVisibility(View.GONE);
-            }
-        });
-    }
-
     private String AddTagsIfNeeded(String text) {
         if (!text.contains(AWAYDAY_TWITTER_TAG)) {
-            text += " " + AWAYDAY_TWITTER_TAG + " " + TWITTER_SEARCH_TERM;
+            text += " " + AWAYDAY_TWITTER_TAG;
         }
         return text;
     }
 
-    private void showTweetPopup() {
+    private void showTweetWindow() {
+        isTweetWindowVisible = true;
         tweetMessageLayout.setVisibility(View.VISIBLE);
-        tweetMessageLayout.requestFocus();
+        pushInAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tweetMessageLayout.requestFocus();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        tweetMessageLayout.startAnimation(pushInAnimation);
+    }
+
+    private void hideTweetWindow() {
+        isTweetWindowVisible = false;
+        pushOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tweetMessageLayout.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        tweetMessageLayout.startAnimation(pushOutAnimation);
     }
 
     private boolean shouldLoadMore(int firstVisible, int visibleCount, int totalCount, int padding) {
@@ -250,7 +335,7 @@ public class SocializeFragment extends ListFragment {
         }.execute();
     }
 
-    private void leadRecentTweets() {
+    private void loadRecentTweets() {
         new AsyncTask<Void, Void, List<Status>>() {
 
             @Override
@@ -260,7 +345,7 @@ public class SocializeFragment extends ListFragment {
 
             @Override
             protected void onPostExecute(List<twitter4j.Status> tweets) {
-                tweetsAdapter.insertAtTheTop(tweets);
+                onRefreshFinished(tweets);
             }
         }.execute();
     }

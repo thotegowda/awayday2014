@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tweeted_by"
                 android:textSize="@dimen/tweet_text_size"
-                android:maxLines="3"
+                android:maxLines="4"
                 android:ellipsize="end"
                 android:gravity="left|center_vertical"/>
 

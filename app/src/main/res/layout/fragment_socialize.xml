@@ -1,82 +1,83 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:orientation="vertical"
-             tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
+<com.twi.awayday2014.ui.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                           xmlns:tools="http://schemas.android.com/tools"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
+                                           tools:context="com.twi.awayday2014.app.HomeActivity$PlaceholderFragment">
 
-    <ListView
-            android:id="@android:id/list"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="@dimen/list_divider_height"
-            android:background="@color/twitter_list_bg"/>
+            android:layout_height="match_parent">
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-
-        <Button
-                android:id="@+id/signInOrTweet"
-                style="@style/Widget.Button.purple"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:text="@string/sign_in"/>
-
-        <Button
-                android:id="@+id/refresh"
-                style="@style/Widget.Button.purple"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/refresh"/>
-
-        <RelativeLayout
-                android:id="@+id/tweet_message_layout"
+        <ListView
+                android:id="@android:id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:background="@color/transparent_black"
-                android:visibility="gone">
+                android:layout_gravity="start"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="@dimen/list_divider_height"
+                android:background="@color/twitter_list_bg"/>
 
-            <EditText
-                    android:id="@+id/tweet_message"
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+            <ImageView
+                    android:id="@+id/signInOrTweet"
+                    style="@style/Widget.Button.Add"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="centerInside"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/add_schedule_button_icon_unchecked"/>
+
+            <RelativeLayout
+                    android:id="@+id/tweet_message_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:paddingLeft="10dp"
-                    android:minLines="5"
-                    android:gravity="left|top"
-                    android:textColor="@color/black"
-                    android:background="@drawable/card_background_small"/>
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/transparent_black"
+                    android:visibility="gone">
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tweet_message"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                <Button
-                        android:id="@+id/tweet"
-                        style="@style/Widget.Button.purple"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                <EditText
+                        android:id="@+id/tweet_message"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tweet"/>
+                        android:layout_centerInParent="true"
+                        android:padding="10dp"
+                        android:minLines="5"
+                        android:gravity="left|top"
+                        android:textColor="@color/black"
+                        android:background="@drawable/card_background_small"/>
 
-                <Button
-                        android:id="@+id/cancel"
-                        style="@style/Widget.Button.purple"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/cancel"/>
-            </LinearLayout>
+                        android:layout_below="@id/tweet_message"
+                        android:orientation="horizontal"
+                        android:background="@color/second_grey"
+                        android:weightSum="2">
 
+                    <Button
+                            android:id="@+id/tweet"
+                            style="@style/Widget.Button.Blue"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tweet"/>
+
+                    <Button
+                            android:id="@+id/cancel"
+                            style="@style/Widget.Button.Blue"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cancel"/>
+                </LinearLayout>
+
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
-</FrameLayout>
+
+    </FrameLayout>
+</com.twi.awayday2014.ui.MultiSwipeRefreshLayout>
