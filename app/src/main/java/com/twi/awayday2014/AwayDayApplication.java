@@ -27,7 +27,6 @@ public class AwayDayApplication extends SugarApp {
         Parse.initialize(getApplicationContext(), null, null);
         Parse.initialize(getApplicationContext(), DeveloperKeys.PARSE_APPLICATION_ID, DeveloperKeys.PARSE_CLIENT_KEY);
 
-        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
@@ -35,7 +34,6 @@ public class AwayDayApplication extends SugarApp {
         ParseACL.setDefaultACL(defaultACL, true);
 
         PushService.setDefaultPushCallback(this, HomeActivity.class);
-        //PushService.subscribe(this, "awayDay", HomeActivity.class);
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }

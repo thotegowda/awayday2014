@@ -110,10 +110,10 @@ public class TweetsAdapter extends BaseAdapter implements View.OnClickListener {
             holder.photoView.setVisibility(View.VISIBLE);
             int height = (int) context.getResources().getDimension(R.dimen.tweet_list_item_height_large);
             view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, height));
-            Log.d(TAG, "loading the url : " + mediaURL);
             Picasso.with(context)
                     .load(mediaURL)
                     .into(holder.photoView);
+
             holder.photoView.setTag(mediaURL);
             holder.photoView.setOnClickListener(this);
         } else {

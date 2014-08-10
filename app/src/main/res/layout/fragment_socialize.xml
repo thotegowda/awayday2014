@@ -46,13 +46,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:padding="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="50dp"
                         android:minLines="5"
                         android:gravity="left|top"
                         android:textColor="@color/black"
                         android:background="@drawable/card_background_small"/>
 
                 <LinearLayout
+                        android:id="@+id/button_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tweet_message"
@@ -76,6 +80,33 @@
                             android:layout_height="wrap_content"
                             android:text="@string/cancel"/>
                 </LinearLayout>
+
+                <ImageView
+                        android:id="@+id/pic_from_cam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_above="@id/button_layout"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/impact"/>
+
+                <ImageView
+                        android:id="@+id/pic_from_gallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/pic_from_cam"
+                        android:layout_above="@id/button_layout"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/impact"/>
+
+                <ImageView
+                    android:id="@+id/selected_image"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_toLeftOf="@id/pic_from_gallery"
+                    android:layout_above="@id/button_layout"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerInside" />
 
             </RelativeLayout>
         </RelativeLayout>

@@ -174,8 +174,8 @@ public class HomeActivity extends Activity {
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-        } else if (currentFragment instanceof SocializeFragment && ((SocializeFragment) currentFragment).isFullViewShowing()) {
-            ((SocializeFragment) currentFragment).hideFullView();
+        } else if (currentFragment instanceof SocializeFragment && ((SocializeFragment) currentFragment).wantToHandleBack()) {
+            ((SocializeFragment) currentFragment).onBackPressed();
         } else {
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager.getBackStackEntryCount() > 1) {

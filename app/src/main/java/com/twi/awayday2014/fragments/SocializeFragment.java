@@ -5,11 +5,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.ListFragment;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +37,13 @@ import com.twi.awayday2014.ui.SwipeRefreshLayout;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.twi.awayday2014.ui.MultiSwipeRefreshLayout.CanChildScrollUpCallback;
 
 public class SocializeFragment
@@ -43,6 +54,9 @@ public class SocializeFragment
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TWITTER_SEARCH_TERM = "bangalore";
     private static final String AWAYDAY_TWITTER_TAG = "#awayday2014";
+
+    private static final int REQUEST_IMAGE_PICK = 101;
+    private static final int REQUEST_IMAGE_CAPTURE = 102;
 
     private Tweeter tweeter;
     private TweetsAdapter tweetsAdapter;
@@ -64,6 +78,9 @@ public class SocializeFragment
     private ImageView photoFullscreenView;
     private View currentPhotoView;
     private View loadingView;
+    private ImageView selectedImageToTweet;
+    private boolean isImageSelectedToTweet;
+    private InputStream currentPhotoTweet;
 
     public static SocializeFragment newInstance(int sectionNumber) {
         SocializeFragment fragment = new SocializeFragment();
@@ -86,7 +103,7 @@ public class SocializeFragment
     public void onResume() {
         super.onResume();
 
-        //getListView().setVisibility(View.INVISIBLE);
+        getListView().setVisibility(View.INVISIBLE);
 
         tweeter = getApplication().getTwitterService();
 
@@ -126,6 +143,21 @@ public class SocializeFragment
             }
         });
 
+        photoFullscreenView = (ImageView) rootView.findViewById(R.id.photo_full_screen);
+        photoFullscreenView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                zoomOutPhotoFullScreenView(currentPhotoView, photoFullscreenView, 500);
+            }
+        });
+
+        bindTweetComposeLayout();
+
+        loadingView = rootView.findViewById(R.id.loading_spinner);
+    }
+
+    private void bindTweetComposeLayout() {
         tweetMessageLayout = rootView.findViewById(R.id.tweet_message_layout);
         tweetMessageView = (EditText) rootView.findViewById(R.id.tweet_message);
         tweetButton = rootView.findViewById(R.id.tweet);
@@ -143,20 +175,33 @@ public class SocializeFragment
 
             @Override
             public void onClick(View view) {
-                hideTweetWindow();
+                closeTweetComposeWindow();
             }
         });
 
-        photoFullscreenView = (ImageView) rootView.findViewById(R.id.photo_full_screen);
-        photoFullscreenView.setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.pic_from_cam).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                zoomOutPhotoFullScreenView(currentPhotoView, photoFullscreenView, 500);
+                pickImageFromCam();
             }
         });
 
-        loadingView = rootView.findViewById(R.id.loading_spinner);
+        rootView.findViewById(R.id.pic_from_gallery).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                pickImageFromGallery();
+            }
+        });
+
+        selectedImageToTweet = (ImageView) rootView.findViewById(R.id.selected_image);
+    }
+
+    private void closeTweetComposeWindow() {
+        hideTweetWindow();
+        clearSelectedImage();
+        tweetMessageView.setText("");
     }
 
     private void handleTwitterCallback() {
@@ -171,10 +216,18 @@ public class SocializeFragment
     private void tweet() {
         String text = tweetMessageView.getText().toString();
         tweetMessageView.setText("");
-        if (text.length() > 0) {
+
+        if (isImageSelectedToTweet) {
+            if (currentPhotoTweet != null) {
+                tweet(text, currentPhotoTweet);
+            } else {
+                tweet(text, new File(mCurrentPhotoPath));
+            }
+        } else if (text.length() > 0) {
             tweet(AddTagsIfNeeded(text));
-            tweetMessageLayout.setVisibility(View.GONE);
         }
+        tweetMessageLayout.setVisibility(View.GONE);
+        clearSelectedImage();
     }
 
     private void trySetupSwipeRefresh() {
@@ -408,6 +461,30 @@ public class SocializeFragment
 
     }
 
+    private void tweet(final String tweetMessage, final InputStream image) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tweeter.tweet(tweetMessage, image);
+                return null;
+            }
+        }.execute();
+
+    }
+
+    private void tweet(final String tweetMessage, final File image) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tweeter.tweet(tweetMessage, image);
+                return null;
+            }
+        }.execute();
+
+    }
+
     @Override
     public void onPhotoClicked(View photoView, String url) {
         Picasso.with(this.getActivity()).load(url).into(photoFullscreenView);
@@ -415,8 +492,27 @@ public class SocializeFragment
         zoomImageFromThumb(photoView, photoFullscreenView, 500);
     }
 
+    public boolean wantToHandleBack() {
+        return isFullViewShowing() || isTweetComposeWindowOpen();
+    }
+
+    private boolean isTweetComposeWindowOpen() {
+        return tweetMessageLayout.getVisibility() == View.VISIBLE;
+    }
+
     public boolean isFullViewShowing() {
         return photoFullscreenView.getVisibility() == View.VISIBLE;
+    }
+
+    public void onBackPressed() {
+        if (isFullViewShowing()) {
+            hideFullView();
+        }
+
+        if (isTweetComposeWindowOpen()) {
+            closeTweetComposeWindow();
+        }
+
     }
 
     public void hideFullView() {
@@ -424,40 +520,28 @@ public class SocializeFragment
     }
 
     private void zoomImageFromThumb(final View thumbView, final View expandedImageView, int duration) {
-        // If there's an animation in progress, cancel it immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
 
-        // Calculate the starting and ending bounds for the zoomed-in image. This step
-        // involves lots of math. Yay, math.
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();
         final Point globalOffset = new Point();
 
-        // The start bounds are the global visible rectangle of the thumbnail, and the
-        // final bounds are the global visible rectangle of the container view. Also
-        // set the container view's offset as the origin for the bounds, since that's
-        // the origin for the positioning animation properties (X, Y).
         thumbView.getGlobalVisibleRect(startBounds);
         rootView.getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
 
-        // Adjust the start bounds to be the same aspect ratio as the final bounds using the
-        // "center crop" technique. This prevents undesirable stretching during the animation.
-        // Also calculate the start scaling factor (the end scaling factor is always 1.0).
         float startScale;
         if ((float) finalBounds.width() / finalBounds.height()
                 > (float) startBounds.width() / startBounds.height()) {
-            // Extend start bounds horizontally
             startScale = (float) startBounds.height() / finalBounds.height();
             float startWidth = startScale * finalBounds.width();
             float deltaWidth = (startWidth - startBounds.width()) / 2;
             startBounds.left -= deltaWidth;
             startBounds.right += deltaWidth;
         } else {
-            // Extend start bounds vertically
             startScale = (float) startBounds.width() / finalBounds.width();
             float startHeight = startScale * finalBounds.height();
             float deltaHeight = (startHeight - startBounds.height()) / 2;
@@ -465,18 +549,12 @@ public class SocializeFragment
             startBounds.bottom += deltaHeight;
         }
 
-        // Hide the thumbnail and show the zoomed-in view. When the animation begins,
-        // it will position the zoomed-in view in the place of the thumbnail.
         thumbView.setAlpha(0f);
         expandedImageView.setVisibility(View.VISIBLE);
 
-        // Set the pivot point for SCALE_X and SCALE_Y transformations to the top-left corner of
-        // the zoomed-in view (the default is the center of the view).
         expandedImageView.setPivotX(0f);
         expandedImageView.setPivotY(0f);
 
-        // Construct and run the parallel animation of the four translation and scale properties
-        // (X, Y, SCALE_X, and SCALE_Y).
         AnimatorSet set = new AnimatorSet();
         set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left))
                 .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
@@ -503,35 +581,25 @@ public class SocializeFragment
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
-        // Calculate the starting and ending bounds for the zoomed-in image. This step
-        // involves lots of math. Yay, math.
+
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();
         final Point globalOffset = new Point();
 
-        // The start bounds are the global visible rectangle of the thumbnail, and the
-        // final bounds are the global visible rectangle of the container view. Also
-        // set the container view's offset as the origin for the bounds, since that's
-        // the origin for the positioning animation properties (X, Y).
         thumbView.getGlobalVisibleRect(startBounds);
         rootView.getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
 
-        // Adjust the start bounds to be the same aspect ratio as the final bounds using the
-        // "center crop" technique. This prevents undesirable stretching during the animation.
-        // Also calculate the start scaling factor (the end scaling factor is always 1.0).
         float startScale;
         if ((float) finalBounds.width() / finalBounds.height()
                 > (float) startBounds.width() / startBounds.height()) {
-            // Extend start bounds horizontally
             startScale = (float) startBounds.height() / finalBounds.height();
             float startWidth = startScale * finalBounds.width();
             float deltaWidth = (startWidth - startBounds.width()) / 2;
             startBounds.left -= deltaWidth;
             startBounds.right += deltaWidth;
         } else {
-            // Extend start bounds vertically
             startScale = (float) startBounds.width() / finalBounds.width();
             float startHeight = startScale * finalBounds.height();
             float deltaHeight = (startHeight - startBounds.height()) / 2;
@@ -545,11 +613,8 @@ public class SocializeFragment
             currentAnimator.cancel();
         }
 
-        // Animate the four positioning/sizing properties in parallel, back to their
-        // original values.
         AnimatorSet set = new AnimatorSet();
-        set
-                .play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left))
+        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left))
                 .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
                 .with(ObjectAnimator
                         .ofFloat(expandedImageView, View.SCALE_X, startScaleFinal))
@@ -569,7 +634,7 @@ public class SocializeFragment
             public void onAnimationCancel(Animator animation) {
                 thumbView.setAlpha(1f);
                 expandedImageView.setVisibility(View.GONE);
-                 currentAnimator = null;
+                currentAnimator = null;
             }
         });
         set.start();
@@ -589,17 +654,99 @@ public class SocializeFragment
 
         showView.animate()
                 .alpha(1f)
-                .setDuration(500)
+                .setDuration(250)
                 .setListener(null);
 
         hideView.animate()
                 .alpha(0f)
-                .setDuration(500)
+                .setDuration(250)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         hideView.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    private void pickImageFromCam() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        if (photoPickerIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(photoPickerIntent, REQUEST_IMAGE_PICK);
+        }
+    }
+
+    private void pickImageFromGallery() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        Log.d(TAG, "storageDir : " + storageDir + " fileName : " + imageFileName);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    private PackageManager getPackageManager() {
+        return getActivity().getPackageManager();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            try {
+//                //currentPhotoTweet = new FileInputStream(new File(mCurrentPhotoPath));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+
+            //Bundle extras = data.getExtras();
+            //setSelectedImage((Bitmap) extras.get("data"));
+            isImageSelectedToTweet = true;
+        } else if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            Uri selectedImage = data.getData();
+            try {
+                currentPhotoTweet = getContentResolver().openInputStream(selectedImage);
+                setSelectedImage(BitmapFactory.decodeStream(currentPhotoTweet));
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private ContentResolver getContentResolver() {
+        return getActivity().getContentResolver();
+    }
+
+    private void setSelectedImage(Bitmap imageBitmap) {
+        isImageSelectedToTweet = true;
+        selectedImageToTweet.setImageBitmap(imageBitmap);
+    }
+
+    private void clearSelectedImage() {
+        isImageSelectedToTweet = false;
+        currentPhotoTweet = null;
+        selectedImageToTweet.setImageBitmap(null);
     }
 }

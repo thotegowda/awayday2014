@@ -11,6 +11,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,13 +145,28 @@ public class Tweeter {
         return searchTwitter.search(query);
     }
 
+    public void tweet(String tweetText, InputStream image) {
+        StatusUpdate status = new StatusUpdate(tweetText);
+        status.setMedia("filename", image);
+        tweet(status);
+    }
+
+    public void tweet(String tweetText, File image) {
+        StatusUpdate status = new StatusUpdate(tweetText);
+        status.setMedia(image);
+        tweet(status);
+    }
+
     public void tweet(String tweetText) {
+        tweet(new StatusUpdate(tweetText));
+    }
+
+    public void tweet(StatusUpdate status) {
         try {
-            twitter.updateStatus(tweetText);
+            twitter.updateStatus(status);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-
     }
 
     public List<Status> getRecentTweets(String searchTerm) {
