@@ -22,8 +22,8 @@ public class Tweeter {
     public static final String TWITTER_CALLBACK_URL = "oauth://thoughtworks.Twitter_oAuth";
     public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
 
-    private static final double BANGALORE_LT  = 12.9316556;
-    private static final double BANGALORE_LNG  = 77.6226959;
+    private static final double BANGALORE_LT = 12.9316556;
+    private static final double BANGALORE_LNG = 77.6226959;
     private static final GeoLocation BANGALORE_LOCATION = new GeoLocation(BANGALORE_LT, BANGALORE_LNG);
 
     public static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
@@ -40,12 +40,12 @@ public class Tweeter {
 
     public Tweeter(Properties properties) {
         this.properties = properties;
-        
+
         setup();
     }
 
     private void setup() {
-        
+
         if (properties.alreadyLoggedIn()) {
             isLoggedIn = true;
 
@@ -68,7 +68,7 @@ public class Tweeter {
             cb.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
             cb.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
             searchTwitter = new TwitterFactory(cb.build()).getInstance();
-         }
+        }
     }
 
     public void login(final Context context) throws TwitterException {
@@ -104,11 +104,9 @@ public class Tweeter {
         try {
             recentQueryResult = lastQueryResult = searchTwitter(new Query(searchTerm));
 
-            Log.d(TAG, "firstQuerySinceId :" + recentQueryResult.getSinceId());
-            Log.d(TAG, "firstQueryMaxId :" + recentQueryResult.getMaxId());
-            Log.d(TAG, "first tweet id: " + recentQueryResult.getTweets().get(0).getId());
-
-
+            Log.d(TAG, "firstQuerySinceId :" + recentQueryResult.getSinceId()
+                    + "firstQueryMaxId :" + recentQueryResult.getMaxId()
+                    + "first tweet id: " + recentQueryResult.getTweets().get(0).getId());
 
             return lastQueryResult.getTweets();
         } catch (TwitterException e) {
@@ -122,7 +120,7 @@ public class Tweeter {
     }
 
     public List<Status> searchNext() {
-        List<Status> tweets =  EMPTY_STATUS;
+        List<Status> tweets = EMPTY_STATUS;
         try {
 
             if (lastQueryResult != null && lastQueryResult.hasNext()) {
@@ -175,8 +173,8 @@ public class Tweeter {
             Query query = new Query(searchTerm);
 
             if (recentQueryResult != null) {
-                Log.d(TAG, "Recent sinceId :" + recentQueryResult.getSinceId());
-                Log.d(TAG, "Recent MaxId :" + recentQueryResult.getMaxId());
+                Log.d(TAG, "Recent sinceId :" + recentQueryResult.getSinceId()
+                        + "Recent MaxId :" + recentQueryResult.getMaxId());
 
                 query.setSinceId(recentQueryResult.getMaxId());
             }

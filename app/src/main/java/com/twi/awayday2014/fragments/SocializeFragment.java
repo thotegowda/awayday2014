@@ -8,6 +8,7 @@ import android.app.ListFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -81,6 +82,8 @@ public class SocializeFragment
     private ImageView selectedImageToTweet;
     private boolean isImageSelectedToTweet;
     private InputStream currentPhotoTweet;
+    private Uri selectedImageUri;
+    private String mCurrentPhotoPath1;
 
     public static SocializeFragment newInstance(int sectionNumber) {
         SocializeFragment fragment = new SocializeFragment();
@@ -218,17 +221,14 @@ public class SocializeFragment
         tweetMessageView.setText("");
 
         if (isImageSelectedToTweet) {
-            if (currentPhotoTweet != null) {
-                tweet(text, currentPhotoTweet);
-            } else {
-                tweet(text, new File(mCurrentPhotoPath));
-            }
+            tweetImage(text);
         } else if (text.length() > 0) {
             tweet(AddTagsIfNeeded(text));
         }
         tweetMessageLayout.setVisibility(View.GONE);
         clearSelectedImage();
     }
+
 
     private void trySetupSwipeRefresh() {
         swipeRefreshLayout = (MultiSwipeRefreshLayout) rootView;
@@ -701,6 +701,7 @@ public class SocializeFragment
         Log.d(TAG, "storageDir : " + storageDir + " fileName : " + imageFileName);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath1 = image.getAbsolutePath();
         return image;
     }
 
@@ -710,22 +711,13 @@ public class SocializeFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            try {
-//                //currentPhotoTweet = new FileInputStream(new File(mCurrentPhotoPath));
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-
-            //Bundle extras = data.getExtras();
-            //setSelectedImage((Bitmap) extras.get("data"));
             isImageSelectedToTweet = true;
+
         } else if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
-            Uri selectedImage = data.getData();
+            selectedImageUri = data.getData();
             try {
-                currentPhotoTweet = getContentResolver().openInputStream(selectedImage);
+                currentPhotoTweet = getContentResolver().openInputStream(selectedImageUri);
                 setSelectedImage(BitmapFactory.decodeStream(currentPhotoTweet));
 
             } catch (FileNotFoundException e) {
@@ -748,5 +740,30 @@ public class SocializeFragment
         isImageSelectedToTweet = false;
         currentPhotoTweet = null;
         selectedImageToTweet.setImageBitmap(null);
+    }
+
+    private void tweetImage(String text) {
+        if (currentPhotoTweet != null) {
+            tweet(text, new File(getPath(selectedImageUri)));
+        } else {
+            tweet(text, new File(mCurrentPhotoPath1));
+        }
+    }
+
+    public String getPath(Uri uri) {
+        if( uri == null ) {
+            return null;
+        }
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        return uri.getPath();
     }
 }
