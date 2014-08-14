@@ -4,14 +4,17 @@
     <color name="orange">#ffffa500</color>
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
-    <color name="pink">#ef5ba1</color>
+    <color name="pink">#ee5ba1</color>
     <color name="gray">#ffb3b3b3</color>
-    <color name="light_gray1">#fff5f5f5</color>
-    <color name="light_gray2">#ffd3d3d3</color>
+    <color name="light_gray">#ffd3d3d3</color>
     <color name="transparent_black">#99000000</color>
+    <color name="transparent_medium_black">#77000000</color>
+    <color name="transparent_light_black">#55000000</color>
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
     <color name="transparent_purple">#aa6A2569</color>
+
+    <color name="viewpager_indicator_color">#eb2483</color>
 
     <color name="count_down_timer_text">@color/white</color>
     <color name="fragment_home_background">@color/transparent_blue</color>

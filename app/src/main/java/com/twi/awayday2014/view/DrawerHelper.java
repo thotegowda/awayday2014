@@ -4,9 +4,10 @@ import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.twi.awayday2014.R;
@@ -44,9 +45,18 @@ public class DrawerHelper {
             public void onDrawerOpened(View drawerView) {
                 homeActivity.onDrawerOpen();
             }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                homeActivity.onDrawerSlide(slideOffset);
+            }
         };
         drawerlayout.setDrawerListener(drawerToggle);
 
+        setupTextviews();
+    }
+
+    private void setupTextviews() {
         TextView agendaText = (TextView) drawerlayout.findViewById(R.id.agenda);
         agendaText.setTypeface(Fonts.openSansRegular(homeActivity));
         TextView myScheduleText = (TextView) drawerlayout.findViewById(R.id.mySchedule);
@@ -77,5 +87,9 @@ public class DrawerHelper {
 
     public void closeDrawer() {
         drawerlayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return drawerToggle.onOptionsItemSelected(item);
     }
 }

@@ -12,14 +12,49 @@
     <dimen name="session_text_view_height">25dp</dimen>
     <dimen name="session_row_height">250dp</dimen>
 
-    <dimen name="home_activity_header_height">250dp</dimen>
+    <dimen name="home_activity_header_height_without_countdown">288dp</dimen>
+    <dimen name="home_activity_header_details_height">240dp</dimen>
+    <dimen name="home_activity_header_bar_height">48dp</dimen>
+    <dimen name="home_activity_headerDetails_headerText_size">14sp</dimen>
+    <dimen name="home_activity_headerDetails_mainText_size">20sp</dimen>
+    <dimen name="home_activity_headerDetails_fotterYearText_size">18sp</dimen>
+    <dimen name="home_activity_headerDetails_big_divider_width">260dp</dimen>
+    <dimen name="home_activity_headerDetails_small_divider_width">100dp</dimen>
+    <dimen name="home_activity_headerDetails_timeElement_width">72dp</dimen>
+    <dimen name="home_activity_header_second_ticker_size">36dp</dimen>
+    <dimen name="home_activity_header_button_size">36dp</dimen>
+
+    <dimen name="timeline_primary_text_size">16sp</dimen>
+    <dimen name="timeline_secondary_text_size">14sp</dimen>
+
+    <dimen name="viewpager_indicator_height">48dp</dimen>
+    <dimen name="viewpager_top_margin">96dp</dimen>
+
+    <dimen name="countdown_time_textsize">14sp</dimen>
+    <dimen name="countdown_timeunit_textsize">12sp</dimen>
+    <dimen name="countdown_divider_height">24dp</dimen>
 
     <dimen name="drawer_image_height">130dp</dimen>
     <dimen name="drawer_selection_buttons_layout_height">42dp</dimen>
 
+    <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
     <dimen name="padding_extra_large">32dp</dimen>
 
+    <dimen name="notifications_height">160dp</dimen>
+    <dimen name="notifications_heading_text_size">20sp</dimen>
+    <dimen name="notifications_description_text_size">16sp</dimen>
+    <dimen name="notifications_time_text_size">14sp</dimen>
+    <dimen name="notifications_label_text_size">12sp</dimen>
 
+    <dimen name="tweets_activity_twitter_button_size">84dp</dimen>
+    <dimen name="tweets_text_size">16sp</dimen>
+    <dimen name="tweets_details_height">36dp</dimen>
+    <dimen name="tweets_details_text_size">14sp</dimen>
+    <dimen name="tweets_login_info_text_size">18sp</dimen>
+    <dimen name="tweets_login_button_text_size">26sp</dimen>
+    <dimen name="tweeter_login_button_height">50dp</dimen>
+    <dimen name="tweeter_login_button_margin">70dp</dimen>
 </resources>

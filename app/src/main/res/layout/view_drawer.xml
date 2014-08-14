@@ -49,10 +49,6 @@
             android:text="Agenda"
             android:drawableLeft="@drawable/ic_agenda"/>
 
-        <View
-            style="@style/HorizontalDivider"
-            android:background="@color/light_gray1"/>
-
         <TextView
             android:id="@+id/mySchedule"
             style="@style/DrawerListTextView"
@@ -61,17 +57,13 @@
         <View
             style="@style/HorizontalDivider"
             android:layout_height="1dp"
-            android:background="@color/light_gray2"/>
+            android:background="@color/light_gray"/>
 
         <TextView
             android:id="@+id/speakers"
             style="@style/DrawerListTextView"
             android:text="Speakers"
             android:drawableLeft="@drawable/ic_speakers"/>
-
-        <View
-            style="@style/HorizontalDivider"
-            android:background="@color/light_gray1"/>
 
         <TextView
             android:id="@+id/breakoutSessions"
@@ -81,17 +73,13 @@
         <View
             style="@style/HorizontalDivider"
             android:layout_height="1dp"
-            android:background="@color/light_gray2"/>
+            android:background="@color/light_gray"/>
 
         <TextView
             android:id="@+id/videos"
             style="@style/DrawerListTextView"
             android:text="Videos"
             android:drawableLeft="@drawable/ic_videos"/>
-
-        <View
-            style="@style/HorizontalDivider"
-            android:background="@color/light_gray1"/>
 
         <TextView
             android:id="@+id/tags"
@@ -101,7 +89,7 @@
         <View
             style="@style/HorizontalDivider"
             android:layout_height="1dp"
-            android:background="@color/light_gray2"/>
+            android:background="@color/light_gray"/>
     </LinearLayout>
 </LinearLayout>
 

@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tweetsRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_light_black">
+
+        <TextView
+            android:id="@+id/tweetsHeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:background="@color/transparent_black"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:padding="@dimen/padding_small"
+            android:text="@string/title_activity_tweets"/>
+
+        <View
+            android:id="@+id/divider"
+            style="@style/HorizontalDivider"
+            android:layout_below="@id/tweetsHeaderText"
+            android:background="@color/pink"/>
+
+        <ListView
+            android:id="@+id/tweetsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0dp"
+            android:clickable="false"
+            android:layout_below="@id/divider"/>
+
+        <Button
+            android:id="@+id/twitterButton"
+            android:layout_width="@dimen/tweets_activity_twitter_button_size"
+            android:layout_height="@dimen/tweets_activity_twitter_button_size"
+            android:layout_marginRight="@dimen/padding"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_twitter_circle" />
+
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/twitterLoginFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
+        android:layout_alignParentBottom="true"
+        />
+
+</FrameLayout>

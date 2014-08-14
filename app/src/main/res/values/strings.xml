@@ -21,10 +21,22 @@
     <string name="coming_soon">Coming Soon...</string>
     <string name="app_not_available">Not yet implemented</string>
     <string name="title_activity_push">PushActivity</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="title_activity_tweets">#TWAwayDay2014</string>
     <string name="hello_world">Hello world!</string>
     <string name="push_header">Push the notification</string>
     <string name="push">Push</string>
     <string name="playerview_text">Youtube Video</string>
     <string name="diplay_notification">Display Notification?</string>
+    <string name="headerDetailsHeader">India Awayday, Hyderabad</string>
+    <string name="headerDetailsMainText">ENVIRONMENTAL JUSTICE</string>
+    <string name="headerDetailsFooterDateText">27-28 September, 2014</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="tweets_login_info">Please login with your twitter account to tweet about awayday.</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

@@ -1,8 +1,13 @@
 package com.twi.awayday2014;
 
+import android.graphics.Bitmap;
+
 import com.orm.SugarApp;
 import com.parse.*;
 import com.twi.awayday2014.models.ShortNotification;
+import com.twi.awayday2014.services.AgendaService;
+import com.twi.awayday2014.services.NotificationsService;
+import com.twi.awayday2014.services.TweeterService;
 import com.twi.awayday2014.view.HomeActivity;
 
 import static com.twi.awayday2014.models.ShortNotification.*;
@@ -12,6 +17,12 @@ public class AwayDayApplication extends SugarApp {
     private static final String YOUR_APPLICATION_ID = "yiKETlRYko1LrZEgrilwJbp2XHmFeVSpAFkrOGGK";
     private static final String YOUR_CLIENT_KEY = "kR3esD6RWpRixzwKblqQux73nMRVXRqBkprv80rU";
     private static final String CHANNEL_AWAYDAY = "AwayDay";
+    private Bitmap homeActivityScreenshot;
+
+
+    private static AgendaService agendaService;
+    private static NotificationsService notificationsService;
+    private static TweeterService tweeterService;
 
     @Override
     public void onCreate() {
@@ -20,6 +31,35 @@ public class AwayDayApplication extends SugarApp {
         setupParse();
 
         setupDefaultNotifications();
+    }
+
+    public static AgendaService agendaService(){
+        if(agendaService == null){
+            agendaService = new AgendaService();
+        }
+        return agendaService;
+    }
+
+    public static NotificationsService notificationsService() {
+        if(notificationsService == null){
+            return new NotificationsService();
+        }
+        return notificationsService;
+    }
+
+    public static TweeterService tweeterService() {
+        if(tweeterService == null){
+            tweeterService = new TweeterService();
+        }
+        return tweeterService;
+    }
+
+    public Bitmap getHomeActivityScreenshot() {
+        return homeActivityScreenshot;
+    }
+
+    public void setHomeActivityScreenshot(Bitmap homeActivityScreenshot) {
+        this.homeActivityScreenshot = homeActivityScreenshot;
     }
 
     private void setupDefaultNotifications() {

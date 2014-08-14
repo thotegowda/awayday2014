@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.models.Presentation;
+import com.twi.awayday2014.models.Session;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import java.util.List;
 public class SessionsAdapter extends BaseAdapter {
 
     private final Context context;
-    private List<Presentation> keynotes;
-    private List<Presentation> sessions;
+    private List<Session> keynotes;
+    private List<Session> sessions;
 
-    public SessionsAdapter(Context context, List<Presentation> keynotes, List<Presentation> sessions) {
+    public SessionsAdapter(Context context, List<Session> keynotes, List<Session> sessions) {
         this.context = context;
         this.keynotes = keynotes;
         this.sessions = sessions;
@@ -58,15 +58,12 @@ public class SessionsAdapter extends BaseAdapter {
         return view;
     }
 
-    private void setupSession(View leftView, Presentation presentation) {
-        if (presentation == null) {
+    private void setupSession(View leftView, Session session) {
+        if (session == null) {
             return;
         }
 
-        ((ImageView)leftView.findViewById(R.id.profile_image)).setImageResource(presentation.presenter().profileResource());
-        ((TextView)leftView.findViewById(R.id.presenter_title)).setText(presentation.title());
-        ((TextView)leftView.findViewById(R.id.presenter_name)).setText(presentation.presenter().name());
-        ((TextView)leftView.findViewById(R.id.presentation_date)).setText(presentation.formatedDate());
+        ((TextView)leftView.findViewById(R.id.presenter_title)).setText(session.getTitle());
     }
 
     private void convertToKeynoteView(View leftView, View rightView) {
@@ -79,17 +76,17 @@ public class SessionsAdapter extends BaseAdapter {
         rightView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
     }
 
-    private Presentation leftSession(int position) {
+    private Session leftSession(int position) {
         position -= keynotes.size();
        return (sessions.size() > 2 * position) ? sessions.get(2 * position) : null;
     }
 
-    public Presentation rightSession(int position) {
+    public Session rightSession(int position) {
         position -= keynotes.size();
         return (sessions.size() > 2 * position + 1) ? sessions.get(2 * position + 1) : null;
     }
 
-    public Presentation getKeynoteSession(int position) {
+    public Session getKeynoteSession(int position) {
         return keynotes.get(position);
     }
 }
