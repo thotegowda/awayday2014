@@ -1,16 +1,12 @@
 package com.twi.awayday2014;
 
-import android.database.sqlite.SQLiteException;
 import com.orm.SugarApp;
 import com.parse.*;
-import com.twi.awayday2014.models.Presentation;
-import com.twi.awayday2014.models.Presenter;
-import com.twi.awayday2014.models.ShortNotification;
 import com.twi.awayday2014.ui.HomeActivity;
 
 public class AwayDayApplication extends SugarApp {
     private static final String CHANNEL_AWAYDAY = "AwayDay";
-    private Properties properties;
+    private TwitterPreference twitterPreference;
     private Tweeter tweeter;
     private SessionsOrganizer sessionsOrganizer;
 
@@ -40,8 +36,8 @@ public class AwayDayApplication extends SugarApp {
 
     public Tweeter getTwitterService() {
         if (tweeter == null) {
-            properties = new Properties(this);
-            tweeter = new Tweeter(properties);
+            twitterPreference = new TwitterPreference(this);
+            tweeter = new Tweeter(twitterPreference);
         }
         return tweeter;
     }

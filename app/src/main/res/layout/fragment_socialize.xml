@@ -16,12 +16,14 @@
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="@dimen/list_divider_height"
-                android:background="@color/twitter_list_bg"/>
+                android:background="@color/gray"/>
 
         <RelativeLayout
+                android:id="@+id/overlay_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:visibility="gone">
 
             <ImageView
                     android:id="@+id/signInOrTweet"
@@ -33,82 +35,8 @@
                     android:padding="10dp"
                     android:src="@drawable/add_schedule_button_icon_unchecked"/>
 
-            <RelativeLayout
-                    android:id="@+id/tweet_message_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/transparent_black"
-                    android:visibility="gone">
+            <include layout="@layout/twitter_compose_layout"/>
 
-                <EditText
-                        android:id="@+id/tweet_message"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="50dp"
-                        android:minLines="5"
-                        android:gravity="left|top"
-                        android:textColor="@color/black"
-                        android:background="@drawable/card_background_small"/>
-
-                <LinearLayout
-                        android:id="@+id/button_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tweet_message"
-                        android:orientation="horizontal"
-                        android:background="@color/second_grey"
-                        android:weightSum="2">
-
-                    <Button
-                            android:id="@+id/tweet"
-                            style="@style/Widget.Button.Blue"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tweet"/>
-
-                    <Button
-                            android:id="@+id/cancel"
-                            style="@style/Widget.Button.Blue"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/cancel"/>
-                </LinearLayout>
-
-                <ImageView
-                        android:id="@+id/pic_from_cam"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_above="@id/button_layout"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/impact"/>
-
-                <ImageView
-                        android:id="@+id/pic_from_gallery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/pic_from_cam"
-                        android:layout_above="@id/button_layout"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/impact"/>
-
-                <ImageView
-                    android:id="@+id/selected_image"
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:layout_toLeftOf="@id/pic_from_gallery"
-                    android:layout_above="@id/button_layout"
-                    android:layout_marginRight="10dp"
-                    android:scaleType="centerInside" />
-
-            </RelativeLayout>
         </RelativeLayout>
 
         <ImageView

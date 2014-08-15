@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.TwitterPreference;
 import com.twi.awayday2014.fragments.*;
 import com.twi.awayday2014.Tweeter;
 
@@ -81,7 +82,7 @@ public class HomeActivity extends Activity {
 
 
         Uri uri = getIntent().getData();
-        if (uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL)) {
+        if (uri != null && uri.toString().startsWith(TwitterPreference.TWITTER_CALLBACK_URL)) {
             selectItem(SOCIALIZE_FRAGMENT);
         } else if (savedInstanceState == null) {
             selectItem(HOME_FRAGMENT);

@@ -2,8 +2,6 @@ package com.twi.awayday2014.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.ListFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -11,10 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,19 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
+import com.twi.awayday2014.AsyncTweeter;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.Tweeter;
+import com.twi.awayday2014.adapters.TweetsAdapter;
+import com.twi.awayday2014.animation.ZoomAnimator;
+import com.twi.awayday2014.stubs.TweeterStub;
 import com.twi.awayday2014.ui.MultiSwipeRefreshLayout;
 import com.twi.awayday2014.ui.SwipeRefreshLayout;
 import twitter4j.Status;
-import twitter4j.TwitterException;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -49,17 +45,15 @@ import static com.twi.awayday2014.ui.MultiSwipeRefreshLayout.CanChildScrollUpCal
 
 public class SocializeFragment
         extends ListFragment
-        implements CanChildScrollUpCallback, TweetsAdapter.OnTweetClickListener {
+        implements CanChildScrollUpCallback, TweetsAdapter.OnTweetClickListener, AsyncTweeter.TwitterCallbacks {
 
     private static final String TAG = "AwayDaySocialize";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String TWITTER_SEARCH_TERM = "bangalore";
-    private static final String AWAYDAY_TWITTER_TAG = "#awayday2014";
 
     private static final int REQUEST_IMAGE_PICK = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
 
-    private Tweeter tweeter;
+    private AsyncTweeter twitter;
     private TweetsAdapter tweetsAdapter;
 
     private View rootView;
@@ -69,6 +63,10 @@ public class SocializeFragment
     private EditText tweetMessageView;
     private View cancelButton;
     private MultiSwipeRefreshLayout swipeRefreshLayout;
+    private ImageView photoFullscreenView;
+    private View currentPhotoView;
+    private View loadingView;
+    private ImageView selectedImageToTweet;
 
     private Animation pushInAnimation;
     private Animation pushOutAnimation;
@@ -76,14 +74,11 @@ public class SocializeFragment
 
     private boolean isTweetWindowVisible;
     private boolean isRefreshInProgress;
-    private ImageView photoFullscreenView;
-    private View currentPhotoView;
-    private View loadingView;
-    private ImageView selectedImageToTweet;
     private boolean isImageSelectedToTweet;
-    private InputStream currentPhotoTweet;
-    private Uri selectedImageUri;
-    private String mCurrentPhotoPath1;
+
+    private Uri selectedGalleryImageUri;
+    private String mCurrentCameraPhotoPath;
+    private View overlayLayout;
 
     public static SocializeFragment newInstance(int sectionNumber) {
         SocializeFragment fragment = new SocializeFragment();
@@ -100,19 +95,25 @@ public class SocializeFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        twitter = new AsyncTweeter(getActivity(), getApplication().getTwitterService(), this);
+        //twitter =  new AsyncTweeter(getActivity(), new TweeterStub(getActivity()), this, AWAY_DAY_SEARCH_TAG);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        getListView().setVisibility(View.INVISIBLE);
-
-        tweeter = getApplication().getTwitterService();
-
+        showLoadingWindow();
         setupAdapter();
 
+        twitter.search();
         handleTwitterCallback();
+    }
+
+    private void showLoadingWindow() {
+        getListView().setVisibility(View.GONE);
+        overlayLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -138,11 +139,7 @@ public class SocializeFragment
 
             @Override
             public void onClick(View view) {
-                if (tweeter.isTwitterLoggedInAlready()) {
-                    showTweetWindow();
-                } else {
-                    loginToTwitter();
-                }
+                onTweetButtonPressed();
             }
         });
 
@@ -151,13 +148,22 @@ public class SocializeFragment
 
             @Override
             public void onClick(View view) {
-                zoomOutPhotoFullScreenView(currentPhotoView, photoFullscreenView, 500);
+                zoomOutToThumbnailView();
             }
         });
 
         bindTweetComposeLayout();
 
         loadingView = rootView.findViewById(R.id.loading_spinner);
+        overlayLayout = rootView.findViewById(R.id.overlay_layout);
+    }
+
+    private void onTweetButtonPressed() {
+        if (twitter.isLoggedIn()) {
+            showTweetWindow();
+        } else {
+            twitter.logIn();
+        }
     }
 
     private void bindTweetComposeLayout() {
@@ -198,7 +204,7 @@ public class SocializeFragment
             }
         });
 
-        selectedImageToTweet = (ImageView) rootView.findViewById(R.id.selected_image);
+        selectedImageToTweet = (ImageView) rootView.findViewById(R.id.selected_image_holder);
     }
 
     private void closeTweetComposeWindow() {
@@ -206,29 +212,6 @@ public class SocializeFragment
         clearSelectedImage();
         tweetMessageView.setText("");
     }
-
-    private void handleTwitterCallback() {
-        if (!tweeter.isTwitterLoggedInAlready()) {
-            if (isLaunchedFromTwitterCallbackUrl(getActivity().getIntent().getData())) {
-                retrieveAccessToken(getActivity().getIntent().getData());
-                showTweetWindow();
-            }
-        }
-    }
-
-    private void tweet() {
-        String text = tweetMessageView.getText().toString();
-        tweetMessageView.setText("");
-
-        if (isImageSelectedToTweet) {
-            tweetImage(text);
-        } else if (text.length() > 0) {
-            tweet(AddTagsIfNeeded(text));
-        }
-        tweetMessageLayout.setVisibility(View.GONE);
-        clearSelectedImage();
-    }
-
 
     private void trySetupSwipeRefresh() {
         swipeRefreshLayout = (MultiSwipeRefreshLayout) rootView;
@@ -251,7 +234,11 @@ public class SocializeFragment
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
-        return isTweetWindowVisible || !(isFirstTweet() && isFirstTweetVisible());
+        if (isLastTweetVisible()) {
+            return true;
+        } else {
+            return isTweetWindowVisible || !(isFirstTweet() && isFirstTweetVisible());
+        }
     }
 
     private boolean isFirstTweetVisible() {
@@ -262,21 +249,19 @@ public class SocializeFragment
         return getListView().getFirstVisiblePosition() == 0;
     }
 
+    private boolean isLastTweetVisible() {
+        return getListView().getLastVisiblePosition() >= tweetsAdapter.getCount() - 1;
+    }
+
     private void refresh() {
         if (!isRefreshInProgress) {
             isRefreshInProgress = true;
-            loadRecentTweets();
+            twitter.refresh();
         }
     }
 
-    private void onRefreshFinished(List<Status> tweets) {
-        tweetsAdapter.insertAtTheTop(tweets);
-        swipeRefreshLayout.setRefreshing(false);
-        isRefreshInProgress = false;
-    }
-
     private boolean isLaunchedFromTwitterCallbackUrl(Uri uri) {
-        return uri != null && uri.toString().startsWith(Tweeter.TWITTER_CALLBACK_URL);
+        return uri != null && twitter.isCallbackUrl(uri);
     }
 
     private void setupAdapter() {
@@ -291,27 +276,11 @@ public class SocializeFragment
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
-                int padding = 5;
-                if (totalCount > 10
-                        && shouldLoadMore(firstVisible, visibleCount, totalCount, padding)) {
-                    twitterSearchNext();
+                if (!twitter.isSearchInProgress() && firstVisible + visibleCount >= (totalCount - 5) && twitter.hasMoreTweets()) {
+                    twitter.searchNext();
                 }
             }
         });
-
-        twitterSearch(TWITTER_SEARCH_TERM);
-
-    }
-
-    private AwayDayApplication getApplication() {
-        return (AwayDayApplication) getActivity().getApplication();
-    }
-
-    private String AddTagsIfNeeded(String text) {
-        if (!text.contains(AWAYDAY_TWITTER_TAG)) {
-            text += " " + AWAYDAY_TWITTER_TAG;
-        }
-        return text;
     }
 
     private void showTweetWindow() {
@@ -365,131 +334,11 @@ public class SocializeFragment
         tweetMessageLayout.startAnimation(pushOutAnimation);
     }
 
-    private boolean shouldLoadMore(int firstVisible, int visibleCount, int totalCount, int padding) {
-        return firstVisible + visibleCount + padding >= totalCount;
-    }
-
-    private void loginToTwitter() {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    tweeter.login(SocializeFragment.this.getActivity());
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute();
-
-    }
-
-    public void retrieveAccessToken(final Uri uri) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    tweeter.retrieveAccessToken(uri);
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute();
-
-    }
-
-    private void twitterSearch(final String searchTerm) {
-        new AsyncTask<Void, Void, List<Status>>() {
-            @Override
-            protected List<twitter4j.Status> doInBackground(Void... voids) {
-                return tweeter.search(searchTerm);
-            }
-
-            @Override
-            protected void onPostExecute(List<twitter4j.Status> tweets) {
-                tweetsAdapter.append(tweets);
-                showContentOrLoadingIndicator(true);
-            }
-        }.execute();
-    }
-
-    private void twitterSearchNext() {
-        if (!tweeter.hasMoreResults()) {
-            return;
-        }
-
-        new AsyncTask<Void, Void, List<Status>>() {
-            @Override
-            protected List<twitter4j.Status> doInBackground(Void... voids) {
-                return tweeter.searchNext();
-            }
-
-            @Override
-            protected void onPostExecute(List<twitter4j.Status> tweets) {
-                tweetsAdapter.append(tweets);
-            }
-        }.execute();
-    }
-
-    private void loadRecentTweets() {
-        new AsyncTask<Void, Void, List<Status>>() {
-
-            @Override
-            protected List<twitter4j.Status> doInBackground(Void... voids) {
-                return tweeter.getRecentTweets(TWITTER_SEARCH_TERM);
-            }
-
-            @Override
-            protected void onPostExecute(List<twitter4j.Status> tweets) {
-                onRefreshFinished(tweets);
-            }
-        }.execute();
-    }
-
-    private void tweet(final String tweetMessage) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                tweeter.tweet(tweetMessage);
-                return null;
-            }
-        }.execute();
-
-    }
-
-    private void tweet(final String tweetMessage, final InputStream image) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                tweeter.tweet(tweetMessage, image);
-                return null;
-            }
-        }.execute();
-
-    }
-
-    private void tweet(final String tweetMessage, final File image) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                tweeter.tweet(tweetMessage, image);
-                return null;
-            }
-        }.execute();
-
-    }
-
     @Override
     public void onPhotoClicked(View photoView, String url) {
         Picasso.with(this.getActivity()).load(url).into(photoFullscreenView);
         currentPhotoView = photoView;
-        zoomImageFromThumb(photoView, photoFullscreenView, 500);
+        zoomInToFullScreenView();
     }
 
     public boolean wantToHandleBack() {
@@ -506,139 +355,20 @@ public class SocializeFragment
 
     public void onBackPressed() {
         if (isFullViewShowing()) {
-            hideFullView();
+            zoomOutToThumbnailView();
         }
 
         if (isTweetComposeWindowOpen()) {
             closeTweetComposeWindow();
         }
-
     }
 
-    public void hideFullView() {
-        zoomOutPhotoFullScreenView(currentPhotoView, photoFullscreenView, 500);
+    public void zoomInToFullScreenView() {
+        new ZoomAnimator().from(currentPhotoView).to(photoFullscreenView).inside(rootView).animateIn();
     }
 
-    private void zoomImageFromThumb(final View thumbView, final View expandedImageView, int duration) {
-        if (currentAnimator != null) {
-            currentAnimator.cancel();
-        }
-
-        final Rect startBounds = new Rect();
-        final Rect finalBounds = new Rect();
-        final Point globalOffset = new Point();
-
-        thumbView.getGlobalVisibleRect(startBounds);
-        rootView.getGlobalVisibleRect(finalBounds, globalOffset);
-        startBounds.offset(-globalOffset.x, -globalOffset.y);
-        finalBounds.offset(-globalOffset.x, -globalOffset.y);
-
-        float startScale;
-        if ((float) finalBounds.width() / finalBounds.height()
-                > (float) startBounds.width() / startBounds.height()) {
-            startScale = (float) startBounds.height() / finalBounds.height();
-            float startWidth = startScale * finalBounds.width();
-            float deltaWidth = (startWidth - startBounds.width()) / 2;
-            startBounds.left -= deltaWidth;
-            startBounds.right += deltaWidth;
-        } else {
-            startScale = (float) startBounds.width() / finalBounds.width();
-            float startHeight = startScale * finalBounds.height();
-            float deltaHeight = (startHeight - startBounds.height()) / 2;
-            startBounds.top -= deltaHeight;
-            startBounds.bottom += deltaHeight;
-        }
-
-        thumbView.setAlpha(0f);
-        expandedImageView.setVisibility(View.VISIBLE);
-
-        expandedImageView.setPivotX(0f);
-        expandedImageView.setPivotY(0f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f));
-        set.setDuration(duration);
-        set.setInterpolator(new DecelerateInterpolator());
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                currentAnimator = null;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                currentAnimator = null;
-            }
-        });
-        set.start();
-        currentAnimator = set;
-    }
-
-    private void zoomOutPhotoFullScreenView(final View thumbView, final View expandedImageView, int duration) {
-        if (currentAnimator != null) {
-            currentAnimator.cancel();
-        }
-
-        final Rect startBounds = new Rect();
-        final Rect finalBounds = new Rect();
-        final Point globalOffset = new Point();
-
-        thumbView.getGlobalVisibleRect(startBounds);
-        rootView.getGlobalVisibleRect(finalBounds, globalOffset);
-        startBounds.offset(-globalOffset.x, -globalOffset.y);
-        finalBounds.offset(-globalOffset.x, -globalOffset.y);
-
-        float startScale;
-        if ((float) finalBounds.width() / finalBounds.height()
-                > (float) startBounds.width() / startBounds.height()) {
-            startScale = (float) startBounds.height() / finalBounds.height();
-            float startWidth = startScale * finalBounds.width();
-            float deltaWidth = (startWidth - startBounds.width()) / 2;
-            startBounds.left -= deltaWidth;
-            startBounds.right += deltaWidth;
-        } else {
-            startScale = (float) startBounds.width() / finalBounds.width();
-            float startHeight = startScale * finalBounds.height();
-            float deltaHeight = (startHeight - startBounds.height()) / 2;
-            startBounds.top -= deltaHeight;
-            startBounds.bottom += deltaHeight;
-        }
-
-
-        final float startScaleFinal = startScale;
-        if (currentAnimator != null) {
-            currentAnimator.cancel();
-        }
-
-        AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
-                .with(ObjectAnimator
-                        .ofFloat(expandedImageView, View.SCALE_X, startScaleFinal))
-                .with(ObjectAnimator
-                        .ofFloat(expandedImageView, View.SCALE_Y, startScaleFinal));
-        set.setDuration(duration);
-        set.setInterpolator(new DecelerateInterpolator());
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                thumbView.setAlpha(1f);
-                expandedImageView.setVisibility(View.GONE);
-                currentAnimator = null;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                thumbView.setAlpha(1f);
-                expandedImageView.setVisibility(View.GONE);
-                currentAnimator = null;
-            }
-        });
-        set.start();
-        currentAnimator = set;
+    public void zoomOutToThumbnailView() {
+        new ZoomAnimator().from(currentPhotoView).to(photoFullscreenView).inside(rootView).animateOut();
     }
 
     private void showContentOrLoadingIndicator(boolean contentLoaded) {
@@ -654,16 +384,17 @@ public class SocializeFragment
 
         showView.animate()
                 .alpha(1f)
-                .setDuration(250)
+                .setDuration(200)
                 .setListener(null);
 
         hideView.animate()
                 .alpha(0f)
-                .setDuration(250)
+                .setDuration(200)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         hideView.setVisibility(View.GONE);
+                        overlayLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -692,43 +423,51 @@ public class SocializeFragment
         }
     }
 
-    String mCurrentPhotoPath;
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        Log.d(TAG, "storageDir : " + storageDir + " fileName : " + imageFileName);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        mCurrentPhotoPath1 = image.getAbsolutePath();
-        return image;
-    }
-
-    private PackageManager getPackageManager() {
-        return getActivity().getPackageManager();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            isImageSelectedToTweet = true;
+            handleImageCapture();
 
         } else if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
-            selectedImageUri = data.getData();
-            try {
-                currentPhotoTweet = getContentResolver().openInputStream(selectedImageUri);
-                setSelectedImage(BitmapFactory.decodeStream(currentPhotoTweet));
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
+            handleImageSelection(data);
         }
     }
 
-    private ContentResolver getContentResolver() {
-        return getActivity().getContentResolver();
+    private void handleImageSelection(Intent data) {
+        selectedGalleryImageUri = data.getData();
+        try {
+            setBitmap(getContentResolver().openInputStream(selectedGalleryImageUri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Failed to load the thumbnail image with ex: " + e.getMessage());
+        }
+    }
+
+    private void handleImageCapture() {
+        isImageSelectedToTweet = true;
+        try {
+            setBitmap(new FileInputStream(mCurrentCameraPhotoPath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Failed to load the thumbnail image with ex: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onSearchResults(List<Status> tweets) {
+        tweetsAdapter.append(tweets);
+        showContentOrLoadingIndicator(true);
+    }
+
+    @Override
+    public void onRefresh(List<Status> tweets) {
+        tweetsAdapter.insertAtTheTop(tweets);
+        swipeRefreshLayout.setRefreshing(false);
+        isRefreshInProgress = false;
+    }
+
+    private void setBitmap(InputStream thumbnail) {
+        setSelectedImage(BitmapFactory.decodeStream(thumbnail)); // TODO: load lighter image
     }
 
     private void setSelectedImage(Bitmap imageBitmap) {
@@ -738,32 +477,87 @@ public class SocializeFragment
 
     private void clearSelectedImage() {
         isImageSelectedToTweet = false;
-        currentPhotoTweet = null;
+        selectedGalleryImageUri = null;
         selectedImageToTweet.setImageBitmap(null);
     }
 
+    private AwayDayApplication getApplication() {
+        return (AwayDayApplication) getActivity().getApplication();
+    }
+
+    private PackageManager getPackageManager() {
+        return getActivity().getPackageManager();
+    }
+
+    private ContentResolver getContentResolver() {
+        return getActivity().getContentResolver();
+    }
+
+    private void handleTwitterCallback() {
+        if (!twitter.isLoggedIn() && isLaunchedFromTwitterCallbackUrl(getActivity().getIntent().getData())) {
+            twitter.onCallbackUrlInvoked(getActivity().getIntent().getData());
+            showTweetWindow();
+        }
+    }
+
+    private void tweet() {
+        String tweetMessage = tweetMessageView.getText().toString();
+        if (isImageSelectedToTweet) {
+            tweetImage(tweetMessage);
+        } else if (tweetMessage.length() > 0) {
+            tweetText(tweetMessage);
+        }
+
+        tweetMessageLayout.setVisibility(View.GONE);
+        tweetMessageView.setText("");
+        clearSelectedImage();
+    }
+
+    private void tweetText(String text) {
+        twitter.tweet(text);
+    }
+
     private void tweetImage(String text) {
-        if (currentPhotoTweet != null) {
-            tweet(text, new File(getPath(selectedImageUri)));
+        if (selectedGalleryImageUri != null) {
+            twitter.tweet(text, new File(getPath(selectedGalleryImageUri)));
         } else {
-            tweet(text, new File(mCurrentPhotoPath1));
+            twitter.tweet(text, new File(mCurrentCameraPhotoPath));
         }
     }
 
     public String getPath(Uri uri) {
-        if( uri == null ) {
+        if (uri == null) {
             return null;
         }
 
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if( cursor != null ){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            cursor.close();
-            return path;
+        String path = uri.getPath();
+        Cursor cursor = null;
+        try {
+            String[] projection = {MediaStore.Images.Media.DATA};
+            cursor = getContentResolver().query(uri, projection, null, null, null);
+            if (cursor != null) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                path = cursor.getString(column_index);
+                cursor.close();
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        return uri.getPath();
+        return path;
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File image = File.createTempFile(imageFileName, ".jpg", getDcimFolderPath());
+        mCurrentCameraPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private File getDcimFolderPath() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     }
 }

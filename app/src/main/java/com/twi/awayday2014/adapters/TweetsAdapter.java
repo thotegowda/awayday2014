@@ -39,6 +39,10 @@ public class TweetsAdapter extends BaseAdapter implements View.OnClickListener {
     }
 
     public void append(List<Status> moreTweets) {
+        if (moreTweets.size() <= 0) {
+            return;
+        }
+
         tweets.addAll(moreTweets);
         notifyDataSetChanged();
     }

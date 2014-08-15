@@ -3,7 +3,6 @@ package com.twi.awayday2014;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -12,46 +11,38 @@ import twitter4j.conf.ConfigurationBuilder;
 
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Tweeter {
     private static final String TAG = "AwayDayTwitter";
 
-    public static final String TWITTER_CALLBACK_URL = "oauth://thoughtworks.Twitter_oAuth";
-    public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
-
-    private static final double BANGALORE_LT = 12.9316556;
-    private static final double BANGALORE_LNG = 77.6226959;
-    private static final GeoLocation BANGALORE_LOCATION = new GeoLocation(BANGALORE_LT, BANGALORE_LNG);
-
-    public static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
+    private static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
 
     private Twitter searchTwitter;
-    private Twitter twitter;
-    private RequestToken requestToken;
     private TwitterFactory twitterFactory;
+    private Twitter twitter;
+
     private boolean isLoggedIn = false;
 
     private QueryResult lastQueryResult;
-    private Properties properties;
+    private RequestToken requestToken;
+    private TwitterPreference preference;
     private QueryResult recentQueryResult;
 
-    public Tweeter(Properties properties) {
-        this.properties = properties;
+    public Tweeter(TwitterPreference preference) {
+        this.preference = preference;
 
         setup();
     }
 
     private void setup() {
-
-        if (properties.alreadyLoggedIn()) {
+        if (preference.alreadyLoggedIn()) {
             isLoggedIn = true;
 
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(DeveloperKeys.TWITTER_CONSUMER_KEY, DeveloperKeys.TWITTER_CONSUMER_SECRET);
-            twitter.setOAuthAccessToken(properties.loadAccessToken());
+            twitter.setOAuthAccessToken(preference.loadAccessToken());
             searchTwitter = twitter;
         } else {
             ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -61,7 +52,7 @@ public class Tweeter {
             twitterFactory = new TwitterFactory(configuration);
             twitter = twitterFactory.getInstance();
 
-            // This is to show search results even when user is not logged in
+            // TODO: This is to show search results even when user is not logged in
             cb = new ConfigurationBuilder();
             cb.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
             cb.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
@@ -72,120 +63,91 @@ public class Tweeter {
     }
 
     public void login(final Context context) throws TwitterException {
-        if (!isTwitterLoggedInAlready()) {
+        if (!isLoggedIn()) {
             requestToken = getRequestToken();
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
         }
     }
 
     private RequestToken getRequestToken() throws TwitterException {
-        return twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
+        return twitter.getOAuthRequestToken(preference.getCallbackUrl());
     }
 
     public void retrieveAccessToken(Uri uri) throws TwitterException {
-        if (uri != null && uri.toString().startsWith(TWITTER_CALLBACK_URL)) {
-            AccessToken accessToken = twitter.getOAuthAccessToken(requestToken,
-                    uri.getQueryParameter(URL_TWITTER_OAUTH_VERIFIER));
-
+        if (uri != null && uri.toString().startsWith(preference.getCallbackUrl())) {
+            AccessToken accessToken = twitter.getOAuthAccessToken(
+                    requestToken, uri.getQueryParameter(preference.getAuthVerifier()));
             isLoggedIn = true;
             saveAccessToken(accessToken);
         }
     }
 
     private void saveAccessToken(AccessToken accessToken) {
-        properties.saveAccessToken(accessToken);
+        preference.saveAccessToken(accessToken);
     }
 
-    public boolean isTwitterLoggedInAlready() {
+    public boolean isLoggedIn() {
         return isLoggedIn;
     }
 
-    public List<Status> search(String searchTerm) {
-        try {
-            recentQueryResult = lastQueryResult = searchTwitter(new Query(searchTerm));
-
-            Log.d(TAG, "firstQuerySinceId :" + recentQueryResult.getSinceId()
-                    + "firstQueryMaxId :" + recentQueryResult.getMaxId()
-                    + "first tweet id: " + recentQueryResult.getTweets().get(0).getId());
-
-            return lastQueryResult.getTweets();
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
-        return EMPTY_STATUS;
-    }
-
     public boolean hasMoreResults() {
-        return lastQueryResult != null;
+        return lastQueryResult != null && lastQueryResult.hasNext();
     }
 
-    public List<Status> searchNext() {
+    public List<Status> search() throws TwitterException {
+        recentQueryResult = lastQueryResult = searchTwitter(new Query(preference.getSearchKeyword()));
+        return lastQueryResult.getTweets();
+    }
+
+    private QueryResult searchTwitter(Query query) throws TwitterException {
+       if (preference.shouldUseLocation()) {
+           query.setGeoCode(preference.getGeoLocation(), preference.getRadius(), preference.getRadiusUnit());
+       }
+        return searchTwitter.search(query);
+    }
+
+    public List<Status> searchNext() throws TwitterException {
         List<Status> tweets = EMPTY_STATUS;
-        try {
-
-            if (lastQueryResult != null && lastQueryResult.hasNext()) {
-                Query query = lastQueryResult.nextQuery();
-                if (query != null) {
-
-                    lastQueryResult = searchTwitter(query);
-                    tweets = lastQueryResult.getTweets();
-
-                }
+        if (lastQueryResult != null && lastQueryResult.hasNext()) {
+            Query query = lastQueryResult.nextQuery();
+            if (query != null) {
+                lastQueryResult = searchTwitter(query);
+                tweets = lastQueryResult.getTweets();
             }
-        } catch (TwitterException e) {
-            e.printStackTrace();
         }
         return tweets;
     }
 
-    private QueryResult searchTwitter(Query query) throws TwitterException {
-        query.setGeoCode(BANGALORE_LOCATION, 100, Query.KILOMETERS);
-        return searchTwitter.search(query);
+    public void tweet(String tweetText) throws TwitterException {
+        tweet(new StatusUpdate(appendHashTags(tweetText)));
     }
 
-    public void tweet(String tweetText, InputStream image) {
-        StatusUpdate status = new StatusUpdate(tweetText);
-        status.setMedia("filename", image);
-        tweet(status);
-    }
-
-    public void tweet(String tweetText, File image) {
-        StatusUpdate status = new StatusUpdate(tweetText);
+    public void tweet(String tweetText, File image) throws TwitterException {
+        StatusUpdate status = new StatusUpdate(appendHashTags(tweetText));
         status.setMedia(image);
         tweet(status);
     }
 
-    public void tweet(String tweetText) {
-        tweet(new StatusUpdate(tweetText));
+    private String appendHashTags(String tweetText) {
+        return tweetText + " " + preference.getHashTags();
     }
 
-    public void tweet(StatusUpdate status) {
-        try {
-            twitter.updateStatus(status);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
+    public void tweet(StatusUpdate status) throws TwitterException {
+        twitter.updateStatus(status);
     }
 
-    public List<Status> getRecentTweets(String searchTerm) {
-        List<Status> tweets = EMPTY_STATUS;
-        try {
-            Query query = new Query(searchTerm);
-
-            if (recentQueryResult != null) {
-                Log.d(TAG, "Recent sinceId :" + recentQueryResult.getSinceId()
-                        + "Recent MaxId :" + recentQueryResult.getMaxId());
-
-                query.setSinceId(recentQueryResult.getMaxId());
-            }
-
-            recentQueryResult = lastQueryResult = searchTwitter(query);
-            tweets = lastQueryResult.getTweets();
-        } catch (TwitterException e) {
-            e.printStackTrace();
+    public List<Status> getRecentTweets() throws TwitterException {
+        Query query = new Query(preference.getSearchKeyword());
+        if (recentQueryResult != null) {
+            query.setSinceId(recentQueryResult.getMaxId());
         }
 
-        Log.d(TAG, " No of new tweets : " + tweets.size());
+        recentQueryResult = lastQueryResult = searchTwitter(query);
+        List<Status> tweets = lastQueryResult.getTweets();
         return tweets;
+    }
+
+    public boolean isCallbackUrl(Uri uri) {
+        return uri.toString().startsWith(preference.getCallbackUrl());
     }
 }

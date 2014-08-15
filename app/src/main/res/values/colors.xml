@@ -7,9 +7,11 @@
     <color name="pink">#ef5ba1</color>
     <color name="gray">#ffEAEAEA</color>
     <color name="blue">#ff1A73BA</color>
-    <color name="second_grey">#ff999999</color>
+
+    <color name="second_grey">#ffEAEAEA</color>
     <color name="card_white">#ffffffff</color>
     <color name="card_shadow">#8c666666</color>
+
     <color name="transparent_black">#aa000000</color>
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
