@@ -4,7 +4,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent_black"
+    android:background="@color/transparent_dark_black"
     android:paddingBottom="@dimen/padding"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -42,7 +42,7 @@
 
         <View
             style="@style/VerticalDivider"
-            android:background="@color/transparent_medium_black"/>
+            android:background="@color/transparent_light_black"/>
         <View
             style="@style/VerticalDivider"
             android:background="@color/transparent_white"/>

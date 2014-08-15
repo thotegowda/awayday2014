@@ -14,18 +14,26 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.animations.SmoothInterpolator;
 
 public class TwitterLoginFragment extends Fragment {
-    private static final long OPEN_ANIMATION_DURATION = 600;
-    private static final long CLOSE_ANIMATION_DURATION = 200;
+    public static final long OPEN_ANIMATION_DURATION = 600;
+    public static final long CLOSE_ANIMATION_DURATION = 400;
 
     private View mRootLayout;
     private ObjectAnimator mSlidingPaneOpenAnimator;
     private ObjectAnimator mSlidingPaneCloseAnimator;
+    private int rootLayoutHeight;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootLayout = inflater.inflate(R.layout.fragment_twitter_login, container, false);
         initAnimators();
-        mRootLayout.setVisibility(View.GONE);
+        mRootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mRootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                rootLayoutHeight = mRootLayout.getHeight();
+                mRootLayout.setVisibility(View.GONE);
+            }
+        });
         return mRootLayout;
     }
 
@@ -52,6 +60,9 @@ public class TwitterLoginFragment extends Fragment {
         mSlidingPaneCloseAnimator.start();
     }
 
+    public int getRootLayoutHeight() {
+        return rootLayoutHeight;
+    }
 
     private void initAnimators() {
         mSlidingPaneOpenAnimator = ObjectAnimator.ofFloat(mRootLayout, "translationY", 0);
@@ -72,6 +83,7 @@ public class TwitterLoginFragment extends Fragment {
 
         mSlidingPaneCloseAnimator = ObjectAnimator.ofFloat(mRootLayout, "translationY", 0);
         mSlidingPaneCloseAnimator.setDuration(CLOSE_ANIMATION_DURATION);
+        mSlidingPaneCloseAnimator.setInterpolator(new SmoothInterpolator());
         mSlidingPaneCloseAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {

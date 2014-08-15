@@ -45,6 +45,11 @@ public class TweetsAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewSource viewSource = null;
         if (convertView == null) {

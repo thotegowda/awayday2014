@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent_light_black">
+        android:background="@color/transparent_black">
 
         <TextView
             android:id="@+id/tweetsHeaderText"
@@ -30,28 +30,29 @@
             android:id="@+id/tweetsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0dp"
+            android:divider="@android:color/transparent"
             android:clickable="false"
             android:layout_below="@id/divider"/>
 
         <Button
             android:id="@+id/twitterButton"
-            android:layout_width="@dimen/tweets_activity_twitter_button_size"
-            android:layout_height="@dimen/tweets_activity_twitter_button_size"
-            android:layout_marginRight="@dimen/padding"
-            android:layout_marginBottom="@dimen/padding"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            style="@style/TwitterCircleButton"
             android:background="@drawable/ic_twitter_circle" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/cancelButton"
+            style="@style/TwitterCircleButton"
+            android:visibility="gone"
+            android:background="@drawable/ic_cancle_circle" />
 
-    <fragment
-        android:id="@+id/twitterLoginFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
-        android:layout_alignParentBottom="true"
-        />
+        <fragment
+            android:id="@+id/twitterLoginFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
 
 </FrameLayout>

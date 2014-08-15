@@ -123,4 +123,14 @@
         <item name="android:layout_height">4dp</item>
         <item name="android:background">@color/pink</item>
     </style>
+
+    <!--Twitter Activity-->
+    <style name="TwitterCircleButton">
+        <item name="android:layout_width">@dimen/tweets_activity_twitter_button_size</item>
+        <item name="android:layout_height">@dimen/tweets_activity_twitter_button_size</item>
+        <item name="android:layout_marginRight">@dimen/padding_small</item>
+        <item name="android:layout_marginBottom">@dimen/padding_small</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
 </resources>
