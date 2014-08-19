@@ -48,11 +48,12 @@ public class SessionDetailsActivity extends Activity {
             }
         });
         scheduleButton = (Button) findViewById(R.id.btn_add_to_my_schedule);
+        scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addToMySchedule();
-                ((Button) view).setText(getScheduleText(presentation));
+                view.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
             }
         });
     }

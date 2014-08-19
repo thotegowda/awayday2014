@@ -29,8 +29,7 @@
                     android:id="@+id/btn_add_to_my_schedule"
                     style="@style/Widget.Button.purple"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@id/profile_image"
-                    android:text="@string/add"/>
+                    android:layout_below="@id/profile_image"/>
 
             <TextView
                     android:id="@+id/session_title"
