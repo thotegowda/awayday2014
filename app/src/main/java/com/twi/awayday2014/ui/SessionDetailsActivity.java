@@ -28,10 +28,10 @@ public class SessionDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_session_details);
-        setupViews();
 
         String presentation_id = getIntent().getStringExtra("presentation_id");
         presentation = Presentation.findById(Presentation.class, Long.valueOf(presentation_id));
+        setupViews();
         bind(presentation);
     }
 
@@ -48,18 +48,24 @@ public class SessionDetailsActivity extends Activity {
             }
         });
         scheduleButton = (Button) findViewById(R.id.btn_add_to_my_schedule);
-        scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
+        if(presentation.isScheduled()) {
+            scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
+        } else {
+            scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
+        }
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToMySchedule();
-                view.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
+                if(presentation.isScheduled()) {
+                    presentation.setScheduled(false);
+                    view.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
+                } else {
+                    presentation.setScheduled(true);
+                    view.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
+                }
+                presentation.save();
             }
         });
-    }
-
-    private String getScheduleText(Presentation presentation) {
-        return presentation.isScheduled() ? "O" : "+";
     }
 
     public void bind(Presentation presentation) {
@@ -67,7 +73,6 @@ public class SessionDetailsActivity extends Activity {
         title.setText(presentation.title());
         description.setText(presentation.description());
         duration.setText(presentation.formattedDate());
-        scheduleButton.setText(getScheduleText(presentation));
         bind(presentation.presenter());
     }
 
@@ -84,8 +89,5 @@ public class SessionDetailsActivity extends Activity {
         startActivity(new Intent(this, FeedbackActivity.class).putExtra("presentation_id", String.valueOf(presentation.getId())));
     }
 
-    private void addToMySchedule() {
-        presentation.setScheduled(!presentation.isScheduled());
-        presentation.save();
-    }
+
 }
