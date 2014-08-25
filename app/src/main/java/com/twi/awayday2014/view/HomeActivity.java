@@ -187,8 +187,8 @@ public class HomeActivity extends FragmentActivity{
         notificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
-                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
+//                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
+//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
                 Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
                 HomeActivity.this.startActivity(intent);
             }
@@ -198,8 +198,8 @@ public class HomeActivity extends FragmentActivity{
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
-                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
+//                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
+//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
                 Intent intent = new Intent(HomeActivity.this, TweetsActivity.class);
                 HomeActivity.this.startActivity(intent);
             }
@@ -220,6 +220,7 @@ public class HomeActivity extends FragmentActivity{
         Bitmap bitmapWithoutStatusBar = Bitmap.createBitmap(b, 0, statusBarHeight, width, height  - statusBarHeight);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapWithoutStatusBar,
                 bitmapWithoutStatusBar.getWidth() / 2, bitmapWithoutStatusBar.getHeight() / 2, false);
+        bitmapWithoutStatusBar.recycle();
 
         decorView.destroyDrawingCache();
         Blur blur = new Blur(this);

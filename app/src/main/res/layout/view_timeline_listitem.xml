@@ -1,45 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/timeText"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="@dimen/padding"
-        android:singleLine="true"
-        android:textSize="@dimen/timeline_primary_text_size"
-        android:gravity="center"/>
+        android:layout_marginBottom="@dimen/padding_small"
+        android:layout_marginLeft="@dimen/padding"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_marginTop="@dimen/padding"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:background="@drawable/card">
 
-    <View
-        style="@style/VerticalDivider"
-        android:layout_width="2dp"
-        android:background="@color/light_gray"/>
+        <ImageView
+            android:id="@+id/sessionImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/agenda_card_image_height"
+            android:scaleType="centerCrop"
+            android:src="@drawable/notifications_image_food" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:padding="@dimen/padding"
-        android:orientation="vertical">
+        <com.twi.awayday2014.view.custom.CircularImageView
+            android:id="@+id/userImage"
+            style="@style/SpeakerImageView"
+            android:layout_marginLeft="@dimen/padding"
+            android:layout_marginTop="@dimen/speaker_image_top_margin"
+            android:src="@drawable/placeholder"/>
+
+        <TextView
+            android:id="@+id/speakers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sessionImage"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_extra_large"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:text="Speaker Name"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/timeline_primary_text_size"/>
+            android:layout_below="@id/speakers"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginTop="@dimen/padding_small"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:text="This Session Is About Something Interesting"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/descriptionText"
+            android:id="@id/timeText"
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/padding"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/timeline_secondary_text_size"
-            android:visibility="gone"/>
+            android:layout_below="@id/titleText"
+            android:background="#6faba7"
+            android:gravity="center"
+            android:padding="@dimen/padding_small"
+            android:textColor="@android:color/white"
+            android:text="15:30 - 16:30"
+            android:textSize="16sp" />
 
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

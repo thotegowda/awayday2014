@@ -1,6 +1,7 @@
 package com.twi.awayday2014.adapters;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,12 +21,14 @@ import java.util.List;
 
 public class AgendaAdapter extends BaseAdapter {
     private final List<Session> agenda;
+    private final LayoutInflater inflater;
     private AgendaService agendaService;
     private Context context;
 
     public AgendaAdapter(Context context,DateTime day) {
         this.context = context;
         agendaService = AwayDayApplication.agendaService();
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         agenda = agendaService.getAgendaFor(day);
     }
 
@@ -48,27 +51,21 @@ public class AgendaAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewSource viewSource = null;
         if(convertView == null){
-            convertView = View.inflate(context, R.layout.view_timeline_listitem, null);
+            convertView = inflater.inflate(R.layout.view_timeline_listitem, parent, false);
             viewSource = new ViewSource();
             viewSource.timeTextView = (TextView) convertView.findViewById(R.id.timeText);
             viewSource.timeTextView.setTypeface(Fonts.openSansRegular(context));
             viewSource.titleTextView = (TextView) convertView.findViewById(R.id.titleText);
             viewSource.titleTextView.setTypeface(Fonts.openSansRegular(context));
-            viewSource.descriptionTextView = (TextView) convertView.findViewById(R.id.descriptionText);
-            viewSource.descriptionTextView.setTypeface(Fonts.openSansLight(context));
+            viewSource.speakerTextView = (TextView) convertView.findViewById(R.id.speakers);
+            viewSource.speakerTextView.setTypeface(Fonts.openSansLight(context));
             convertView.setTag(viewSource);
         }
 
         viewSource = (ViewSource) convertView.getTag();
         viewSource.timeTextView.setText(agenda.get(position).getTime());
         viewSource.titleTextView.setText(agenda.get(position).getTitle());
-        String description = agenda.get(position).getDescription();
-        if(description != null){
-            viewSource.descriptionTextView.setText(description);
-            viewSource.descriptionTextView.setVisibility(View.VISIBLE);
-        }else {
-            viewSource.descriptionTextView.setVisibility(View.GONE);
-        }
+
 
         return convertView;
     }
@@ -76,6 +73,6 @@ public class AgendaAdapter extends BaseAdapter {
     private class ViewSource{
         TextView timeTextView;
         TextView titleTextView;
-        TextView descriptionTextView;
+        TextView speakerTextView;
     }
 }

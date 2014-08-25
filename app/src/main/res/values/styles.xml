@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
 
     <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid</item>
+        <item name="android:background">@android:drawable/screen_background_dark_transparent</item>
     </style>
 
     <style name="Widget.ActionBar.Transparent">
@@ -132,5 +132,14 @@
         <item name="android:layout_marginBottom">@dimen/padding_small</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <!--Timeline-->
+    <style name="SpeakerImageView">
+        <item name="android:layout_width">@dimen/speaker_image_diameter</item>
+        <item name="android:layout_height">@dimen/speaker_image_diameter</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="com.twi.awayday2014:border_color">#ffffff</item>
+        <item name="com.twi.awayday2014:border_width">2</item>
     </style>
 </resources>

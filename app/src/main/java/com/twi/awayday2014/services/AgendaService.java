@@ -1,5 +1,7 @@
 package com.twi.awayday2014.services;
 
+import com.twi.awayday2014.R;
+import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
 
 import org.joda.time.DateTime;
@@ -20,7 +22,9 @@ public class AgendaService {
     private List<Session> sessionsFor27() {
         return new ArrayList<Session>(){{
             add(new Session(null, "Lunch & Settling In", "27 Sep", "12:00", null));
-            add(new Session(null, "Away Day Kick-off", "27 Sep", "15:00", null));
+            add(new Session(new ArrayList<Presenter>(){{
+                new Presenter("Deepa", R.drawable.placeholder, 0);
+            }}, "Away Day Kick-off", "27 Sep", "15:00 - 15:30", null));
             add(new Session(null, "One year gone by, one year to come", "27 Sep", "15:30", "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum." +
                     "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum."));
             add(new Session(null, "The other side of development in India", "27 Sep", "16:00", "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum." +

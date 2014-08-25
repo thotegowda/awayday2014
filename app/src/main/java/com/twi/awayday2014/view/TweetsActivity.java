@@ -59,6 +59,7 @@ public class TweetsActivity extends FragmentActivity{
         });
 
         cancelButton = (Button) findViewById(R.id.cancelButton);
+        cancelButton.setClickable(false);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +94,8 @@ public class TweetsActivity extends FragmentActivity{
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        cancelButton.setClickable(true);
+                        twitterButton.setClickable(false);
                         //just a placeholder to override the other listener
                     }
                 })
@@ -109,6 +112,8 @@ public class TweetsActivity extends FragmentActivity{
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        twitterButton.setClickable(true);
+                        cancelButton.setClickable(false);
                         //just a placeholder to override the other listener
                     }
                 })
