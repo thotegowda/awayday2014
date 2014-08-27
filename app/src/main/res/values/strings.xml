@@ -44,5 +44,7 @@
     <string name="headerDetailsHeader">India Awayday, Hyderabad</string>
     <string name="headerDetailsMainText">ENVIRONMENTAL JUSTICE</string>
     <string name="headerDetailsFooterDateText">27-28 September, 2014</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="title_activity_tweets">#TWAwayDay2014</string>
 
 </resources>

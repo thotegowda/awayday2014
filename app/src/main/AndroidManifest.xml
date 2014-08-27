@@ -117,6 +117,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+                android:name=".ui.NotificationsActivity"
+                android:label="@string/title_activity_notifications"
+                android:theme="@style/Theme.NoActionbar">
+        </activity>
+
         <!-- Parse framework specific -->
 
         <service android:name="com.parse.PushService" />

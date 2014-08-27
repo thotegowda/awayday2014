@@ -1,6 +1,7 @@
 package com.twi.awayday2014.ui;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.Blur;
 import com.twi.awayday2014.Fonts;
 import com.twi.awayday2014.R;
@@ -181,10 +183,10 @@ public class NewHomeActivity extends FragmentActivity {
         notificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AwayDayApplication awayDayApplication = (AwayDayApplication) NewHomeActivity.this.getApplication();
-//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
-//                Intent intent = new Intent(NewHomeActivity.this, NotificationsActivity.class);
-//                NewHomeActivity.this.startActivity(intent);
+                AwayDayApplication awayDayApplication = (AwayDayApplication) NewHomeActivity.this.getApplication();
+                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
+                Intent intent = new Intent(NewHomeActivity.this, NotificationsActivity.class);
+                NewHomeActivity.this.startActivity(intent);
             }
         });
 

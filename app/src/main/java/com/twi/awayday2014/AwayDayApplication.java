@@ -1,16 +1,20 @@
 package com.twi.awayday2014;
 
+import android.graphics.Bitmap;
 import com.orm.SugarApp;
 import com.parse.*;
 import com.twi.awayday2014.service.AgendaService;
+import com.twi.awayday2014.service.NotificationsService;
 import com.twi.awayday2014.ui.HomeActivity;
 
 public class AwayDayApplication extends SugarApp {
     private static final String CHANNEL_AWAYDAY = "AwayDay";
     private static AgendaService agendaService;
+    private static NotificationsService notificationsService;
     private TwitterPreference twitterPreference;
     private Tweeter tweeter;
     private SessionsOrganizer sessionsOrganizer;
+    private Bitmap homeActivityScreenshot;
 
     @Override
     public void onCreate() {
@@ -52,11 +56,27 @@ public class AwayDayApplication extends SugarApp {
     }
 
 
-    public static AgendaService agendaService(){
-        if(agendaService == null){
+    public static AgendaService agendaService() {
+        if (agendaService == null) {
             agendaService = new AgendaService();
         }
         return agendaService;
+    }
+
+    public static NotificationsService notificationsService() {
+        if (notificationsService == null) {
+            return new NotificationsService();
+        }
+        return notificationsService;
+    }
+
+
+    public Bitmap getHomeActivityScreenshot() {
+        return homeActivityScreenshot;
+    }
+
+    public void setHomeActivityScreenshot(Bitmap homeActivityScreenshot) {
+        this.homeActivityScreenshot = homeActivityScreenshot;
     }
 
 }

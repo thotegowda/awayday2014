@@ -46,23 +46,23 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupNotifications() {
-        adapter = new NotificationsAdapter(getActivity(), ShortNotification.listAll(ShortNotification.class));
-        listView.setAdapter(adapter);
-        swipeListener = new SwipeDismissListViewTouchListener(listView, new DismissCallbacks() {
-
-            @Override
-            public boolean canDismiss(int position) {
-                return true;
-            }
-
-            @Override
-            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                for (int position : reverseSortedPositions) {
-                    adapter.remove(position);
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        adapter = new NotificationsAdapter(getActivity(), ShortNotification.listAll(ShortNotification.class));
+//        listView.setAdapter(adapter);
+//        swipeListener = new SwipeDismissListViewTouchListener(listView, new DismissCallbacks() {
+//
+//            @Override
+//            public boolean canDismiss(int position) {
+//                return true;
+//            }
+//
+//            @Override
+//            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+//                for (int position : reverseSortedPositions) {
+//                    adapter.remove(position);
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
 
         listView.setOnTouchListener(swipeListener);
         listView.setOnScrollListener(swipeListener.makeScrollListener());
