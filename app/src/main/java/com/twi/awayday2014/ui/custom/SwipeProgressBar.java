@@ -24,7 +24,7 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import com.twi.awayday2014.ui.BakedBezierInterpolator;
+import com.twi.awayday2014.animation.BakedBezierInterpolator;
 
 
 /**

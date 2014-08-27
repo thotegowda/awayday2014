@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent_dark_black"
+    android:paddingBottom="@dimen/padding"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <View
+        style="@style/HorizontalDivider"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        android:gravity="center"
+        android:text="@string/tweets_login_info"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tweets_login_info_text_size" />
+
+    <LinearLayout
+        android:id="@+id/twitter_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tweeter_login_button_height"
+        android:layout_marginBottom="@dimen/padding_small"
+        android:layout_marginLeft="@dimen/tweeter_login_button_margin"
+        android:layout_marginRight="@dimen/tweeter_login_button_margin"
+        android:layout_marginTop="@dimen/padding_small"
+        android:background="#00b0ed"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_small"
+            android:src="@drawable/ic_twitter_logo_white"/>
+
+        <View
+            style="@style/VerticalDivider"
+            android:background="@color/transparent_light_black"/>
+        <View
+            style="@style/VerticalDivider"
+            android:background="@color/transparent_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:text="@string/login"
+            android:gravity="center"
+            android:textSize="@dimen/tweets_login_button_text_size"/>
+    </LinearLayout>
+</LinearLayout>

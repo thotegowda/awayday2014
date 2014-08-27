@@ -73,7 +73,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW1"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -95,16 +95,6 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                        android:host="thoughtworks.Twitter_oAuth"
-                        android:scheme="oauth"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -121,6 +111,22 @@
                 android:name=".ui.NotificationsActivity"
                 android:label="@string/title_activity_notifications"
                 android:theme="@style/Theme.NoActionbar">
+        </activity>
+
+        <activity
+                android:name=".ui.TweetsActivity"
+                android:label="@string/title_activity_notifications"
+                android:theme="@style/Theme.NoActionbar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                        android:host="thoughtworks.Twitter_oAuth"
+                        android:scheme="oauth"/>
+            </intent-filter>
         </activity>
 
         <!-- Parse framework specific -->

@@ -1,15 +1,16 @@
 <com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                xmlns:tools="http://schemas.android.com/tools"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                tools:context="com.twi.awayday2014.fragments.SocializeFragment">
+                                                       xmlns:tools="http://schemas.android.com/tools"
+                                                       android:id="@+id/tweets_root_layout"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       tools:context="com.twi.awayday2014.fragments.SocializeFragment">
 
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <ListView
-                android:id="@android:id/list"
+                android:id="@+id/tweets_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
@@ -25,7 +26,7 @@
                 android:layout_gravity="bottom"
                 android:visibility="gone">
 
-            <ImageView
+            <!--ImageView
                     android:id="@+id/signInOrTweet"
                     style="@style/Widget.Button.Add"
                     android:layout_alignParentBottom="true"
@@ -33,7 +34,18 @@
                     android:scaleType="centerInside"
                     android:layout_marginRight="10dp"
                     android:padding="10dp"
-                    android:src="@drawable/add_schedule_button_icon_unchecked"/>
+                    android:src="@drawable/add_schedule_button_icon_unchecked"/-->
+
+            <Button
+                    android:id="@+id/signInOrTweet"
+                    style="@style/TwitterCircleButton"
+                    android:background="@drawable/ic_twitter_circle" />
+
+            <Button
+                    android:id="@+id/cancelButton"
+                    style="@style/TwitterCircleButton"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_cancle_circle" />
 
             <include layout="@layout/twitter_compose_layout"/>
 
@@ -47,11 +59,19 @@
                 android:background="@color/transparent_black"
                 android:visibility="gone"/>
 
-        <ProgressBar android:id="@+id/loading_spinner"
-                     style="?android:progressBarStyleLarge"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center" />
+        <ProgressBar
+                android:id="@+id/loading_spinner"
+                style="?android:progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+        <fragment
+                android:id="@+id/twitterLoginFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.twi.awayday2014.fragments.TwitterLoginFragment"
+                android:layout_gravity="bottom"/>
 
     </FrameLayout>
 </com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout>

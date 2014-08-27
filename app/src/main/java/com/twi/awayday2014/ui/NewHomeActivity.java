@@ -194,10 +194,10 @@ public class NewHomeActivity extends FragmentActivity {
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AwayDayApplication awayDayApplication = (AwayDayApplication) NewHomeActivity.this.getApplication();
-//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
-//                Intent intent = new Intent(NewHomeActivity.this, TweetsActivity.class);
-//                NewHomeActivity.this.startActivity(intent);
+                AwayDayApplication awayDayApplication = (AwayDayApplication) NewHomeActivity.this.getApplication();
+                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
+                Intent intent = new Intent(NewHomeActivity.this, TweetsActivity.class);
+                NewHomeActivity.this.startActivity(intent);
             }
         });
     }

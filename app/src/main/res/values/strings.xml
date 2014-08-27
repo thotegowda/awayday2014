@@ -47,4 +47,7 @@
     <string name="title_activity_notifications">Notifications</string>
     <string name="title_activity_tweets">#TWAwayDay2014</string>
 
+    <string name="tweets_login_info">Please login with your twitter account to tweet about awayday.</string>
+    <string name="login">Login</string>
+
 </resources>
