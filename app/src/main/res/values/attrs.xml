@@ -12,5 +12,4 @@
         <attr name="circularImageViewStyle" format="reference"></attr>
     </declare-styleable>
 
-
 </resources>

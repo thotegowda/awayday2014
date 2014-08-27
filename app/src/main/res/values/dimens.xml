@@ -51,12 +51,13 @@
 
     <dimen name="tweets_activity_twitter_button_size">84dp</dimen>
     <dimen name="tweets_text_size">16sp</dimen>
-    <dimen name="tweets_details_height">36dp</dimen>
+    <dimen name="tweets_details_height">64dp</dimen>
     <dimen name="tweets_details_text_size">14sp</dimen>
     <dimen name="tweets_login_info_text_size">18sp</dimen>
     <dimen name="tweets_login_button_text_size">26sp</dimen>
     <dimen name="tweeter_login_button_height">50dp</dimen>
     <dimen name="tweeter_login_button_margin">70dp</dimen>
+    <dimen name="tweeter_user_image_diameter">48dp</dimen>
 
     <dimen name="agenda_card_image_height">144dp</dimen>
     <dimen name="speaker_image_diameter">60dp</dimen>

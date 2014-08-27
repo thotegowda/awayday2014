@@ -5,28 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.twi.awayday2014.AwayDayApplication;
+import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.models.Tweet;
-import com.twi.awayday2014.services.TweeterService;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.view.custom.CircularImageView;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import twitter4j.MediaEntity;
+import twitter4j.Status;
 
 public class TweetsAdapter extends BaseAdapter {
 
 
     private final LayoutInflater inflater;
-    private List<Tweet> tweets;
+    private List<Status> tweets;
     private Context context;
 
     public TweetsAdapter(Context context) {
         this.context = context;
-        TweeterService tweeterService = AwayDayApplication.tweeterService();
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        tweets = tweeterService.getTweets();
+        tweets = new ArrayList<Status>();
     }
 
     @Override
@@ -59,18 +64,60 @@ public class TweetsAdapter extends BaseAdapter {
             viewSource.tweetText.setTypeface(Fonts.openSansRegular(context));
             viewSource.detailsText = (TextView) convertView.findViewById(R.id.detailsText);
             viewSource.detailsText.setTypeface(Fonts.openSansItalic(context));
+            viewSource.timeText = (TextView) convertView.findViewById(R.id.timeText);
+            viewSource.timeText.setTypeface(Fonts.openSansItalic(context));
+            viewSource.imageView = (ImageView) convertView.findViewById(R.id.image);
+            viewSource.userImage = (CircularImageView) convertView.findViewById(R.id.userImage);
             convertView.setTag(viewSource);
         }
 
         viewSource = (ViewSource) convertView.getTag();
-        Tweet tweet = tweets.get(position);
-        viewSource.tweetText.setText(tweet.getTweet());
-        viewSource.detailsText.setText(tweet.getDisplayDetails());
+        Status status = tweets.get(position);
+        viewSource.tweetText.setText(status.getText());
+        viewSource.detailsText.setText(status.getUser().getName() +
+            " (@" + status.getUser().getScreenName() + ")");
+        DateTime dateTime = new DateTime(status.getCreatedAt());
+        viewSource.timeText.setText(dateTime.toString("hh:mm, dd MMM yyyy"));
+
+        viewSource.userImage.setImageDrawable(context.getResources().getDrawable(R.drawable.placeholder));
+        Picasso.with(context)
+                .load(status.getUser().getBiggerProfileImageURL())
+                .placeholder(R.drawable.placeholder)
+                .into(viewSource.userImage);
+        viewSource.userImage.setTag(status.getUser().getBiggerProfileImageURL());
+
+        MediaEntity[] mediaEntities = status.getMediaEntities();
+        String mediaURL = null;
+        for (MediaEntity mediaEntity : mediaEntities) {
+            mediaURL = mediaEntity.getMediaURL();
+        }
+        if (mediaURL != null) {
+            viewSource.imageView.setVisibility(View.VISIBLE);
+            Picasso.with(context)
+                    .load(mediaURL)
+                    .into(viewSource.imageView);
+
+            viewSource.imageView.setTag(mediaURL);
+        } else {
+            viewSource.imageView.setVisibility(View.GONE);
+        }
         return convertView;
+    }
+
+    public void append(List<Status> moreTweets){
+        if(moreTweets.size() == 0){
+            return;
+        }
+
+        tweets.addAll(moreTweets);
+        notifyDataSetChanged();
     }
 
     private class ViewSource {
         TextView tweetText;
         TextView detailsText;
+        TextView timeText;
+        ImageView imageView;
+        CircularImageView userImage;
     }
 }

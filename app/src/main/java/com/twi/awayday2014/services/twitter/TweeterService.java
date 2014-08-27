@@ -1,4 +1,4 @@
-package com.twi.awayday2014.services;
+package com.twi.awayday2014.services.twitter;
 
 import com.twi.awayday2014.models.Tweet;
 

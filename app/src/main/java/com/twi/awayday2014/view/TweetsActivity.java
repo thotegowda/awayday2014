@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,35 +19,43 @@ import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.animations.SmoothInterpolator;
+import com.twi.awayday2014.tasks.AsyncTweeterTasks;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.fragments.TwitterLoginFragment;
 
+import java.util.List;
+
+import twitter4j.Status;
+
+import static android.widget.AbsListView.OnScrollListener;
+import static com.twi.awayday2014.tasks.AsyncTweeterTasks.TwitterCallbacks;
 import static com.twi.awayday2014.view.fragments.TwitterLoginFragment.CLOSE_ANIMATION_DURATION;
 import static com.twi.awayday2014.view.fragments.TwitterLoginFragment.OPEN_ANIMATION_DURATION;
 
-public class TweetsActivity extends FragmentActivity{
+public class TweetsActivity extends FragmentActivity implements TwitterCallbacks{
 
     private ListView tweetsList;
     private TwitterLoginFragment twitterLoginFragment;
     private Button twitterButton;
     private Button cancelButton;
     private AnimatorSet slideDownAnimatorSet;
+    private AsyncTweeterTasks asyncTweeterTasks;
+    private TweetsAdapter tweetsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweets);
-        View rootLayout = findViewById(R.id.tweetsRootLayout);
-        AwayDayApplication awayDayApplication = (AwayDayApplication)getApplication();
-        Bitmap background = awayDayApplication.getHomeActivityScreenshot();
-        if(background != null){
-           rootLayout.setBackground(new BitmapDrawable(getResources(), background));
-        }
-
+        setupTweeterTask();
         setupListView();
         setupHeader();
         setupButtons();
         setupFragments();
+    }
+
+    private void setupTweeterTask() {
+        asyncTweeterTasks = new AsyncTweeterTasks(this, ((AwayDayApplication) getApplication()).getTwitterService(), this);
+        asyncTweeterTasks.search();
     }
 
     private void setupButtons() {
@@ -141,10 +151,36 @@ public class TweetsActivity extends FragmentActivity{
     private void setupHeader() {
         TextView headerText = (TextView) findViewById(R.id.tweetsHeaderText);
         headerText.setTypeface(Fonts.openSansRegular(this));
+        String hashTag = ((AwayDayApplication) getApplication()).getTwitterService().getPreference().getHashTags();
+        headerText.setText("#" + hashTag);
     }
 
     private void setupListView() {
         tweetsList = (ListView) findViewById(R.id.tweetsList);
-        tweetsList.setAdapter(new TweetsAdapter(this));
+        tweetsAdapter = new TweetsAdapter(this);
+        tweetsList.setAdapter(tweetsAdapter);
+        tweetsList.setOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
+                if (!asyncTweeterTasks.isSearchInProgress() && firstVisible + visibleCount >= (totalCount - 5) && asyncTweeterTasks.hasMoreTweets()) {
+                    asyncTweeterTasks.searchNext();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onSearchResults(List<Status> tweets) {
+        tweetsAdapter.append(tweets);
+    }
+
+    @Override
+    public void onRefresh(List<Status> tweets) {
+
     }
 }

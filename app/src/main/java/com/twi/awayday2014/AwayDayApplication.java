@@ -5,9 +5,12 @@ import android.graphics.Bitmap;
 import com.orm.SugarApp;
 import com.parse.*;
 import com.twi.awayday2014.models.ShortNotification;
+import com.twi.awayday2014.models.Tweeter;
 import com.twi.awayday2014.services.AgendaService;
 import com.twi.awayday2014.services.NotificationsService;
-import com.twi.awayday2014.services.TweeterService;
+import com.twi.awayday2014.services.twitter.TweeterService;
+import com.twi.awayday2014.services.twitter.TwitterPreference;
+import com.twi.awayday2014.services.twitter.TwitterService;
 import com.twi.awayday2014.view.HomeActivity;
 
 import static com.twi.awayday2014.models.ShortNotification.*;
@@ -23,6 +26,7 @@ public class AwayDayApplication extends SugarApp {
     private static AgendaService agendaService;
     private static NotificationsService notificationsService;
     private static TweeterService tweeterService;
+    private TwitterService twitterService;
 
     @Override
     public void onCreate() {
@@ -61,6 +65,14 @@ public class AwayDayApplication extends SugarApp {
     public void setHomeActivityScreenshot(Bitmap homeActivityScreenshot) {
         this.homeActivityScreenshot = homeActivityScreenshot;
     }
+
+    public TwitterService getTwitterService() {
+        if (twitterService == null) {
+            twitterService = new TwitterService(new TwitterPreference(this));
+        }
+        return twitterService;
+    }
+
 
     private void setupDefaultNotifications() {
         if (!findAll(ShortNotification.class).hasNext()) {
