@@ -1,33 +1,23 @@
 package com.twi.awayday2014.fragments;
 
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.twi.awayday2014.R;
-import android.app.Fragment;
+import com.twi.awayday2014.adapters.ViewPagerAdapter;
 
-public class AgendaFragment extends Fragment {
-
-    private static final String ARG_SECTION_NUMBER = "section_number";
+public class AgendaFragment extends ViewPagerFragment{
+    private static final String TAG = "AgendaFragment";
 
     public static AgendaFragment newInstance(int sectionNumber) {
-        AgendaFragment fragment = new AgendaFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public AgendaFragment() {
-
+        return new AgendaFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_agenda, container, false);
-        return rootView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootLayout = super.onCreateView(inflater, container, savedInstanceState);
+        pager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
+        return rootLayout;
     }
-
 }

@@ -26,12 +26,10 @@ import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AsyncTweeter;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.Tweeter;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.animation.ZoomAnimator;
-import com.twi.awayday2014.stubs.TweeterStub;
-import com.twi.awayday2014.ui.MultiSwipeRefreshLayout;
-import com.twi.awayday2014.ui.SwipeRefreshLayout;
+import com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout;
+import com.twi.awayday2014.ui.custom.SwipeRefreshLayout;
 import twitter4j.Status;
 
 import java.io.*;
@@ -41,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.twi.awayday2014.ui.MultiSwipeRefreshLayout.CanChildScrollUpCallback;
+import static com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout.CanChildScrollUpCallback;
 
 public class SocializeFragment
         extends ListFragment

@@ -1,4 +1,4 @@
-<com.twi.awayday2014.ui.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                 xmlns:tools="http://schemas.android.com/tools"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
@@ -54,4 +54,4 @@
                      android:layout_gravity="center" />
 
     </FrameLayout>
-</com.twi.awayday2014.ui.MultiSwipeRefreshLayout>
+</com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout>

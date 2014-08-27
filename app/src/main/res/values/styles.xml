@@ -1,16 +1,12 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/awayday_2013_background</item>
     </style>
 
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/action_bar_background</item>
-    </style>
-
-    <style name="AppTheme.FullScreen">
-        <item name="android:windowFullscreen">true</item>
+    <style name="Widget.ActionBar.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:displayOptions">showHome</item>
     </style>
 
     <style name="Widget.TextView" parent="@android:style/Widget.TextView">
@@ -70,4 +66,112 @@
         <item name="android:numStars">5</item>
         <item name="android:stepSize">1.0</item>
     </style>
+
+    <!--Common-->
+    <style name="WeightedByWidthLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="VerticalDivider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <!--Drawer-->
+    <style name="DrawerListTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">@dimen/padding</item>
+        <item name="android:drawablePadding">@dimen/padding</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--Header-->
+    <style name="HeaderDetailsTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CountDownPageRootLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/padding</item>
+    </style>
+
+    <style name="TimeLayout">
+        <item name="android:layout_width">@dimen/home_activity_headerDetails_timeElement_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TimeText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/countdown_time_textsize</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TimeUnitText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/countdown_timeunit_textsize</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="HeaderButton">
+        <item name="android:layout_width">@dimen/home_activity_header_button_size</item>
+        <item name="android:layout_height">@dimen/home_activity_header_button_size</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <!--Viewpager-->
+    <style name="ViewpagerIndicatorLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ViewpagerIndicatorTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ViewpagerSelectionIndicator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:background">@color/pink</item>
+    </style>
+
+    <!--Twitter Activity-->
+    <style name="TwitterCircleButton">
+        <item name="android:layout_width">@dimen/tweets_activity_twitter_button_size</item>
+        <item name="android:layout_height">@dimen/tweets_activity_twitter_button_size</item>
+        <item name="android:layout_marginRight">@dimen/padding_small</item>
+        <item name="android:layout_marginBottom">@dimen/padding_small</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
 </resources>

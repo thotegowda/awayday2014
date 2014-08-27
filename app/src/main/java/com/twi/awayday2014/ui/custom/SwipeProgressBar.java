@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twi.awayday2014.ui;
+package com.twi.awayday2014.ui.custom;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -24,6 +24,7 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import com.twi.awayday2014.ui.BakedBezierInterpolator;
 
 
 /**

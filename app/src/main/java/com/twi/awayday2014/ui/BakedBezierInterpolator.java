@@ -21,7 +21,7 @@ import android.view.animation.Interpolator;
 /**
  * A pre-baked bezier-curved interpolator for indeterminate progress animations.
  */
-final class BakedBezierInterpolator implements Interpolator {
+public final class BakedBezierInterpolator implements Interpolator {
     private static final BakedBezierInterpolator INSTANCE = new BakedBezierInterpolator();
 
     public final static BakedBezierInterpolator getInstance() {

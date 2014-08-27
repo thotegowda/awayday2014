@@ -207,8 +207,8 @@ public class HomeActivity extends Activity {
             default:
             case HOME_FRAGMENT:
                 return HomeFragment.newInstance(position);
-            case AGENDA_FRAGMENT:
-                return AgendaFragment.newInstance(position);
+            //case AGENDA_FRAGMENT:
+                //return AgendaFragment.newInstance(position);
             case SPEAKERS_FRAGMENT:
                 return SpeakersFragment.newInstance(position);
             case BREAKOUT_FRAGMENT:

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twi.awayday2014.ui;
+package com.twi.awayday2014.ui.custom;
 
 import android.content.Context;
 import android.content.res.Resources;

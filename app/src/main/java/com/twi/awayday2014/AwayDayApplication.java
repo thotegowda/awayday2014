@@ -2,10 +2,12 @@ package com.twi.awayday2014;
 
 import com.orm.SugarApp;
 import com.parse.*;
+import com.twi.awayday2014.service.AgendaService;
 import com.twi.awayday2014.ui.HomeActivity;
 
 public class AwayDayApplication extends SugarApp {
     private static final String CHANNEL_AWAYDAY = "AwayDay";
+    private static AgendaService agendaService;
     private TwitterPreference twitterPreference;
     private Tweeter tweeter;
     private SessionsOrganizer sessionsOrganizer;
@@ -47,6 +49,14 @@ public class AwayDayApplication extends SugarApp {
             sessionsOrganizer = new SessionsOrganizer();
         }
         return sessionsOrganizer;
+    }
+
+
+    public static AgendaService agendaService(){
+        if(agendaService == null){
+            agendaService = new AgendaService();
+        }
+        return agendaService;
     }
 
 }
