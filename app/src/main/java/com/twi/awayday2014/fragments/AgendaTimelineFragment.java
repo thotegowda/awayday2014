@@ -1,8 +1,7 @@
 package com.twi.awayday2014.fragments;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
 import android.widget.AbsListView;
@@ -35,13 +34,13 @@ public class AgendaTimelineFragment extends Fragment implements NewHomeActivity.
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(android.app.Activity activity) {
         super.onAttach(activity);
 
         int position = getArguments().getInt(POSITION);
         Log.d(TAG + " " + position, "onAttach()");
-        NewHomeActivity newHomeActivity = (NewHomeActivity) getActivity();
-        newHomeActivity.addCustomActionbarStateListener(this);
+        NewHomeActivity newHomeNewHomeActivity = (NewHomeActivity) getActivity();
+        newHomeNewHomeActivity.addCustomActionbarStateListener(this);
     }
 
     @Override

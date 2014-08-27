@@ -1,16 +1,12 @@
 package com.twi.awayday2014.ui;
 
-import android.app.ActionBar;
+import android.app.*;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,17 +20,25 @@ import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.Blur;
 import com.twi.awayday2014.Fonts;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.fragments.AgendaFragment;
+import com.twi.awayday2014.fragments.*;
 import com.twi.awayday2014.ui.custom.KenBurnsView;
 import com.twi.awayday2014.ui.custom.ObservableScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewHomeActivity extends FragmentActivity {
+public class NewHomeActivity extends Activity {
     private static final String TAG = "HomeActivity";
 
-    public static final int AGENDA = 0;
+    //public static final int AGENDA = 0;
+    public static final int HOME_FRAGMENT = 0;
+    public static final int AGENDA_FRAGMENT = 1;
+    public static final int SPEAKERS_FRAGMENT = 2;
+    public static final int BREAKOUT_FRAGMENT = 3;
+    public static final int MY_SCHEDULE_FRAGMENT = 4;
+    public static final int VIDEOS_FRAGMENT = 5;
+    public static final int SOCIALIZE_FRAGMENT = 6;
+    public static final int MAP_FRAGMENT = 7;
 
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
@@ -46,6 +50,8 @@ public class NewHomeActivity extends FragmentActivity {
     private List<CustomActionbarStateListener> customActionbarStateListener;
     private View customActionbarBackground;
     private Drawable appIcon;
+    private double mCurrentPosition;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +157,7 @@ public class NewHomeActivity extends FragmentActivity {
 
     public void onDrawerItemClick(int itemId) {
         Fragment fragment = getFragment(itemId);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, fragment, "" + itemId);
         fragmentTransaction.commit();
@@ -261,16 +267,75 @@ public class NewHomeActivity extends FragmentActivity {
         actionBar.setBackgroundDrawable(actionbarDrawable);
     }
 
-    private Fragment getFragment(int position) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("" + position);
+//    private Fragment getFragment(int position) {
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag("" + position);
+//        if (fragment == null) {
+//            fragment = createFragment(position);
+//        }
+//        return fragment;
+//    }
+
+//    private Fragment createFragment(int position) {
+//        return new AgendaFragment();
+//    }
+
+    public void onNavigationItemSelected(int position) {
+        if (mCurrentPosition == position) {
+            drawerHelper.closeDrawer();
+            return;
+        }
+        mCurrentPosition = position;
+        selectItem(position);
+    }
+
+    private void selectItem(int position) {
+        startFragment(position);
+        drawerHelper.closeDrawer();
+    }
+
+    private void startFragment(int position) {
+        currentFragment = getFragment(position);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, currentFragment);
+
+        if (fragmentManager.getBackStackEntryCount() <= 1) {
+            transaction.addToBackStack(null);
+        } else {
+            fragmentManager.popBackStack();
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    public android.app.Fragment getFragment(int position) {
+        android.app.Fragment fragment = getFragmentManager().findFragmentById(position);
         if (fragment == null) {
             fragment = createFragment(position);
         }
         return fragment;
     }
 
-    private Fragment createFragment(int position) {
-        return new AgendaFragment();
+    public android.app.Fragment createFragment(int position) {
+        switch (position) {
+            default:
+            case HOME_FRAGMENT:
+                return HomeFragment.newInstance(position);
+            case AGENDA_FRAGMENT:
+                return AgendaFragment.newInstance(position);
+            case SPEAKERS_FRAGMENT:
+                return SpeakersFragment.newInstance(position);
+            case BREAKOUT_FRAGMENT:
+                return BreakoutFragment.newInstance(position);
+            case MY_SCHEDULE_FRAGMENT:
+                return MyScheduleFragment.newInstance(position);
+            case VIDEOS_FRAGMENT:
+                return VideosFragment.newInstance(position);
+            case SOCIALIZE_FRAGMENT:
+                return SocializeFragment.newInstance(position);
+            case MAP_FRAGMENT:
+                return MapFragment.newInstance(position);
+        }
     }
 
     public enum CustomActionbarState {

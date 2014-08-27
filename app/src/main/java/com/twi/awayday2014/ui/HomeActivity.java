@@ -16,7 +16,6 @@ import android.widget.*;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.TwitterPreference;
 import com.twi.awayday2014.fragments.*;
-import com.twi.awayday2014.Tweeter;
 
 public class HomeActivity extends Activity {
 
@@ -120,13 +119,17 @@ public class HomeActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mCurrentPosition == position) {
-                mDrawerLayout.closeDrawer(navigationLayout);
-                return;
-            }
-            mCurrentPosition = position;
-            selectItem(position);
+            onNavigationItemSelected(position);
         }
+    }
+
+    private void onNavigationItemSelected(int position) {
+        if (mCurrentPosition == position) {
+            mDrawerLayout.closeDrawer(navigationLayout);
+            return;
+        }
+        mCurrentPosition = position;
+        selectItem(position);
     }
 
     private void selectItem(int position) {

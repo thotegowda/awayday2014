@@ -1,8 +1,9 @@
 package com.twi.awayday2014.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 import com.twi.awayday2014.fragments.AgendaTimelineFragment;
 import org.joda.time.DateTime;
 
@@ -29,4 +30,5 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
 }
