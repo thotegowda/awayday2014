@@ -5,7 +5,7 @@
               android:weightSum="100"
               android:padding="10dp"
               android:orientation="horizontal"
-              android:background="@drawable/card_background_blue">
+              android:background="@drawable/card_background">
 
     <TextView
             android:id="@+id/message"

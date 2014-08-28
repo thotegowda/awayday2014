@@ -2,6 +2,7 @@ package com.twi.awayday2014.components.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class SessionDetailsActivity extends Activity {
     private TextView duration;
     private Presentation presentation;
     private Button scheduleButton;
+    private View topView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +68,12 @@ public class SessionDetailsActivity extends Activity {
                 presentation.save();
             }
         });
+
+        topView = findViewById(R.id.top_view);
     }
 
     public void bind(Presentation presentation) {
+        topView.setBackgroundColor(presentation.getModeColor());
         profileImageView.setImageResource(presentation.presenter().profileResource());
         title.setText(presentation.title());
         description.setText(presentation.description());

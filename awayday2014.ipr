@@ -215,6 +215,13 @@
     <mapping directory="" vcs="" />
   </component>
   <component name="libraryTable">
+    <library name="android-support-v13">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/app/libs/android-support-v13.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="android-support-v4">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/app/libs/android-support-v4.jar!/" />

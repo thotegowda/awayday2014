@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -228,9 +229,12 @@ public class NewHomeActivity extends Activity {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapWithoutStatusBar,
                 bitmapWithoutStatusBar.getWidth() / 2, bitmapWithoutStatusBar.getHeight() / 2, false);
 
-        decorView.destroyDrawingCache();
-        Blur blur = new Blur(this);
-        return blur.blur(scaledBitmap, 10);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            decorView.destroyDrawingCache();
+            Blur blur = new Blur(this);
+            return blur.blur(scaledBitmap, 10);
+        }
+        return scaledBitmap;
     }
 
     private void setupHeaderText() {

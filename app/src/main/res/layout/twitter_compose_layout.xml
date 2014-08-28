@@ -20,7 +20,7 @@
             android:minLines="5"
             android:gravity="left|top"
             android:textColor="@color/black"
-            android:background="@drawable/card_background_small"/>
+            android:background="@drawable/card_background"/>
 
     <LinearLayout
             android:id="@+id/button_layout"

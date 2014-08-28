@@ -1,6 +1,7 @@
 package com.twi.awayday2014.models;
 
 
+import android.graphics.Color;
 import com.orm.SugarRecord;
 
 public class Presentation extends SugarRecord<Presentation> {
@@ -10,17 +11,19 @@ public class Presentation extends SugarRecord<Presentation> {
     private String date;
     private boolean isKeynoteSession;
     private boolean isScheduled;
+    private int colorResourceId;
 
     public Presentation() {
 
     }
 
-    public Presentation(Presenter presenter, String title, String date, boolean isKeynoteSession) {
+    public Presentation(Presenter presenter, String title, String date, boolean isKeynoteSession, int colorResourceId) {
         this.presenter = presenter;
         this.title = title;
         this.date = date;
         this.isKeynoteSession = isKeynoteSession;
         this.isScheduled = false;
+        this.colorResourceId = colorResourceId;
     }
 
     public Presenter presenter() {
@@ -48,5 +51,9 @@ public class Presentation extends SugarRecord<Presentation> {
 
     public void setScheduled(boolean isScheduled) {
         this.isScheduled = isScheduled;
+    }
+
+    public int getModeColor() {
+        return colorResourceId;
     }
 }

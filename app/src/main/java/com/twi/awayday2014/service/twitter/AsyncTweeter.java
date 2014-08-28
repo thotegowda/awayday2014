@@ -188,4 +188,8 @@ public class AsyncTweeter {
         return tweeter.isCallbackUrl(uri);
     }
 
+    public String getCurrentSearchKeyword() {
+        return tweeter.getCurrentSearchKeyword();
+    }
+
 }

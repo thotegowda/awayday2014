@@ -6,7 +6,7 @@
               android:layout_height="@dimen/tweet_list_item_height_normal"
               android:orientation="horizontal"
               android:weightSum="100"
-              android:background="@drawable/card_background_small">
+              android:background="@drawable/card_background">
 
     <ImageView
             android:id="@+id/profile_thumbnail"

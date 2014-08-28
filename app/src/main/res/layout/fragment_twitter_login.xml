@@ -31,7 +31,7 @@
         android:layout_marginLeft="@dimen/tweeter_login_button_margin"
         android:layout_marginRight="@dimen/tweeter_login_button_margin"
         android:layout_marginTop="@dimen/padding_small"
-        android:background="#00b0ed"
+        android:background="@drawable/login_button_background"
         android:clickable="true"
         android:orientation="horizontal">
 

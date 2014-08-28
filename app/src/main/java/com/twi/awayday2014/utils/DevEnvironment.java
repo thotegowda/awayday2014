@@ -9,6 +9,8 @@ import com.twi.awayday2014.models.Speaker;
 
 public class DevEnvironment {
 
+    RandomColorSelector colorSelector =  new RandomColorSelector();
+
 
     public void setup() {
         setupNotifications();
@@ -76,7 +78,7 @@ public class DevEnvironment {
         Presenter presenter = new Presenter(presenterName, resourceId);
         presenter.save();
 
-        new Presentation(presenter, presentationTitle, dateInfo, isKeynote).save();
+        new Presentation(presenter, presentationTitle, dateInfo, isKeynote, colorSelector.next()).save();
     }
 
 

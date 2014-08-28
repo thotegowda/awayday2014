@@ -76,6 +76,7 @@ public class Tweeter {
 
     public void retrieveAccessToken(Uri uri) throws TwitterException {
         if (uri != null && uri.toString().startsWith(preference.getCallbackUrl())) {
+            // TODO: handle cancel button click
             AccessToken accessToken = twitter.getOAuthAccessToken(
                     requestToken, uri.getQueryParameter(preference.getAuthVerifier()));
             isLoggedIn = true;
@@ -150,5 +151,9 @@ public class Tweeter {
 
     public boolean isCallbackUrl(Uri uri) {
         return uri.toString().startsWith(preference.getCallbackUrl());
+    }
+
+    public String getCurrentSearchKeyword() {
+        return preference.getSearchKeyword();
     }
 }

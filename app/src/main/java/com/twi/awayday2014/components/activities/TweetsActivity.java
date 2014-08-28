@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.squareup.picasso.Picasso;
-import com.twi.awayday2014.service.twitter.AsyncTweeter;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
@@ -27,6 +26,7 @@ import com.twi.awayday2014.animation.ZoomAnimator;
 import com.twi.awayday2014.components.fragments.TwitterLoginFragment;
 import com.twi.awayday2014.customviews.MultiSwipeRefreshLayout;
 import com.twi.awayday2014.customviews.SwipeRefreshLayout;
+import com.twi.awayday2014.service.twitter.AsyncTweeter;
 import twitter4j.Status;
 
 import java.io.*;
@@ -42,13 +42,12 @@ public class TweetsActivity
         MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
     private static final String TAG = "AwayDaySocialize";
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     private static final int REQUEST_IMAGE_PICK = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
 
-    public static final long OPEN_ANIMATION_DURATION = 600;
-    public static final long CLOSE_ANIMATION_DURATION = 400;
+    private static final long OPEN_ANIMATION_DURATION = 600;
+    private static final long CLOSE_ANIMATION_DURATION = 400;
 
     private AsyncTweeter twitter;
     private TweetsAdapter tweetsAdapter;
@@ -87,6 +86,7 @@ public class TweetsActivity
 
         rootView = findViewById(R.id.tweets_root_layout);
 
+        //twitter = new AsyncTweeter(this, new TweeterStub(this), this);
         twitter = new AsyncTweeter(this, getAwayDayApplication().getTwitterService(), this);
 
         AwayDayApplication awayDayApplication = (AwayDayApplication) getApplication();
@@ -106,6 +106,8 @@ public class TweetsActivity
 
         twitter.search();
         handleTwitterCallback();
+
+        getActionBar().setTitle(twitter.getCurrentSearchKeyword());
     }
 
     private AwayDayApplication getAwayDayApplication() {
@@ -113,19 +115,13 @@ public class TweetsActivity
     }
 
     private ListView getListView() {
-        if (listView == null) {
-            listView = (ListView) findViewById(R.id.tweets_list);
-        }
         return listView;
-    }
-
-    private void showLoadingWindow() {
-        getListView().setVisibility(View.GONE);
-        overlayLayout.setVisibility(View.GONE);
     }
 
     private void bindViews() {
         setupFragments();
+
+        listView = (ListView) findViewById(R.id.tweets_list);
 
         pushInAnimation = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
         pushOutAnimation = AnimationUtils.loadAnimation(this, R.anim.push_up_out);
@@ -172,7 +168,6 @@ public class TweetsActivity
         } else {
             twitterLoginFragment.slideIn();
             startTwitterButtonMoveUpAnimation();
-            //twitter.logIn();
         }
     }
 
@@ -215,6 +210,11 @@ public class TweetsActivity
         });
 
         selectedImageToTweet = (ImageView) rootView.findViewById(R.id.selected_image_holder);
+    }
+
+    private void showLoadingWindow() {
+        getListView().setVisibility(View.GONE);
+        overlayLayout.setVisibility(View.GONE);
     }
 
     private void closeTweetComposeWindow() {

@@ -25,7 +25,8 @@
             android:name="com.twi.awayday2014.AwayDayApplication"
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.NoActionbar">
 
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
                 android:value="AIzaSyCxTiSWZmwVkud2xY8El0ePCSkJ_v3y4CI"/>
@@ -71,8 +72,8 @@
                 android:label="@string/title_activity_push"
                 android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN1"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="com.twi.awayday2014.PUSH_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 

@@ -66,7 +66,7 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
 
         View sessionLayout = sessionView.findViewById(R.id.session_text_layout);
         sessionLayout.setTag(presentation);
-        sessionLayout.setBackgroundResource(randomColorSelector.next());
+        sessionLayout.setBackgroundColor(presentation.getModeColor());
         sessionLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override

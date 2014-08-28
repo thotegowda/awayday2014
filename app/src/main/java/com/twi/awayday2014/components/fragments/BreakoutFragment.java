@@ -74,7 +74,7 @@ public class BreakoutFragment extends ListFragment {
     }
 
     private SessionsAdapter getAdapter() {
-        return new SessionsAdapter(this.getActivity(), getApplication().getSessionOrganizer(), new RandomColorSelector());
+        return new SessionsAdapter(this.getActivity(), getApplication().getSessionOrganizer());
     }
 
     private AwayDayApplication getApplication() {

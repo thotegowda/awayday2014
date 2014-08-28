@@ -20,7 +20,7 @@ public class SessionsAdapter extends BaseAdapter {
     private SessionsOrganizer sessionOrganizer;
     private RandomColorSelector randomColorSelector;
 
-    public SessionsAdapter(Context context, SessionsOrganizer sessionOrganizer, RandomColorSelector randomColorSelector) {
+    public SessionsAdapter(Context context, SessionsOrganizer sessionOrganizer) {
         this.context = context;
         this.sessionOrganizer = sessionOrganizer;
         this.randomColorSelector = randomColorSelector;
@@ -70,7 +70,7 @@ public class SessionsAdapter extends BaseAdapter {
 
         View sessionLayout = sessionView.findViewById(R.id.session_text_layout);
         sessionLayout.setTag(presentation);
-        sessionLayout.setBackgroundResource(randomColorSelector.next());
+        sessionLayout.setBackgroundColor(presentation.getModeColor());
         sessionLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
