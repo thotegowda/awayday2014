@@ -1,20 +1,16 @@
 package com.twi.awayday2014.stubs;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.twi.awayday2014.DateUtil;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import twitter4j.Status;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class TweetsAdapterStub  extends TweetsAdapter {

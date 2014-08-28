@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout;
-import com.twi.awayday2014.ui.custom.SwipeRefreshLayout;
+import com.twi.awayday2014.customviews.MultiSwipeRefreshLayout;
+import com.twi.awayday2014.customviews.SwipeRefreshLayout;
 
 public class TestSocializeActivity extends Activity {
     public static final String TAG = "TestActivity";

@@ -5,6 +5,11 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="Theme.PinkActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/Widget.ActionBar.Pink</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <style name="Theme.NoActionbar" parent="@android:style/Theme.NoTitleBar"/>
 
     <style name="Theme.TranslucentActionBar.Overlay">

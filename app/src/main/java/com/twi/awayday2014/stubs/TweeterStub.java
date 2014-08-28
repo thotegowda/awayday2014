@@ -1,13 +1,11 @@
 package com.twi.awayday2014.stubs;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
-import com.twi.awayday2014.Tweeter;
-import com.twi.awayday2014.TwitterPreference;
+import com.twi.awayday2014.service.twitter.Tweeter;
+import com.twi.awayday2014.service.twitter.TwitterPreference;
 import org.joda.time.LocalDate;
 import twitter4j.*;
-import twitter4j.auth.RequestToken;
 
 import java.io.File;
 import java.util.Arrays;

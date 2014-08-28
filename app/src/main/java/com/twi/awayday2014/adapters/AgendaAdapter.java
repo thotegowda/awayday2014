@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.Fonts;
+import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.service.AgendaService;

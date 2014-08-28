@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.twi.awayday2014.DateUtil;
+import com.twi.awayday2014.utils.DateUtil;
 import com.twi.awayday2014.R;
 import twitter4j.MediaEntity;
 import twitter4j.Status;

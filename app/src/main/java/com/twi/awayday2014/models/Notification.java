@@ -1,10 +1,9 @@
 package com.twi.awayday2014.models;
 
+import com.twi.awayday2014.utils.DateUtil;
 import org.joda.time.DateTime;
 
 import java.util.Comparator;
-
-import static com.twi.awayday2014.CompareTime.*;
 
 public class Notification {
     private String title;
@@ -36,17 +35,7 @@ public class Notification {
     }
 
     public String getDisplayTime() {
-        if (hasHappenedWithinHalfAnHour(time)) {
-            return "Now";
-        } else if (hasHappenedToday(time)) {
-            return time.toString("HH:mm") + " Today";
-        } else if (hasHappenedYesterday(time)) {
-            return time.toString("HH:mm") + " Yesterday";
-        } else if (hasHappenedThisYear(time)) {
-            return time.toString("HH:mm , dd MMM");
-        } else {
-            return time.toString("dd MMM, yyyy");
-        }
+        return DateUtil.getDisplayTimeForNotifications(time);
     }
 
     public static class NotificatonsComparator implements Comparator<Notification>{

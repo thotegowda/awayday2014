@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.Fonts;
+import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Notification;
 import com.twi.awayday2014.models.NotificationType;

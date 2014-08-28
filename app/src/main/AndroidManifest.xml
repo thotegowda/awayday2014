@@ -10,29 +10,16 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-feature android:name="android.hardware.camera"
-                  android:required="true" />
-
-    <permission android:protectionLevel="signature"
-                android:name="com.twi.awayday2014.permission.C2D_MESSAGE" />
-
-    <uses-permission android:name="com.twi.awayday2014.permission.C2D_MESSAGE" />
-
-
-    <permission
-            android:name="com.twi.awayday2014.permission.MAPS_RECEIVE"
-            android:protectionLevel="signature"/>
-
-    <uses-permission android:name="com.twi.awayday2014.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="com.twi.awayday2014.permission.C2D_MESSAGE"/>
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+
+    <permission android:name="com.twi.awayday2014.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <permission android:name="com.twi.awayday2014.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.twi.awayday2014.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="com.twi.awayday2014.permission.C2D_MESSAGE" />
 
     <application
             android:name="com.twi.awayday2014.AwayDayApplication"
@@ -40,53 +27,36 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
 
-        <meta-data
-                android:name="com.google.android.maps.v2.API_KEY"
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
                 android:value="AIzaSyCxTiSWZmwVkud2xY8El0ePCSkJ_v3y4CI"/>
 
-        <meta-data
-                android:name="com.google.android.gms.version"
+        <meta-data android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>
 
-        <meta-data
-                android:name="DATABASE"
-                android:value="sugar_awayday.db"/>
-        <meta-data
-                android:name="VERSION"
-                android:value="2"/>
-        <meta-data
-                android:name="QUERY_LOG"
-                android:value="true"/>
-        <meta-data
-                android:name="DOMAIN_PACKAGE_NAME"
-                android:value="com.twi.awayday2014"/>
+        <meta-data android:name="DATABASE" android:value="sugar_awayday.db"/>
+        <meta-data android:name="VERSION" android:value="2"/>
+        <meta-data android:name="QUERY_LOG" android:value="true"/>
+        <meta-data android:name="DOMAIN_PACKAGE_NAME"  android:value="com.twi.awayday2014"/>
 
-        <activity
-                android:name=".ui.HomeActivity"
+        <activity android:name=".components.activities.HomeActivity"
                 android:label="@string/app_name"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.TranslucentActionBar.Overlay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN1"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW1"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                        android:host="thoughtworks.Twitter_oAuth"
-                        android:scheme="oauth"/>
+                <data android:host="thoughtworks.Twitter_oAuth" android:scheme="oauth"/>
             </intent-filter>
         </activity>
 
-
-        <activity
-                android:name=".ui.NewHomeActivity"
+        <activity android:name=".components.activities.NewHomeActivity"
                 android:label="@string/app_name"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait"
@@ -97,8 +67,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".ui.PushActivity"
+        <activity android:name=".components.activities.PushActivity"
                 android:label="@string/title_activity_push"
                 android:screenOrientation="portrait">
             <intent-filter>
@@ -107,30 +76,39 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".ui.NotificationsActivity"
+        <activity android:name=".components.activities.NotificationsActivity"
                 android:label="@string/title_activity_notifications"
-                android:theme="@style/Theme.NoActionbar">
+                android:theme="@style/Theme.NoActionbar"
+                android:parentActivityName=".components.activities.NewHomeActivity">
         </activity>
 
-        <activity
-                android:name=".ui.TweetsActivity"
+        <activity android:name=".components.activities.TweetsActivity"
                 android:label="@string/title_activity_notifications"
-                android:theme="@style/Theme.NoActionbar">
+                android:theme="@style/Theme.PinkActionBar"
+                android:parentActivityName=".components.activities.NewHomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                        android:host="thoughtworks.Twitter_oAuth"
-                        android:scheme="oauth"/>
+                <data android:host="thoughtworks.Twitter_oAuth" android:scheme="oauth"/>
             </intent-filter>
         </activity>
 
-        <!-- Parse framework specific -->
+        <activity android:name=".components.activities.SessionDetailsActivity"
+                android:label="@string/sessions"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.PinkActionBar"
+                android:parentActivityName=".components.activities.NewHomeActivity"/>
 
+        <activity android:name=".components.activities.FeedbackActivity"
+                android:label="@string/session_details"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.PinkActionBar"
+                android:parentActivityName=".components.activities.SessionDetailsActivity"/>
+
+        <!-- Parse framework specific -->
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
@@ -138,6 +116,7 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
         <receiver android:name="com.parse.GcmBroadcastReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
@@ -154,20 +133,6 @@
                 <!--<action android:name="com.twi.awayday2014.UPDATE_STATUS"/>-->
             <!--</intent-filter>-->
         <!--</receiver>-->
-
-        <activity
-                android:name=".ui.SessionDetailsActivity"
-                android:label="@string/sessions"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".ui.HomeActivity"/>
-
-        <activity
-                android:name=".ui.FeedbackActivity"
-                android:label="@string/session_details"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".ui.SessionDetailsActivity"/>
 
         <activity android:name=".stubs.TestSocializeActivity">
             <intent-filter>

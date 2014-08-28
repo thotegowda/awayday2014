@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.RandomColorSelector;
-import com.twi.awayday2014.SessionsOrganizer;
+import com.twi.awayday2014.utils.RandomColorSelector;
+import com.twi.awayday2014.service.SessionsOrganizer;
 import com.twi.awayday2014.models.Presentation;
-import com.twi.awayday2014.ui.SessionDetailsActivity;
+import com.twi.awayday2014.components.activities.SessionDetailsActivity;
 
 import java.util.List;
 

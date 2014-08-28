@@ -5,7 +5,12 @@ import com.orm.SugarApp;
 import com.parse.*;
 import com.twi.awayday2014.service.AgendaService;
 import com.twi.awayday2014.service.NotificationsService;
-import com.twi.awayday2014.ui.HomeActivity;
+import com.twi.awayday2014.service.SessionsOrganizer;
+import com.twi.awayday2014.service.twitter.Tweeter;
+import com.twi.awayday2014.service.twitter.TwitterPreference;
+import com.twi.awayday2014.components.activities.HomeActivity;
+import com.twi.awayday2014.utils.DevEnvironment;
+import com.twi.awayday2014.utils.DeveloperKeys;
 
 public class AwayDayApplication extends SugarApp {
     private static final String CHANNEL_AWAYDAY = "AwayDay";

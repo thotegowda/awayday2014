@@ -1,6 +1,6 @@
 package com.twi.awayday2014.models;
 
-import com.twi.awayday2014.Tweeter;
+import com.twi.awayday2014.service.twitter.Tweeter;
 import junit.framework.TestCase;
 
 

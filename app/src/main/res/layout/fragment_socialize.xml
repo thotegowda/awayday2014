@@ -1,9 +1,9 @@
-<com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.twi.awayday2014.customviews.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                        xmlns:tools="http://schemas.android.com/tools"
                                                        android:id="@+id/tweets_root_layout"
                                                        android:layout_width="match_parent"
                                                        android:layout_height="match_parent"
-                                                       tools:context="com.twi.awayday2014.fragments.SocializeFragment">
+                                                       tools:context="com.twi.awayday2014.components.fragments.SocializeFragment">
 
     <FrameLayout
             android:layout_width="match_parent"
@@ -70,8 +70,8 @@
                 android:id="@+id/twitterLoginFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.twi.awayday2014.fragments.TwitterLoginFragment"
+                android:name="com.twi.awayday2014.components.fragments.TwitterLoginFragment"
                 android:layout_gravity="bottom"/>
 
     </FrameLayout>
-</com.twi.awayday2014.ui.custom.MultiSwipeRefreshLayout>
+</com.twi.awayday2014.customviews.MultiSwipeRefreshLayout>
