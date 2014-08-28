@@ -27,6 +27,7 @@ import com.twi.awayday2014.components.fragments.TwitterLoginFragment;
 import com.twi.awayday2014.customviews.MultiSwipeRefreshLayout;
 import com.twi.awayday2014.customviews.SwipeRefreshLayout;
 import com.twi.awayday2014.service.twitter.AsyncTweeter;
+import com.twi.awayday2014.utils.Network;
 import twitter4j.Status;
 
 import java.io.*;
@@ -93,6 +94,12 @@ public class TweetsActivity
         Bitmap background = awayDayApplication.getHomeActivityScreenshot();
         if (background != null) {
             rootView.setBackground(new BitmapDrawable(getResources(), background));
+        }
+
+        if (!Network.isAvailable(this)) {
+            Toast.makeText(this, "Check internet connection of your mobile", Toast.LENGTH_LONG).show();
+            finish();
+            return;
         }
 
         bindViews();
