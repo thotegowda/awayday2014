@@ -17,7 +17,6 @@ public class DevEnvironment {
         setupPresentations();
     }
 
-
     private void setupNotifications() {
         if (!hasShortNotificationRecords()) {
             new ShortNotification("Cool news: Android app is getting ready to help you experience away day better", "now").save();

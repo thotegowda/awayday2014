@@ -10,7 +10,7 @@
     </style>
 
     <style name="Widget.ActionBar.Pink">
-        <item name="android:background">@color/pink</item>
+        <item name="android:background">@drawable/ab_solid_awayday</item>
         <item name="android:displayOptions">showHome|showTitle</item>
     </style>
 

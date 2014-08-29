@@ -32,7 +32,8 @@
             android:paddingBottom="@dimen/padding_small"
             android:textSize="18sp"
             android:text="India 2014"
-            android:drawableRight="@drawable/ic_action_expand"/>
+            android:drawableRight="@drawable/ic_action_expand"
+            android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout

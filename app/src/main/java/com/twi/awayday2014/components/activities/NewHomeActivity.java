@@ -32,7 +32,6 @@ import java.util.List;
 public class NewHomeActivity extends Activity {
     private static final String TAG = "HomeActivity";
 
-    //public static final int AGENDA = 0;
     public static final int HOME_FRAGMENT = 0;
     public static final int AGENDA_FRAGMENT = 1;
     public static final int SPEAKERS_FRAGMENT = 2;
@@ -244,22 +243,6 @@ public class NewHomeActivity extends Activity {
         mainText.setTypeface(Fonts.openSansSemiBold(this));
         TextView footerDate = (TextView) findViewById(R.id.headerDetailsFooterDate);
         footerDate.setTypeface(Fonts.openSansLightItalic(this));
-
-//        TextView daysCount = (TextView) findViewById(R.id.daysCount);
-//        daysCount.setTypeface(Fonts.openSansLight(this));
-//        TextView days = (TextView) findViewById(R.id.days);
-//        days.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView hoursCount = (TextView) findViewById(R.id.hoursCount);
-//        hoursCount.setTypeface(Fonts.openSansLight(this));
-//        TextView hours = (TextView) findViewById(R.id.hours);
-//        hours.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView minutesCount = (TextView) findViewById(R.id.minutesCount);
-//        minutesCount.setTypeface(Fonts.openSansLight(this));
-//        TextView minutes = (TextView) findViewById(R.id.minutes);
-//        minutes.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView seconds = (TextView) findViewById(R.id.seconds);
-//        seconds.setTypeface(Fonts.openSansLightItalic(this));
-
         TextView selectedSectionText = (TextView) findViewById(R.id.selectedSectionText);
         selectedSectionText.setTypeface(Fonts.openSansRegular(this));
     }
@@ -275,18 +258,6 @@ public class NewHomeActivity extends Activity {
         actionbarDrawable.setAlpha(0);
         actionBar.setBackgroundDrawable(actionbarDrawable);
     }
-
-//    private Fragment getFragment(int position) {
-//        Fragment fragment = getSupportFragmentManager().findFragmentByTag("" + position);
-//        if (fragment == null) {
-//            fragment = createFragment(position);
-//        }
-//        return fragment;
-//    }
-
-//    private Fragment createFragment(int position) {
-//        return new AgendaFragment();
-//    }
 
     public void onNavigationItemSelected(int position) {
         if (mCurrentPosition == position) {

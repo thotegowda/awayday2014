@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -79,28 +78,21 @@ public class TweetsActivity
     private ListView listView;
     private TwitterLoginFragment twitterLoginFragment;
     private View cancelLoginButton;
+    private boolean isLoginWindowOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_socialize);
-
-        rootView = findViewById(R.id.tweets_root_layout);
-
-        //twitter = new AsyncTweeter(this, new TweeterStub(this), this);
-        twitter = new AsyncTweeter(this, getAwayDayApplication().getTwitterService(), this);
-
-        AwayDayApplication awayDayApplication = (AwayDayApplication) getApplication();
-        Bitmap background = awayDayApplication.getHomeActivityScreenshot();
-        if (background != null) {
-            rootView.setBackground(new BitmapDrawable(getResources(), background));
-        }
 
         if (!Network.isAvailable(this)) {
             Toast.makeText(this, "Check internet connection of your mobile", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
+
+        setContentView(R.layout.fragment_socialize);
+
+        twitter = new AsyncTweeter(this, getAwayDayApplication().getTwitterService(), this);
 
         bindViews();
         showLoadingWindow();
@@ -128,6 +120,7 @@ public class TweetsActivity
     private void bindViews() {
         setupFragments();
 
+        rootView = findViewById(R.id.tweets_root_layout);
         listView = (ListView) findViewById(R.id.tweets_list);
 
         pushInAnimation = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
@@ -149,8 +142,7 @@ public class TweetsActivity
 
             @Override
             public void onClick(View view) {
-                twitterLoginFragment.slideOut();
-                startTwitterButtonMoveDownAnimation();
+                closeTwitterLoginWindow();
             }
         });
 
@@ -173,9 +165,20 @@ public class TweetsActivity
         if (twitter.isLoggedIn()) {
             showTweetWindow();
         } else {
-            twitterLoginFragment.slideIn();
-            startTwitterButtonMoveUpAnimation();
+            showTwitterLoginWindow();
         }
+    }
+
+    private void showTwitterLoginWindow() {
+        twitterLoginFragment.slideIn();
+        startTwitterButtonMoveUpAnimation();
+        isLoginWindowOpen = true;
+    }
+
+    private void closeTwitterLoginWindow() {
+        twitterLoginFragment.slideOut();
+        startTwitterButtonMoveDownAnimation();
+        isLoginWindowOpen = false;
     }
 
     private void bindTweetComposeLayout() {
@@ -298,6 +301,8 @@ public class TweetsActivity
                 }
             }
         });
+
+
     }
 
     private void setListAdapter(ListAdapter adapter) {
@@ -375,11 +380,16 @@ public class TweetsActivity
             zoomOutToThumbnailView();
         } else if (isTweetComposeWindowOpen()) {
             closeTweetComposeWindow();
+        } else if (isTwitterLoginWindowOpen()) {
+            closeTwitterLoginWindow();
         } else {
             finish();
         }
     }
 
+    private boolean isTwitterLoginWindowOpen() {
+        return isLoginWindowOpen;
+    }
     public void zoomInToFullScreenView() {
         new ZoomAnimator().from(currentPhotoView).to(photoFullscreenView).inside(rootView).animateIn();
     }

@@ -52,6 +52,4 @@ public class Fonts {
         }
         return OPENSANS_SEMI_BOLD;
     }
-
-
 }

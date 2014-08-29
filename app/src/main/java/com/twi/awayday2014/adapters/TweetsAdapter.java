@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.utils.DateUtil;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.utils.Fonts;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 
@@ -141,8 +142,14 @@ public class TweetsAdapter extends BaseAdapter implements View.OnClickListener {
 
         public TweetViewHolder(View tweetView) {
             userView = (TextView) tweetView.findViewById(R.id.tweeted_by);
+            userView.setTypeface(Fonts.openSansBold(context));
+
             textView = (TextView) tweetView.findViewById(R.id.tweet_text);
+            textView.setTypeface(Fonts.openSansRegular(context));
+
             dateView = (TextView) tweetView.findViewById(R.id.tweet_time);
+            dateView.setTypeface(Fonts.openSansLight(context));
+
             profileView = (ImageView) tweetView.findViewById(R.id.profile_thumbnail);
             photoView = (ImageView) tweetView.findViewById(R.id.tweet_image);
         }

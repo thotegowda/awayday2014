@@ -19,8 +19,10 @@ public class NotificationsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_notifications);
         View rootLayout = findViewById(R.id.notificationsRootLayout);
+
         AwayDayApplication awayDayApplication = (AwayDayApplication) getApplication();
         Bitmap background = awayDayApplication.getHomeActivityScreenshot();
         if (background != null) {
