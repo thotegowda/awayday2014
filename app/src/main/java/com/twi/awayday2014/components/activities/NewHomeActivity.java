@@ -32,14 +32,10 @@ import java.util.List;
 public class NewHomeActivity extends Activity {
     private static final String TAG = "HomeActivity";
 
-    public static final int HOME_FRAGMENT = 0;
     public static final int AGENDA_FRAGMENT = 1;
     public static final int SPEAKERS_FRAGMENT = 2;
     public static final int BREAKOUT_FRAGMENT = 3;
     public static final int MY_SCHEDULE_FRAGMENT = 4;
-    public static final int VIDEOS_FRAGMENT = 5;
-    public static final int SOCIALIZE_FRAGMENT = 6;
-    public static final int MAP_FRAGMENT = 7;
 
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
@@ -53,6 +49,7 @@ public class NewHomeActivity extends Activity {
     private Drawable appIcon;
     private double mCurrentPosition;
     private Fragment currentFragment;
+    private TextView selectedSectionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,20 +91,24 @@ public class NewHomeActivity extends Activity {
                 int distanceToTravel = defaultActionbarTopPos - defaultHeaderTopPos;
                 int currentDistanceTravelled = getAbsTop(customActionbar) - defaultHeaderTopPos;
                 float ratioTravelled = (float) currentDistanceTravelled / distanceToTravel;
-                Log.e(TAG, "ratio: " + ratioTravelled);
-                if (ratioTravelled <= 0 && currentCustomActionbarState == CustomActionbarState.FLOATING) {
-                    currentCustomActionbarState = CustomActionbarState.STICKY;
-                    Log.d(TAG, "actionbar is now sticky");
-                    notifyCustomActionbarStateChange(CustomActionbarState.STICKY);
+                Log.e("LIST", "ratio: " + ratioTravelled);
+
+                if (ratioTravelled <= 0.0f && currentCustomActionbarState == CustomActionbarState.FLOATING) {
+                    onCustomActionBarStateChanged(CustomActionbarState.STICKY);
+                    Log.d("LIST", "actionbar is now sticky");
                 } else if (ratioTravelled > 0 && currentCustomActionbarState == CustomActionbarState.STICKY) {
-                    currentCustomActionbarState = CustomActionbarState.FLOATING;
-                    Log.d(TAG, "actionbar is now floating");
-                    notifyCustomActionbarStateChange(CustomActionbarState.FLOATING);
+                    onCustomActionBarStateChanged(CustomActionbarState.FLOATING);
+                    Log.d("LIST", "actionbar is now floating");
                 }
                 customActionbarBackground.setAlpha(1 - ratioTravelled);
                 appIcon.setAlpha((int) (255 * ratioTravelled));
             }
         });
+    }
+
+    private void onCustomActionBarStateChanged(CustomActionbarState state) {
+        currentCustomActionbarState = state;
+        notifyCustomActionbarStateChange(state);
     }
 
     private void notifyCustomActionbarStateChange(CustomActionbarState state) {
@@ -157,15 +158,6 @@ public class NewHomeActivity extends Activity {
     public void onDrawerClosed() {
         getActionBar().setTitle("");
         invalidateOptionsMenu();
-    }
-
-
-    public void onDrawerItemClick(int itemId) {
-        Fragment fragment = getFragment(itemId);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, fragment, "" + itemId);
-        fragmentTransaction.commit();
     }
 
     public void onDrawerSlide(float slideOffset) {
@@ -239,11 +231,14 @@ public class NewHomeActivity extends Activity {
     private void setupHeaderText() {
         TextView headerText = (TextView) findViewById(R.id.headerDetailsHeaderText);
         headerText.setTypeface(Fonts.openSansLightItalic(this));
+
         TextView mainText = (TextView) findViewById(R.id.headerDetailsMainText);
         mainText.setTypeface(Fonts.openSansSemiBold(this));
+
         TextView footerDate = (TextView) findViewById(R.id.headerDetailsFooterDate);
         footerDate.setTypeface(Fonts.openSansLightItalic(this));
-        TextView selectedSectionText = (TextView) findViewById(R.id.selectedSectionText);
+
+        selectedSectionText = (TextView) findViewById(R.id.selectedSectionText);
         selectedSectionText.setTypeface(Fonts.openSansRegular(this));
     }
 
@@ -266,6 +261,8 @@ public class NewHomeActivity extends Activity {
         }
         mCurrentPosition = position;
         selectItem(position);
+
+        selectedSectionText.setText(getFragmentTitle(position));
     }
 
     private void selectItem(int position) {
@@ -299,8 +296,6 @@ public class NewHomeActivity extends Activity {
     public android.app.Fragment createFragment(int position) {
         switch (position) {
             default:
-            case HOME_FRAGMENT:
-                return HomeFragment.newInstance(position);
             case AGENDA_FRAGMENT:
                 return AgendaFragment.newInstance(position);
             case SPEAKERS_FRAGMENT:
@@ -309,12 +304,21 @@ public class NewHomeActivity extends Activity {
                 return BreakoutFragment.newInstance(position);
             case MY_SCHEDULE_FRAGMENT:
                 return MyScheduleFragment.newInstance(position);
-            case VIDEOS_FRAGMENT:
-                return VideosFragment.newInstance(position);
-            case SOCIALIZE_FRAGMENT:
-                return SocializeFragment.newInstance(position);
-            case MAP_FRAGMENT:
-                return MapFragment.newInstance(position);
+
+        }
+    }
+
+    public String getFragmentTitle(int position) {
+        switch (position) {
+            default:
+            case AGENDA_FRAGMENT:
+                return "Agenda";
+            case SPEAKERS_FRAGMENT:
+                return "Speakers";
+            case BREAKOUT_FRAGMENT:
+                return "Breakout Sessions";
+            case MY_SCHEDULE_FRAGMENT:
+                return "My Schedule";
         }
     }
 

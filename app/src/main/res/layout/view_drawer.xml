@@ -76,7 +76,7 @@
             android:layout_height="1dp"
             android:background="@color/light_gray"/>
 
-        <TextView
+        <!--TextView
             android:id="@+id/videos"
             style="@style/DrawerListTextView"
             android:text="Videos"
@@ -86,7 +86,7 @@
             android:id="@+id/tags"
             style="@style/DrawerListTextView"
             android:text="Tags"
-            android:drawableLeft="@drawable/ic_tags"/>
+            android:drawableLeft="@drawable/ic_tags"/-->
         <View
             style="@style/HorizontalDivider"
             android:layout_height="1dp"

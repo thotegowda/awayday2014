@@ -1,5 +1,7 @@
 package com.twi.awayday2014.utils;
 
+import android.util.Log;
+import com.twi.awayday2014.models.Presentation;
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -101,5 +103,14 @@ public class DateUtil {
 
         System.out.println("");
 
+    }
+
+    public static boolean isAlreadyHappened(Presentation presentation) {
+        return isAlreadyHappened(presentation.getDate());
+    }
+
+    private static boolean isAlreadyHappened(LocalDateTime date) {
+        Log.d("TIME", "date:" + date.toString());
+        return true;
     }
 }

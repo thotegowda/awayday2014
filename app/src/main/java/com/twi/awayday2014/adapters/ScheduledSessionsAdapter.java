@@ -19,12 +19,10 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
     private final Context context;
     private final List<Presentation> scheduledSessions;
     private SessionsOrganizer sessionOrganizer;
-    private RandomColorSelector randomColorSelector;
 
-    public ScheduledSessionsAdapter(Context context, SessionsOrganizer sessionOrganizer, RandomColorSelector randomColorSelector) {
+    public ScheduledSessionsAdapter(Context context, SessionsOrganizer sessionOrganizer) {
         this.context = context;
         this.sessionOrganizer = sessionOrganizer;
-        this.randomColorSelector = randomColorSelector;
         this.scheduledSessions = sessionOrganizer.getScheduledSessions();
     }
 

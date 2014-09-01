@@ -18,9 +18,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         DateTime day1 = new DateTime().withDayOfMonth(27).withMonthOfYear(9);
         DateTime day2 = new DateTime().withDayOfMonth(28).withMonthOfYear(9);
-        if(i == 0){
+        if (i == 0) {
             return AgendaTimelineFragment.newInstance(day1, i);
-        }else if(i == 1){
+        } else if (i == 1) {
             return AgendaTimelineFragment.newInstance(day2, i);
         }
         return null;

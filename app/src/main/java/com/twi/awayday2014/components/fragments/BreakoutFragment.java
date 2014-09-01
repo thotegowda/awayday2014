@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.utils.RandomColorSelector;
 import com.twi.awayday2014.adapters.SessionsAdapter;
 
-public class BreakoutFragment extends ListFragment {
+public class BreakoutFragment extends BaseListFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -28,16 +29,8 @@ public class BreakoutFragment extends ListFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-    @Override
     public void onResume() {
         super.onResume();
-
-        setListAdapter(getAdapter());
 
         restoreListViewPosition();
     }
@@ -73,7 +66,8 @@ public class BreakoutFragment extends ListFragment {
         return getActivity().getSharedPreferences("breakout_fragment", Context.MODE_PRIVATE);
     }
 
-    private SessionsAdapter getAdapter() {
+
+    protected ListAdapter getAdapter() {
         return new SessionsAdapter(this.getActivity(), getApplication().getSessionOrganizer());
     }
 
@@ -81,10 +75,4 @@ public class BreakoutFragment extends ListFragment {
         return (AwayDayApplication) this.getActivity().getApplication();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-        return rootView;
-    }
 }

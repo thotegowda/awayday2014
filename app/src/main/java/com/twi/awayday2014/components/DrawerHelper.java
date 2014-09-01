@@ -12,6 +12,8 @@ import com.twi.awayday2014.components.activities.NewHomeActivity;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.R;
 
+import static com.twi.awayday2014.components.activities.NewHomeActivity.*;
+
 
 public class DrawerHelper {
     private NewHomeActivity newHomeActivity;
@@ -25,7 +27,6 @@ public class DrawerHelper {
     public void onCreate(DrawerLayout drawerLayout) {
         this.drawerlayout = drawerLayout;
         setupDrawer();
-        newHomeActivity.onDrawerItemClick(NewHomeActivity.AGENDA_FRAGMENT);
     }
 
     private void setupDrawer() {
@@ -60,7 +61,7 @@ public class DrawerHelper {
         agendaText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newHomeActivity.onNavigationItemSelected(NewHomeActivity.AGENDA_FRAGMENT);
+                newHomeActivity.onNavigationItemSelected(AGENDA_FRAGMENT);
             }
         });
 
@@ -69,7 +70,7 @@ public class DrawerHelper {
         myScheduleText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newHomeActivity.onNavigationItemSelected(NewHomeActivity.MY_SCHEDULE_FRAGMENT);
+                newHomeActivity.onNavigationItemSelected(MY_SCHEDULE_FRAGMENT);
             }
         });
 
@@ -78,7 +79,7 @@ public class DrawerHelper {
         speakers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newHomeActivity.onNavigationItemSelected(NewHomeActivity.SPEAKERS_FRAGMENT);
+                newHomeActivity.onNavigationItemSelected(SPEAKERS_FRAGMENT);
             }
         });
 
@@ -87,16 +88,16 @@ public class DrawerHelper {
         breakoutSessions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newHomeActivity.onNavigationItemSelected(NewHomeActivity.BREAKOUT_FRAGMENT);
+                newHomeActivity.onNavigationItemSelected(BREAKOUT_FRAGMENT);
             }
         });
 
-        TextView videos = (TextView) drawerlayout.findViewById(R.id.videos);
+        /*TextView videos = (TextView) drawerlayout.findViewById(R.id.videos);
         videos.setTypeface(Fonts.openSansRegular(newHomeActivity));
         videos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newHomeActivity.onNavigationItemSelected(NewHomeActivity.VIDEOS_FRAGMENT);
+                newHomeActivity.onNavigationItemSelected(VIDEOS_FRAGMENT);
             }
         });
 
@@ -106,7 +107,7 @@ public class DrawerHelper {
             @Override
             public void onClick(View view) {
             }
-        });
+        }); */
 
         TextView countryText = (TextView) drawerlayout.findViewById(R.id.countryYearText);
         countryText.setTypeface(Fonts.openSansLight(newHomeActivity));
@@ -114,6 +115,8 @@ public class DrawerHelper {
 
     public void onPostCreate() {
         drawerToggle.syncState();
+
+        newHomeActivity.onNavigationItemSelected(AGENDA_FRAGMENT);
     }
 
     public void onConfigurationChanged(Configuration newConfig) {

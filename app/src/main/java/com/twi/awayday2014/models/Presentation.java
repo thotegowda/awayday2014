@@ -3,6 +3,10 @@ package com.twi.awayday2014.models;
 
 import android.graphics.Color;
 import com.orm.SugarRecord;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
+import java.util.Date;
 
 public class Presentation extends SugarRecord<Presentation> {
 
@@ -55,5 +59,9 @@ public class Presentation extends SugarRecord<Presentation> {
 
     public int getModeColor() {
         return colorResourceId;
+    }
+
+    public LocalDateTime getDate() {
+        return LocalDateTime.now();
     }
 }

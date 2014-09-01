@@ -1,16 +1,11 @@
 package com.twi.awayday2014.components.fragments;
 
-import android.app.ListFragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.R;
-import com.twi.awayday2014.utils.RandomColorSelector;
 import com.twi.awayday2014.adapters.ScheduledSessionsAdapter;
 
-public class MyScheduleFragment extends ListFragment {
+public class MyScheduleFragment extends BaseListFragment {
 
     private static final String TAG = "AwayDay";
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -27,31 +22,13 @@ public class MyScheduleFragment extends ListFragment {
     public MyScheduleFragment() {
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        setListAdapter(getAdapter());
-    }
-
-    private ScheduledSessionsAdapter getAdapter() {
-        return new ScheduledSessionsAdapter(getActivity(), getApplication().getSessionOrganizer(), new RandomColorSelector());
+    protected ListAdapter getAdapter() {
+        return new ScheduledSessionsAdapter(getActivity(), getApplication().getSessionOrganizer());
     }
 
     private AwayDayApplication getApplication() {
         return (AwayDayApplication)getActivity().getApplication();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-        return rootView;
-    }
 
 }

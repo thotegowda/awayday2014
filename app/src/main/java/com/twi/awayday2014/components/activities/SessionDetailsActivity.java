@@ -6,13 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presentation;
 import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.utils.DateUtil;
 
 public class SessionDetailsActivity extends Activity {
 
@@ -21,9 +19,10 @@ public class SessionDetailsActivity extends Activity {
     private TextView description;
     private LinearLayout presenters;
     private TextView duration;
-    private Presentation presentation;
     private ImageView scheduleButton;
     private View topView;
+
+    private Presentation presentation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +92,10 @@ public class SessionDetailsActivity extends Activity {
     }
 
     private void launchFeedback() {
+        if (!DateUtil.isAlreadyHappened(presentation)) {
+            Toast.makeText(this, "Please wait for the session to get over!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         startActivity(new Intent(this, FeedbackActivity.class).putExtra("presentation_id", String.valueOf(presentation.getId())));
     }
-
-
 }

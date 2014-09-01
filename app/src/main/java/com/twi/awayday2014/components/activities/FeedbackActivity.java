@@ -28,6 +28,7 @@ public class FeedbackActivity extends Activity {
     }
 
     private void bind(Presentation presentation) {
+        sessionTitleView.setBackgroundColor(presentation.getModeColor());
         sessionTitleView.setText(presentation.title());
     }
 

@@ -18,12 +18,10 @@ public class SessionsAdapter extends BaseAdapter {
 
     private final Context context;
     private SessionsOrganizer sessionOrganizer;
-    private RandomColorSelector randomColorSelector;
 
     public SessionsAdapter(Context context, SessionsOrganizer sessionOrganizer) {
         this.context = context;
         this.sessionOrganizer = sessionOrganizer;
-        this.randomColorSelector = randomColorSelector;
     }
 
     @Override
@@ -33,12 +31,12 @@ public class SessionsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return  (i < getKeynotes().size()) ? getKeynoteSession(i) : leftSession(i); // This is wrong, It should return two sessions though.
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
