@@ -26,16 +26,6 @@
                 android:layout_gravity="bottom"
                 android:visibility="gone">
 
-            <!--ImageView
-                    android:id="@+id/signInOrTweet"
-                    style="@style/Widget.Button.Add"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="centerInside"
-                    android:layout_marginRight="10dp"
-                    android:padding="10dp"
-                    android:src="@drawable/add_schedule_button_icon_unchecked"/-->
-
             <Button
                     android:id="@+id/signInOrTweet"
                     style="@style/TwitterCircleButton"

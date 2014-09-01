@@ -22,7 +22,7 @@ public class SessionDetailsActivity extends Activity {
     private LinearLayout presenters;
     private TextView duration;
     private Presentation presentation;
-    private Button scheduleButton;
+    private ImageView scheduleButton;
     private View topView;
 
     @Override
@@ -49,27 +49,29 @@ public class SessionDetailsActivity extends Activity {
                 launchFeedback();
             }
         });
-        scheduleButton = (Button) findViewById(R.id.btn_add_to_my_schedule);
-        if(presentation.isScheduled()) {
-            scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
-        } else {
-            scheduleButton.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
-        }
+        scheduleButton = (ImageView) findViewById(R.id.btn_add_to_my_schedule);
+        setScheduleButton(presentation.isScheduled());
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(presentation.isScheduled()) {
                     presentation.setScheduled(false);
-                    view.setBackgroundResource(R.drawable.add_schedule_button_icon_unchecked);
+                    setScheduleButton(false);
                 } else {
                     presentation.setScheduled(true);
-                    view.setBackgroundResource(R.drawable.add_schedule_button_icon_checked);
+                    setScheduleButton(true);
                 }
                 presentation.save();
             }
         });
 
         topView = findViewById(R.id.top_view);
+    }
+
+    private void setScheduleButton(boolean isScheduled) {
+        scheduleButton.setImageResource(isScheduled ?
+                R.drawable.add_schedule_button_icon_checked : R.drawable.add_schedule_button_icon_unchecked);
+        scheduleButton.setSelected(isScheduled ? true : false);
     }
 
     public void bind(Presentation presentation) {

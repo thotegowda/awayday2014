@@ -25,11 +25,14 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/speaker_00"/>
 
-            <Button
+            <ImageView
                     android:id="@+id/btn_add_to_my_schedule"
-                    style="@style/Widget.Button.purple"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerInside"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@id/profile_image"/>
+                    android:layout_below="@id/profile_image"
+                    android:background="@drawable/add_schedule_fab_background"/>
 
             <TextView
                     android:id="@+id/session_title"
