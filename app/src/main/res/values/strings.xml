@@ -49,5 +49,6 @@
 
     <string name="tweets_login_info">Please login with your twitter account to tweet about awayday.</string>
     <string name="login">Login</string>
+    <string name="ask">Ask</string>
 
 </resources>

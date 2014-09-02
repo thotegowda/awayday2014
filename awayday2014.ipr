@@ -284,11 +284,11 @@
     </library>
     <library name="support-v4-19.1.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../../../android-sdk/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../android-sdk/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/../../../../android-sdk/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../android-sdk/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="twitter4j-core-4.0.2">
