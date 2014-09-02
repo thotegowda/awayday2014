@@ -97,4 +97,19 @@ public class AwayDayNotification extends SugarRecord<AwayDayNotification> implem
         }
     };
 
+    public static class NotificatonsComparator implements Comparator<AwayDayNotification>{
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+        @Override
+        public int compare(AwayDayNotification lhs, AwayDayNotification rhs) {
+            DateTime lhsTime = formatter.parseDateTime(lhs.getTime());
+            DateTime rhsTime = formatter.parseDateTime(rhs.getTime());
+            if (lhsTime.isAfter(rhsTime)) {
+                return 1;
+            } else if (lhsTime.isBefore(rhsTime)) {
+                return -1;
+            }
+            return 0;
+        }
+    }
+
 }

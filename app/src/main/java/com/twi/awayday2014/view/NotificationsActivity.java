@@ -17,6 +17,7 @@ import com.twi.awayday2014.adapters.NotificationsAdapter;
 import com.twi.awayday2014.models.AwayDayNotification;
 import com.twi.awayday2014.utils.Fonts;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.twi.awayday2014.PushNotificationReceiver.NOTIFICATION_RECEIVED;
@@ -54,6 +55,7 @@ public class NotificationsActivity extends Activity{
             if(awayDayNotifications.size() > 0 && notificationsAdapter != null){
                 notificationsList.setVisibility(View.VISIBLE);
                 noNotificationsText.setVisibility(View.GONE);
+                Collections.sort(awayDayNotifications, Collections.reverseOrder(new AwayDayNotification.NotificatonsComparator()));
                 notificationsAdapter.dataSetChanged(awayDayNotifications);
             }else{
                 notificationsList.setVisibility(View.GONE);
@@ -75,6 +77,7 @@ public class NotificationsActivity extends Activity{
         Intent intent = getIntent();
         boolean previewMode = intent.getBooleanExtra(PREVIEW_MODE, false);
         List<AwayDayNotification> awayDayNotifications = AwayDayNotification.listAll(AwayDayNotification.class);
+        Collections.sort(awayDayNotifications, Collections.reverseOrder(new AwayDayNotification.NotificatonsComparator()));
         if(previewMode){
             List<AwayDayNotification> previewNotification = asList((AwayDayNotification)intent.getExtras().getParcelable(PREVIEW_NOTIFICATION));
             notificationsList.setAdapter(new NotificationsAdapter(this, previewNotification));

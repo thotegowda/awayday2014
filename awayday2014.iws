@@ -14,7 +14,9 @@
   </component>
   <component name="AndroidLayoutPreviewToolWindow">
     <option name="state">
-      <GlobalState />
+      <GlobalState>
+        <option name="visible" value="false" />
+      </GlobalState>
     </option>
   </component>
   <component name="AndroidLayouts">
@@ -84,37 +86,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.884615" vertical-offset="1419" max-vertical-offset="2299">
-              <caret line="106" column="33" selection-start-line="106" selection-start-column="33" selection-end-line="106" selection-end-column="33" />
-              <folding>
-                <element signature="e#1314#1332#0" expanded="true" />
-                <element signature="e#1948#1966#0" expanded="true" />
-                <element signature="e#2816#2854#0" expanded="true" />
-                <element signature="e#3221#3259#0" expanded="true" />
-                <element signature="e#3632#3661#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PushNotificationReceiver.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/PushNotificationReceiver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="951" max-vertical-offset="1596">
-              <caret line="65" column="73" selection-start-line="65" selection-start-column="73" selection-end-line="65" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AwayDayNotification.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/AwayDayNotification.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1520">
-              <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="899" max-vertical-offset="1805">
+              <caret line="99" column="46" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -123,37 +99,87 @@
       <file leaf-file-name="NotificationsActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/view/NotificationsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="761" max-vertical-offset="1406">
-              <caret line="83" column="45" selection-start-line="83" selection-start-column="45" selection-end-line="83" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1444">
+              <caret line="79" column="123" selection-start-line="79" selection-start-column="123" selection-end-line="79" selection-end-column="123" />
               <folding>
-                <element signature="e#1766#2445#0" expanded="true" />
-                <element signature="e#2438#2439#0" expanded="true" />
+                <element signature="e#1796#2607#0" expanded="true" />
+                <element signature="e#2600#2601#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NotificationType.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="placeholder_twitter.png" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/placeholder_twitter.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="notifications_image_update.jpg" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/notifications_image_update.jpg">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NotificationType.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/NotificationType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20212767" vertical-offset="0" max-vertical-offset="931">
-              <caret line="10" column="52" selection-start-line="10" selection-start-column="52" selection-end-line="10" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="931">
+              <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="notifications_image_travel.jpg" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/notifications_image_travel.jpg">
+      <file leaf-file-name="sessions_placeholder.jpg" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/sessions_placeholder.jpg">
           <provider selected="true" editor-type-id="images">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="notifications_image_sessions.jpg" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/notifications_image_sessions.jpg">
-          <provider selected="true" editor-type-id="images">
+      <file leaf-file-name="session_item.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/session_item.xml">
+          <provider editor-type-id="android-designer">
             <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.9259257" vertical-offset="0" max-vertical-offset="1159">
+              <caret line="7" column="42" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view_timeline_listitem.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_timeline_listitem.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.90784985" vertical-offset="0" max-vertical-offset="1444">
+              <caret line="42" column="39" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
+              <folding>
+                <element signature="e#340#362#0" expanded="true" />
+                <element signature="e#397#413#0" expanded="true" />
+                <element signature="e#449#465#0" expanded="true" />
+                <element signature="e#499#515#0" expanded="true" />
+                <element signature="e#811#844#0" expanded="true" />
+                <element signature="e#1130#1146#0" expanded="true" />
+                <element signature="e#1184#1217#0" expanded="true" />
+                <element signature="e#1515#1537#0" expanded="true" />
+                <element signature="e#1575#1603#0" expanded="true" />
+                <element signature="e#1673#1689#0" expanded="true" />
+                <element signature="e#1723#1739#0" expanded="true" />
+                <element signature="e#2026#2042#0" expanded="true" />
+                <element signature="e#2080#2102#0" expanded="true" />
+                <element signature="e#2172#2188#0" expanded="true" />
+                <element signature="e#2222#2238#0" expanded="true" />
+                <element signature="e#2658#2680#0" expanded="true" />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
@@ -164,21 +190,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CompareTime.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/utils/CompareTime.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="665">
-              <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="NotificationsAdapter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="1539">
-              <caret line="88" column="31" selection-start-line="88" selection-start-column="31" selection-end-line="88" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1539">
+              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -1307,7 +1323,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/Session.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/Presenter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/services/AgendaService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/view_timeline_listitem.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/services/twitter/TweeterService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/services/twitter/Tweeter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/utils/Tweeter.java" />
@@ -1340,11 +1355,12 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/AwayDayApplication.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_notifications.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/AwayDayNotification.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/PushNotificationReceiver.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/AwayDayNotification.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/view/NotificationsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/NotificationType.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/view_timeline_listitem.xml" />
       </list>
     </option>
   </component>
@@ -2115,7 +2131,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2131,14 +2147,14 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2753304" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26552463" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26552463" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21367522" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2875458" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28789732" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32762313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2250,8 +2266,14 @@
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java</url>
+          <line>29</line>
+          <properties />
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="18" />
+      <option name="time" value="19" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -2259,49 +2281,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/utils/DeveloperKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="380">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tweet_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1102">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_timeline_listitem.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.555555" vertical-offset="114" max-vertical-offset="1463">
-          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
-          <folding>
-            <element signature="e#811#844#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-29.481482" vertical-offset="2776" max-vertical-offset="4199">
-          <caret line="188" column="78" selection-start-line="183" selection-start-column="24" selection-end-line="188" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/tasks/AsyncTweeterTasks.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-21.923077" vertical-offset="0" max-vertical-offset="3838">
@@ -2420,11 +2399,6 @@
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/placeholder_twitter.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/animations/SmoothInterpolator.java">
@@ -2694,14 +2668,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/AwayDayNotification.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1520">
-          <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-22.884615" vertical-offset="1419" max-vertical-offset="2299">
@@ -2716,30 +2682,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="1539">
-          <caret line="88" column="31" selection-start-line="88" selection-start-column="31" selection-end-line="88" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/PushNotificationReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="951" max-vertical-offset="1596">
           <caret line="65" column="73" selection-start-line="65" selection-start-column="73" selection-end-line="65" selection-end-column="73" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/view/NotificationsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="761" max-vertical-offset="1406">
-          <caret line="83" column="45" selection-start-line="83" selection-start-column="45" selection-end-line="83" selection-end-column="45" />
-          <folding>
-            <element signature="e#1766#2445#0" expanded="true" />
-            <element signature="e#2438#2439#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2758,11 +2705,92 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/adapters/NotificationsAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1539">
+          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/AwayDayNotification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="899" max-vertical-offset="1805">
+          <caret line="99" column="46" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/view/NotificationsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1444">
+          <caret line="79" column="123" selection-start-line="79" selection-start-column="123" selection-end-line="79" selection-end-column="123" />
+          <folding>
+            <element signature="e#1796#2607#0" expanded="true" />
+            <element signature="e#2600#2601#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/placeholder_twitter.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/notifications_image_update.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/twi/awayday2014/models/NotificationType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20212767" vertical-offset="0" max-vertical-offset="931">
-          <caret line="10" column="52" selection-start-line="10" selection-start-column="52" selection-end-line="10" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="931">
+          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/sessions_placeholder.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/session_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.9259257" vertical-offset="0" max-vertical-offset="1159">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_timeline_listitem.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.90784985" vertical-offset="0" max-vertical-offset="1444">
+          <caret line="42" column="39" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
+          <folding>
+            <element signature="e#340#362#0" expanded="true" />
+            <element signature="e#397#413#0" expanded="true" />
+            <element signature="e#449#465#0" expanded="true" />
+            <element signature="e#499#515#0" expanded="true" />
+            <element signature="e#811#844#0" expanded="true" />
+            <element signature="e#1130#1146#0" expanded="true" />
+            <element signature="e#1184#1217#0" expanded="true" />
+            <element signature="e#1515#1537#0" expanded="true" />
+            <element signature="e#1575#1603#0" expanded="true" />
+            <element signature="e#1673#1689#0" expanded="true" />
+            <element signature="e#1723#1739#0" expanded="true" />
+            <element signature="e#2026#2042#0" expanded="true" />
+            <element signature="e#2080#2102#0" expanded="true" />
+            <element signature="e#2172#2188#0" expanded="true" />
+            <element signature="e#2222#2238#0" expanded="true" />
+            <element signature="e#2658#2680#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

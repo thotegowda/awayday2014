@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/agenda_card_image_height"
             android:scaleType="centerCrop"
-            android:src="@drawable/notifications_image_food" />
+            android:src="@drawable/sessions_placeholder" />
 
         <com.twi.awayday2014.view.custom.CircularImageView
             android:id="@+id/userImage"
@@ -40,8 +40,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/padding"
             android:paddingRight="@dimen/padding"
-            android:text="Speaker Name"
-            android:visibility="gone"/>
+            android:text="Speaker Name"/>
 
         <TextView
             android:id="@+id/titleText"
