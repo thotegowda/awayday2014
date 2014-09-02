@@ -38,5 +38,16 @@
     <string name="tweets_login_info">Please login with your twitter account to tweet about awayday.</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
+    <string name="preview">Preview</string>
+    <string name="verifyPush">Are you sure you want to push the notification? This action can not be undone.</string>
+    <string name="no_notifications_test">You have not received any notifications.</string>
+
+    <string-array name="notification_type">
+        <item>Info</item>
+        <item>Travel</item>
+        <item>Food</item>
+        <item>Sessions</item>
+        <item>App Update</item>
+    </string-array>
 
 </resources>

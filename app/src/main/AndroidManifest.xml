@@ -34,7 +34,7 @@
                 android:value="AIzaSyCxTiSWZmwVkud2xY8El0ePCSkJ_v3y4CI"/>
 
         <meta-data android:name="DATABASE" android:value="sugar_awayday.db" />
-        <meta-data android:name="VERSION" android:value="2" />
+        <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.twi.awayday2014" />
 
@@ -45,7 +45,6 @@
             android:theme="@style/Theme.TranslucentActionBar.Overlay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -63,22 +62,26 @@
         <activity
             android:name=".view.NotificationsActivity"
             android:label="@string/title_activity_notifications"
-            android:theme="@style/Theme.NoActionbar">
+            android:theme="@style/Theme.NoActionbar"
+            android:parentActivityName=".view.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.HomeActivity"/>
         </activity>
 
         <activity
             android:name=".view.TweetsActivity"
             android:label="@string/title_activity_notifications"
-            android:theme="@style/Theme.NoActionbar">
+            android:theme="@style/Theme.NoActionbar"
+            android:parentActivityName=".view.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.HomeActivity"/>
         </activity>
 
         <activity
                 android:name=".view.PushActivity"
                 android:label="@string/title_activity_push" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Parse framework specific -->

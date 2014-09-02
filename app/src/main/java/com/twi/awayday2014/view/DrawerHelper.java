@@ -1,6 +1,9 @@
 package com.twi.awayday2014.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +22,8 @@ public class DrawerHelper {
     private HomeActivity homeActivity;
     private DrawerLayout drawerlayout;
     private ActionBarDrawerToggle drawerToggle;
+    private int clickCounter;
+    private Handler handler;
 
     public DrawerHelper(HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
@@ -27,6 +32,7 @@ public class DrawerHelper {
     public void onCreate(DrawerLayout drawerLayout) {
         this.drawerlayout = drawerLayout;
         setupDrawer();
+        setupAdminPage();
         homeActivity.onDrawerItemClick(AGENDA);
     }
 
@@ -54,6 +60,29 @@ public class DrawerHelper {
         drawerlayout.setDrawerListener(drawerToggle);
 
         setupTextviews();
+    }
+
+    private void setupAdminPage() {
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                clickCounter = 0;
+            }
+        };
+        View drawerImage = drawerlayout.findViewById(R.id.drawerImage);
+        drawerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickCounter += 1;
+                handler.removeMessages(0);
+                handler.sendEmptyMessageDelayed(0, 400);
+                if(clickCounter == 9){
+                    clickCounter = 0;
+                    Intent intent = new Intent(homeActivity, PushActivity.class);
+                    homeActivity.startActivity(intent);
+                }
+            }
+        });
     }
 
     private void setupTextviews() {

@@ -1,6 +1,7 @@
 package com.twi.awayday2014.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,7 @@ import twitter4j.MediaEntity;
 import twitter4j.Status;
 
 public class TweetsAdapter extends BaseAdapter {
-
-
+    private static final String TAG = "TweetsAdapter";
     private final LayoutInflater inflater;
     private List<Status> tweets;
     private Context context;
@@ -95,6 +95,7 @@ public class TweetsAdapter extends BaseAdapter {
             viewSource.imageView.setVisibility(View.VISIBLE);
             Picasso.with(context)
                     .load(mediaURL)
+                    .placeholder(R.drawable.placeholder_twitter)
                     .into(viewSource.imageView);
 
             viewSource.imageView.setTag(mediaURL);
@@ -112,6 +113,21 @@ public class TweetsAdapter extends BaseAdapter {
         tweets.addAll(moreTweets);
         notifyDataSetChanged();
     }
+
+    public void insertAtTheTop(List<Status> moreTweets) {
+        if (moreTweets.size() > 1) {
+            Log.d(TAG, "new tweets added count : " + moreTweets.size());
+
+            List<Status> newTweets = new ArrayList<Status>(moreTweets);
+            newTweets.addAll(tweets);
+            tweets = newTweets;
+
+            notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "no new tweets available ");
+        }
+    }
+
 
     private class ViewSource {
         TextView tweetText;

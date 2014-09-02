@@ -8,7 +8,7 @@ import com.twi.awayday2014.R;
 public enum NotificationType {
     TRAVEL(R.drawable.notifications_image_travel, Color.parseColor("#25688d"), "TRAVEL"),
     FOOD(R.drawable.notifications_image_food, Color.parseColor("#007f64"), "FOOD"),
-    SESSIONS(R.drawable.notifications_image_sessoins, Color.parseColor("#ad512f"), "SESSIONS"),
+    SESSIONS(R.drawable.notifications_image_sessions, Color.parseColor("#ad512f"), "SESSIONS"),
     APP_UPDATE(R.drawable.notifications_image_travel, Color.parseColor("#ff4e50"), "APP UPDATE"),
     INFO(R.drawable.notifications_image_travel, Color.parseColor("#e6ac27"), "INFO");
 
@@ -41,5 +41,14 @@ public enum NotificationType {
 
     public String getDisplayText() {
         return displayText;
+    }
+
+    public static NotificationType fromDisplayText(String displayText){
+        for (NotificationType notificationType : values()) {
+            if(notificationType.displayText.toLowerCase().equals(displayText.toLowerCase())){
+                return notificationType;
+            }
+        }
+        return null;
     }
 }

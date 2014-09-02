@@ -39,7 +39,6 @@ import static com.twi.awayday2014.utils.Constants.DrawerConstants.AGENDA;
 
 public class HomeActivity extends FragmentActivity{
     private static final String TAG = "HomeActivity";
-    public static final String SCREENSHOT = "screenshot";
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
     private DrawerLayout drawerLayout;
@@ -187,8 +186,6 @@ public class HomeActivity extends FragmentActivity{
         notificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
-//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
                 Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
                 HomeActivity.this.startActivity(intent);
             }
@@ -198,8 +195,6 @@ public class HomeActivity extends FragmentActivity{
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AwayDayApplication awayDayApplication = (AwayDayApplication) HomeActivity.this.getApplication();
-//                awayDayApplication.setHomeActivityScreenshot(getScreenShot());
                 Intent intent = new Intent(HomeActivity.this, TweetsActivity.class);
                 HomeActivity.this.startActivity(intent);
             }

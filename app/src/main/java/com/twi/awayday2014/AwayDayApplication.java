@@ -1,31 +1,21 @@
 package com.twi.awayday2014;
 
-import android.graphics.Bitmap;
-
 import com.orm.SugarApp;
-import com.parse.*;
-import com.twi.awayday2014.models.ShortNotification;
-import com.twi.awayday2014.models.Tweeter;
+import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseInstallation;
+import com.parse.ParseUser;
 import com.twi.awayday2014.services.AgendaService;
-import com.twi.awayday2014.services.NotificationsService;
-import com.twi.awayday2014.services.twitter.TweeterService;
 import com.twi.awayday2014.services.twitter.TwitterPreference;
 import com.twi.awayday2014.services.twitter.TwitterService;
-import com.twi.awayday2014.view.HomeActivity;
-
-import static com.twi.awayday2014.models.ShortNotification.*;
 
 public class AwayDayApplication extends SugarApp {
 
-    private static final String YOUR_APPLICATION_ID = "yiKETlRYko1LrZEgrilwJbp2XHmFeVSpAFkrOGGK";
-    private static final String YOUR_CLIENT_KEY = "kR3esD6RWpRixzwKblqQux73nMRVXRqBkprv80rU";
-    private static final String CHANNEL_AWAYDAY = "AwayDay";
-    private Bitmap homeActivityScreenshot;
+    private static final String YOUR_APPLICATION_ID = "cRkqJtkVvjyuC5pvKRzLNz8CFm6WgrbPqX0uKX7a";
+    private static final String YOUR_CLIENT_KEY = "o4Dr0m1oV8PBWw0DQSeaYmd9T3LSayKIPJCkbIxd";
 
 
     private static AgendaService agendaService;
-    private static NotificationsService notificationsService;
-    private static TweeterService tweeterService;
     private TwitterService twitterService;
 
     @Override
@@ -33,8 +23,6 @@ public class AwayDayApplication extends SugarApp {
         super.onCreate();
 
         setupParse();
-
-        setupDefaultNotifications();
     }
 
     public static AgendaService agendaService(){
@@ -44,28 +32,6 @@ public class AwayDayApplication extends SugarApp {
         return agendaService;
     }
 
-    public static NotificationsService notificationsService() {
-        if(notificationsService == null){
-            return new NotificationsService();
-        }
-        return notificationsService;
-    }
-
-    public static TweeterService tweeterService() {
-        if(tweeterService == null){
-            tweeterService = new TweeterService();
-        }
-        return tweeterService;
-    }
-
-    public Bitmap getHomeActivityScreenshot() {
-        return homeActivityScreenshot;
-    }
-
-    public void setHomeActivityScreenshot(Bitmap homeActivityScreenshot) {
-        this.homeActivityScreenshot = homeActivityScreenshot;
-    }
-
     public TwitterService getTwitterService() {
         if (twitterService == null) {
             twitterService = new TwitterService(new TwitterPreference(this));
@@ -73,21 +39,8 @@ public class AwayDayApplication extends SugarApp {
         return twitterService;
     }
 
-
-    private void setupDefaultNotifications() {
-        if (!findAll(ShortNotification.class).hasNext()) {
-            new ShortNotification("Cool news: Android app is getting ready to help you experience away day better", "now").save();
-            new ShortNotification("We'd like to welcome you to the 2014 India Away Day group on myThoughtWorks!", "25 Mins ago").save();
-            new ShortNotification("We're super excited to announce the Away Day 2014 Logo Competition! That's right." +
-                    "We want YOUR imagination and creativity for a fabulous logo for  Away Day!", "1 hour ago").save();
-            new ShortNotification("Travelling plans are: going by train, coming back by Air", "10 hours ago").save();
-            new ShortNotification("This time away day happens at Hyderabad", "5 days ago").save();
-            new ShortNotification("Away day starts on 19th Sep and lasts lasts till 21st Sep", "12 days ago").save();
-        }
-    }
-
     private void setupParse() {
-        Parse.initialize(getApplicationContext(), YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
 
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
@@ -95,11 +48,6 @@ public class AwayDayApplication extends SugarApp {
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
-
-        PushService.subscribe(this, CHANNEL_AWAYDAY, HomeActivity.class);
-
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
-
-
 }

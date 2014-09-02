@@ -1,13 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tweetsRootLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:background="@drawable/background_twitter"/>
+        android:background="@drawable/background_twitter"
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,27 +18,69 @@
             android:id="@+id/tweetsHeaderText"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="@color/transparent_black"
             android:layout_alignParentTop="true"
+            android:background="@color/transparent_black"
             android:gravity="center"
-            android:textSize="22sp"
-            android:textColor="@android:color/white"
             android:padding="@dimen/padding_small"
-            android:text="@string/title_activity_tweets"/>
+            android:text="@string/title_activity_tweets"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
 
         <View
             android:id="@+id/divider"
             style="@style/HorizontalDivider"
             android:layout_below="@id/tweetsHeaderText"
-            android:background="@color/pink"/>
+            android:background="@color/pink" />
 
-        <ListView
-            android:id="@+id/tweetsList"
+        <LinearLayout
+            android:id="@+id/placeholderView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@android:color/transparent"
-            android:clickable="false"
-            android:layout_below="@id/divider"/>
+            android:layout_marginTop="?android:actionBarSize"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/placeholderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:indeterminate="true"
+                app:spb_color="#ffffff"
+                app:spb_mirror_mode="true"
+                app:spb_progressiveStart_activated="true"
+                app:spb_progressiveStart_speed="1.5"
+                app:spb_progressiveStop_speed="3.4"
+                app:spb_reversed="false"
+                app:spb_sections_count="4"
+                app:spb_speed="1.0"
+                app:spb_stroke_separator_length="2dp"
+                app:spb_stroke_width="2dp" />
+        </LinearLayout>
+
+        <com.twi.awayday2014.view.custom.MultiSwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/divider">
+
+            <ListView
+                android:id="@+id/tweetsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:divider="@android:color/transparent" />
+        </com.twi.awayday2014.view.custom.MultiSwipeRefreshLayout>
 
         <Button
             android:id="@+id/twitterButton"
@@ -48,16 +90,15 @@
         <Button
             android:id="@+id/cancelButton"
             style="@style/TwitterCircleButton"
-            android:visibility="gone"
-            android:background="@drawable/ic_cancle_circle" />
+            android:background="@drawable/ic_cancle_circle"
+            android:visibility="gone" />
 
         <fragment
             android:id="@+id/twitterLoginFragment"
+            android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

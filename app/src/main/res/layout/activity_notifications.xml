@@ -14,21 +14,35 @@
             android:layout_height="?android:actionBarSize"
             android:background="@color/transparent_black"
             android:gravity="center"
-            android:textSize="22sp"
-            android:textColor="@android:color/white"
             android:padding="@dimen/padding_small"
-            android:text="@string/title_activity_notifications"/>
+            android:text="@string/title_activity_notifications"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
 
         <View
             style="@style/HorizontalDivider"
-            android:background="@color/pink"/>
+            android:background="@color/pink" />
 
-        <ListView
-            android:id="@+id/notificationsList"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/black"
-            android:dividerHeight="2dp"/>
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/noNotificationsText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:padding="@dimen/padding"
+                android:visibility="gone"
+                android:text="@string/no_notifications_test"/>
+
+            <ListView
+                android:id="@+id/notificationsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/black"
+                android:dividerHeight="2dp" />
+        </FrameLayout>
 
     </LinearLayout>
 
