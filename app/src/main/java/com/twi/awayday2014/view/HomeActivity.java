@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.models.Theme;
+import com.twi.awayday2014.services.ParseDataService;
 import com.twi.awayday2014.utils.Blur;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.custom.KenBurnsView;
@@ -49,6 +51,7 @@ public class HomeActivity extends FragmentActivity{
     private List<CustomActionbarStateListener> customActionbarStateListener;
     private View customActionbarBackground;
     private Drawable appIcon;
+    private KenBurnsView headerPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,13 @@ public class HomeActivity extends FragmentActivity{
         setupActionbar();
         setupHeader();
         setupScroller();
+        fetchData();
+    }
+
+    private void fetchData() {
+        AwayDayApplication application = (AwayDayApplication) getApplication();
+        ParseDataService parseDataService = application.getParseDataService();
+        parseDataService.fetchThemeInBackground();
     }
 
     private void setupScroller() {
@@ -179,8 +189,14 @@ public class HomeActivity extends FragmentActivity{
     }
 
     private void setupHeader() {
-        KenBurnsView headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
-        headerPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1);
+        headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
+        Bitmap[] bitmaps = new Bitmap[4];
+        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.picture0);
+        bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
+        bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
+        bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
+//        headerPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1, R.drawable.placeholder_twitter);
+        headerPicture.setBitmaps(bitmaps);
         setupHeaderText();
         Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
         notificationsButton.setOnClickListener(new View.OnClickListener() {
@@ -285,5 +301,18 @@ public class HomeActivity extends FragmentActivity{
 
     public interface CustomActionbarStateListener{
         void onActionbarStateChange(CustomActionbarState customActionbarState);
+    }
+
+    private class ParseCallbackListener implements ParseDataService.ParseDataListener{
+
+        @Override
+        public void onThemeFetched(Theme theme) {
+
+        }
+
+        @Override
+        public void onThemeFetchedError(int status) {
+
+        }
     }
 }

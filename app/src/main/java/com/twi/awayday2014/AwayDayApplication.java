@@ -6,6 +6,7 @@ import com.parse.ParseACL;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.twi.awayday2014.services.AgendaService;
+import com.twi.awayday2014.services.ParseDataService;
 import com.twi.awayday2014.services.twitter.TwitterPreference;
 import com.twi.awayday2014.services.twitter.TwitterService;
 
@@ -17,6 +18,7 @@ public class AwayDayApplication extends SugarApp {
 
     private static AgendaService agendaService;
     private TwitterService twitterService;
+    private ParseDataService parseDataService;
 
     @Override
     public void onCreate() {
@@ -39,12 +41,19 @@ public class AwayDayApplication extends SugarApp {
         return twitterService;
     }
 
+    public ParseDataService getParseDataService(){
+        if(parseDataService == null){
+            parseDataService = new ParseDataService();
+        }
+        return parseDataService;
+    }
+
     private void setupParse() {
         Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
 
         ParseUser.enableAutomaticUser();
-        ParseACL defaultACL = new ParseACL();
 
+        ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 

@@ -3,6 +3,7 @@ package com.twi.awayday2014.view.custom;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,7 +22,9 @@ public class KenBurnsView extends FrameLayout {
 
     private final Handler mHandler;
     private int[] mResourceIds;
+    private Bitmap[] bitmaps;
     private ImageView[] mImageViews;
+    private int mActiveImageViewIndex = -1;
     private int mActiveImageIndex = -1;
 
     private final Random random = new Random();
@@ -57,21 +60,29 @@ public class KenBurnsView extends FrameLayout {
         fillImageViews();
     }
 
+    public void setBitmaps(Bitmap[] bitmaps){
+        this.bitmaps = bitmaps;
+    }
+
     private void swapImage() {
-        Log.d(TAG, "swapImage active=" + mActiveImageIndex);
-        if(mActiveImageIndex == -1) {
-            mActiveImageIndex = 1;
-            animate(mImageViews[mActiveImageIndex]);
+        if(mActiveImageViewIndex == -1) {
+            mActiveImageViewIndex = 0;
+            mActiveImageIndex = 0;
+            mImageViews[mActiveImageIndex].setImageBitmap(bitmaps[mActiveImageIndex]);
+            animate(mImageViews[mActiveImageViewIndex]);
             return;
         }
 
-        int inactiveIndex = mActiveImageIndex;
-        mActiveImageIndex = (1 + mActiveImageIndex) % mImageViews.length;
-        Log.d(TAG, "new active=" + mActiveImageIndex);
+        int inactiveImageViewIndex = mActiveImageViewIndex;
+        mActiveImageViewIndex = (1 + mActiveImageViewIndex) % mImageViews.length;
+        Log.d(TAG, "new active imageView=" + mActiveImageViewIndex);
+        mActiveImageIndex = (1 + mActiveImageIndex) % bitmaps.length;
+        Log.d(TAG, "new active image=" + mActiveImageIndex);
 
-        final ImageView activeImageView = mImageViews[mActiveImageIndex];
+        final ImageView activeImageView = mImageViews[mActiveImageViewIndex];
         activeImageView.setAlpha(0.0f);
-        ImageView inactiveImageView = mImageViews[inactiveIndex];
+        activeImageView.setImageBitmap(bitmaps[mActiveImageIndex]);
+        ImageView inactiveImageView = mImageViews[inactiveImageViewIndex];
 
         animate(activeImageView);
 
@@ -91,7 +102,6 @@ public class KenBurnsView extends FrameLayout {
         view.setTranslationY(fromTranslationY);
         ViewPropertyAnimator propertyAnimator = view.animate().translationX(toTranslationX).translationY(toTranslationY).scaleX(toScale).scaleY(toScale).setDuration(duration);
         propertyAnimator.start();
-        Log.d(TAG, "starting Ken Burns animation " + propertyAnimator);
     }
 
     private float pickScale() {

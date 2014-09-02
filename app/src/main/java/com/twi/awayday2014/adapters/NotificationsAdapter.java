@@ -9,14 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.AwayDayNotification;
 import com.twi.awayday2014.models.NotificationType;
-import com.twi.awayday2014.services.NotificationsService;
 import com.twi.awayday2014.utils.Fonts;
 
-import java.util.Collections;
 import java.util.List;
 
 public class NotificationsAdapter extends BaseAdapter {
