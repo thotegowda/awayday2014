@@ -50,4 +50,16 @@
         <item>App Update</item>
     </string-array>
 
+
+    <string name="presenters">Presenters:</string>
+    <string name="rate_this_session_overall">Rate this session overall</string>
+    <string name="how_relevant_is_content">How relevant is the content</string>
+    <string name="speaker_quality">Speaker quality</string>
+    <string name="anything_else_to_say">Anything else you would like to say</string>
+    <string name="sessions">Sessions</string>
+    <string name="tell_us">Tell us</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="session_details">Session Details</string>
+    <string name="ask">Ask</string>
+
 </resources>

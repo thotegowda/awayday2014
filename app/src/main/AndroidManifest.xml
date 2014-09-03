@@ -79,10 +79,23 @@
                 android:value=".view.HomeActivity"/>
         </activity>
 
-        <activity
-                android:name=".view.PushActivity"
+        <activity android:name=".view.PushActivity"
                 android:label="@string/title_activity_push" >
         </activity>
+
+        <activity android:name=".view.SessionDetailsActivity"
+                  android:label="@string/sessions"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.ActionBar.Blue"
+                  android:parentActivityName=".view.HomeActivity"/>
+
+        <activity android:name=".view.FeedbackActivity"
+                  android:label="@string/session_details"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.ActionBar.Blue"
+                  android:parentActivityName=".view.HomeActivity"/>
 
         <!-- Parse framework specific -->
         <service android:name="com.parse.PushService" />

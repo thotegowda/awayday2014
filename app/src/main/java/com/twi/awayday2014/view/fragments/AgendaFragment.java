@@ -13,7 +13,7 @@ public class AgendaFragment extends ViewPagerFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootLayout = super.onCreateView(inflater, container, savedInstanceState);
-        pager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
+        pager.setAdapter(new ViewPagerAdapter(getActivity().getFragmentManager()));
         return rootLayout;
     }
 }

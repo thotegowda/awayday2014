@@ -1,25 +1,36 @@
 package com.twi.awayday2014.models;
 
 
+import com.orm.SugarRecord;
+import com.twi.awayday2014.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Session {
+public class Session extends SugarRecord<Session> {
 
-    private final List<Presenter> presenter;
-    private final String title;
-    private final String date;
-    private final String time;
-    private final String description;
+    private Presenter presenter;
+    private String title;
+    private String date;
+    private String time;
+    private String description;
+    private String location;
+    private boolean scheduled;
 
-    public Session(List<Presenter> presenter, String title, String date, String time, String description) {
+    public Session() {
+
+    }
+
+    public Session(Presenter presenter, String title, String date, String time, String description, String location) {
         this.presenter = presenter;
         this.title = title;
         this.date = date;
         this.time = time;
         this.description = description;
+        this.location = location;
     }
 
-    public List<Presenter> getPresenter() {
+    public Presenter getPresenter() {
         return presenter;
     }
 
@@ -37,5 +48,17 @@ public class Session {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isScheduled() {
+        return scheduled;
+    }
+
+    public void setScheduled(boolean scheduled) {
+        this.scheduled = scheduled;
+    }
+
+    public int getSessionResource() {
+        return R.drawable.notifications_image_sessions;
     }
 }
