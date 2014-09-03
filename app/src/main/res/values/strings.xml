@@ -61,5 +61,6 @@
     <string name="submit_feedback">Submit Feedback</string>
     <string name="session_details">Session Details</string>
     <string name="ask">Ask</string>
+    <string name="speakers_details">Speakers</string>
 
 </resources>

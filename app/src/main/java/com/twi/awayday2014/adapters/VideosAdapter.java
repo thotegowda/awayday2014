@@ -41,7 +41,7 @@ public class VideosAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
        if (view == null) {
-           view = inflater.inflate(R.layout.video_item, viewGroup, false);
+           view = inflater.inflate(R.layout.speaker_item, viewGroup, false);
        }
 
         ((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(videos.get(i).thumbnail());

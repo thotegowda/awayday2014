@@ -10,6 +10,10 @@ import com.twi.awayday2014.adapters.ViewPagerAdapter;
 public class AgendaFragment extends ViewPagerFragment{
     private static final String TAG = "AgendaFragment";
 
+    public static AgendaFragment newInstance(int sectionNumber) {
+        return new AgendaFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootLayout = super.onCreateView(inflater, container, savedInstanceState);

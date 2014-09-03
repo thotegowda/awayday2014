@@ -15,7 +15,7 @@ public class Session extends SugarRecord<Session> {
     private String time;
     private String description;
     private String location;
-    private boolean scheduled;
+    private boolean isScheduled;
 
     public Session() {
 
@@ -51,11 +51,11 @@ public class Session extends SugarRecord<Session> {
     }
 
     public boolean isScheduled() {
-        return scheduled;
+        return isScheduled;
     }
 
     public void setScheduled(boolean scheduled) {
-        this.scheduled = scheduled;
+        this.isScheduled = scheduled;
     }
 
     public int getSessionResource() {

@@ -2,18 +2,22 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="match_parent"
+             android:background="@drawable/card_background">
 
     <ImageView
             android:id="@+id/profile_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:scaleType="fitCenter"/>
 
     <RelativeLayout
+            android:id="@+id/session_text_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/listview_purple_background"
+            android:layout_margin="3dp"
+            android:background="@color/transparent_blue"
             android:focusable="true"
             android:clickable="true">
 

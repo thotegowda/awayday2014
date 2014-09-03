@@ -97,6 +97,13 @@
                   android:theme="@style/Theme.ActionBar.Blue"
                   android:parentActivityName=".view.HomeActivity"/>
 
+        <activity android:name=".view.SpeakerDetailsActivity"
+                  android:label="@string/speakers_details"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.ActionBar.Blue"
+                  android:parentActivityName=".view.HomeActivity"/>
+
         <!-- Parse framework specific -->
         <service android:name="com.parse.PushService" />
 

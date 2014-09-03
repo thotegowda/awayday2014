@@ -7,18 +7,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.models.Speaker;
+import com.twi.awayday2014.models.Presenter;
 
 import java.util.List;
 
 public class SpeakersAdapter extends BaseAdapter {
 
-    private List<Speaker> speakers;
+    private List<Presenter> speakers;
     private LayoutInflater inflater;
 
-    public SpeakersAdapter(Context context, List<Speaker> speakers) {
+    public SpeakersAdapter(Context context, List<Presenter> speakers) {
         this.speakers = speakers;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -41,12 +40,12 @@ public class SpeakersAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
        if (view == null) {
-           view = inflater.inflate(R.layout.video_item, viewGroup, false);
+           view = inflater.inflate(R.layout.speaker_item, viewGroup, false);
        }
 
-        ((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(speakers.get(i).imageResourceId());
-        ((TextView)view.findViewById(R.id.video_title)).setText(speakers.get(i).name());
-        ((TextView)view.findViewById(R.id.video_sub_title)).setText(speakers.get(i).shortBio());
+        ((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(speakers.get(i).profileResource());
+        ((TextView)view.findViewById(R.id.video_title)).setText(speakers.get(i).getName());
+        ((TextView)view.findViewById(R.id.video_sub_title)).setText(speakers.get(i).getDescription());
         view.setTag(speakers.get(i));
         return view;
     }

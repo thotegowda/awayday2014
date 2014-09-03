@@ -37,4 +37,8 @@
     <color name="notification_item_text">@color/white</color>
 
     <color name="actionbar_color">#66000000</color>
+
+    <color name="second_grey">#ffEAEAEA</color>
+    <color name="card_white">#ffffffff</color>
+    <color name="card_shadow">#22666666</color>
 </resources>

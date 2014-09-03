@@ -1,6 +1,8 @@
 package com.twi.awayday2014.view;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -8,10 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,16 +29,24 @@ import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.custom.KenBurnsView;
 import com.twi.awayday2014.view.custom.ObservableScrollView;
 import com.twi.awayday2014.view.fragments.AgendaFragment;
+import com.twi.awayday2014.view.fragments.BreakoutFragment;
+import com.twi.awayday2014.view.fragments.MyScheduleFragment;
+import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.twi.awayday2014.utils.Constants.DrawerConstants.AGENDA;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends Activity {
     private static final String TAG = "HomeActivity";
+
+    public static final int AGENDA_FRAGMENT = 1;
+    public static final int SPEAKERS_FRAGMENT = 2;
+    public static final int BREAKOUT_FRAGMENT = 3;
+    public static final int MY_SCHEDULE_FRAGMENT = 4;
+    public static final int VIDEOS_FRAGMENT = 5;
+    public static final int TAG_FRAGMENT = 6;
+
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
     private DrawerLayout drawerLayout;
@@ -52,6 +58,9 @@ public class HomeActivity extends FragmentActivity {
     private View customActionbarBackground;
     private Drawable appIcon;
     private KenBurnsView headerPicture;
+    private double mCurrentPosition;
+    private Fragment currentFragment;
+    private TextView selectedSectionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,14 +178,6 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
-    public void onDrawerItemClick(int itemId) {
-        Fragment fragment = getFragment(itemId);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, fragment, "" + itemId);
-        fragmentTransaction.commit();
-    }
-
     private int getAbsTop(View view) {
         int[] coords = {0, 0};
         view.getLocationOnScreen(coords);
@@ -198,7 +199,6 @@ public class HomeActivity extends FragmentActivity {
         bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
         bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
         bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
-//        headerPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1, R.drawable.placeholder_twitter);
         headerPicture.setBitmaps(bitmaps);
         setupHeaderText();
         Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
@@ -248,23 +248,7 @@ public class HomeActivity extends FragmentActivity {
         mainText.setTypeface(Fonts.openSansSemiBold(this));
         TextView footerDate = (TextView) findViewById(R.id.headerDetailsFooterDate);
         footerDate.setTypeface(Fonts.openSansLightItalic(this));
-
-//        TextView daysCount = (TextView) findViewById(R.id.daysCount);
-//        daysCount.setTypeface(Fonts.openSansLight(this));
-//        TextView days = (TextView) findViewById(R.id.days);
-//        days.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView hoursCount = (TextView) findViewById(R.id.hoursCount);
-//        hoursCount.setTypeface(Fonts.openSansLight(this));
-//        TextView hours = (TextView) findViewById(R.id.hours);
-//        hours.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView minutesCount = (TextView) findViewById(R.id.minutesCount);
-//        minutesCount.setTypeface(Fonts.openSansLight(this));
-//        TextView minutes = (TextView) findViewById(R.id.minutes);
-//        minutes.setTypeface(Fonts.openSansLightItalic(this));
-//        TextView seconds = (TextView) findViewById(R.id.seconds);
-//        seconds.setTypeface(Fonts.openSansLightItalic(this));
-
-        TextView selectedSectionText = (TextView) findViewById(R.id.selectedSectionText);
+        selectedSectionText = (TextView) findViewById(R.id.selectedSectionText);
         selectedSectionText.setTypeface(Fonts.openSansRegular(this));
     }
 
@@ -281,20 +265,74 @@ public class HomeActivity extends FragmentActivity {
         actionBar.setBackgroundDrawable(actionbarDrawable);
     }
 
-    private Fragment getFragment(int position) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("" + position);
+    public void onNavigationItemSelected(int position, int resourceId) {
+        if (mCurrentPosition == position) {
+            drawerHelper.closeDrawer();
+            return;
+        }
+        mCurrentPosition = position;
+        selectItem(position);
+
+        if (selectedSectionText != null) {
+            selectedSectionText.setText(getFragmentTitle(position));
+            selectedSectionText.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(resourceId), null, null, null);
+        }
+    }
+
+    private void selectItem(int position) {
+        startFragment(position);
+        drawerHelper.closeDrawer();
+    }
+
+    private void startFragment(int position) {
+        currentFragment = getFragment(position);
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        android.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, currentFragment);
+        transaction.commit();
+    }
+
+    public android.app.Fragment getFragment(int position) {
+        android.app.Fragment fragment = getFragmentManager().findFragmentById(position);
         if (fragment == null) {
             fragment = createFragment(position);
         }
         return fragment;
     }
 
-    private Fragment createFragment(int position) {
+    public android.app.Fragment createFragment(int position) {
         switch (position) {
-            case AGENDA:
-                return new AgendaFragment();
             default:
-                return new AgendaFragment();
+            case AGENDA_FRAGMENT:
+                return AgendaFragment.newInstance(position);
+            case SPEAKERS_FRAGMENT:
+                return SpeakersFragment.newInstance(position);
+            case BREAKOUT_FRAGMENT:
+                return BreakoutFragment.newInstance(position);
+            case MY_SCHEDULE_FRAGMENT:
+                return MyScheduleFragment.newInstance(position);
+            case VIDEOS_FRAGMENT:
+                return BreakoutFragment.newInstance(position);
+            case TAG_FRAGMENT:
+                return BreakoutFragment.newInstance(position);
+        }
+    }
+
+    public String getFragmentTitle(int position) {
+        switch (position) {
+            default:
+            case AGENDA_FRAGMENT:
+                return "Agenda";
+            case SPEAKERS_FRAGMENT:
+                return "Speakers";
+            case BREAKOUT_FRAGMENT:
+                return "Breakout Sessions";
+            case MY_SCHEDULE_FRAGMENT:
+                return "My Schedule";
+            case VIDEOS_FRAGMENT:
+                return "Videos";
+            case TAG_FRAGMENT:
+                return "Tags";
         }
     }
 

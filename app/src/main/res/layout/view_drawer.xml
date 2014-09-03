@@ -61,7 +61,7 @@
                     style="@style/DrawerListTextView"
                     android:text="Agenda" />
 
-                <View
+                <View android:id="@+id/select_agenda"
                     style="@style/DrawerListIndicator"/>
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                     style="@style/DrawerListTextView"
                     android:text="Speakers" />
 
-                <View
+                <View android:id="@+id/select_speakers"
                     style="@style/DrawerListIndicator"
                     android:visibility="gone"/>
             </LinearLayout>
@@ -104,9 +104,31 @@
                     style="@style/DrawerListTextView"
                     android:text="Breakout Sessions" />
 
-                <View
+                <View android:id="@+id/select_breakout"
                     style="@style/DrawerListIndicator"
                     android:visibility="gone"/>
+            </LinearLayout>
+
+            <View
+                    style="@style/HorizontalDivider"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+            <LinearLayout
+                    style="@style/DrawerListItem">
+
+                <ImageView
+                        style="@style/DrawerListItemImageView"
+                        android:src="@drawable/ic_sessions"/>
+
+                <TextView
+                        android:id="@+id/myScheduleText"
+                        style="@style/DrawerListTextView"
+                        android:text="My Schedule" />
+
+                <View android:id="@+id/select_my_schedule"
+                      style="@style/DrawerListIndicator"
+                      android:visibility="gone"/>
             </LinearLayout>
 
             <View
@@ -126,7 +148,7 @@
                     style="@style/DrawerListTextView"
                     android:text="Videos" />
 
-                <View
+                <View android:id="@+id/select_videos"
                     style="@style/DrawerListIndicator"
                     android:visibility="gone"/>
             </LinearLayout>
@@ -148,7 +170,7 @@
                     style="@style/DrawerListTextView"
                     android:text="Tags" />
 
-                <View
+                <View android:id="@+id/select_tags"
                     style="@style/DrawerListIndicator"
                     android:visibility="gone"/>
             </LinearLayout>

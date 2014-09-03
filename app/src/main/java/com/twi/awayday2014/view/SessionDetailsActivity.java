@@ -2,8 +2,10 @@ package com.twi.awayday2014.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -46,14 +48,18 @@ public class SessionDetailsActivity extends Activity {
         profileImageView = ((ImageView) findViewById(R.id.profile_image));
         title = (TextView)findViewById(R.id.session_title);
         description = (TextView) findViewById(R.id.session_description);
+
         presenters = (LinearLayout) findViewById(R.id.presenters_layout);
+
         duration = (TextView) findViewById(R.id.session_duration);
+
         findViewById(R.id.btn_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchFeedback();
             }
         });
+
         scheduleButton = (ImageView) findViewById(R.id.btn_add_to_my_schedule);
         setScheduleButton(session.isScheduled());
         scheduleButton.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +124,6 @@ public class SessionDetailsActivity extends Activity {
         }
     }
 
-
     private void setScheduleButton(boolean isScheduled) {
         scheduleButton.setImageResource(isScheduled ?
                 R.drawable.add_schedule_button_icon_checked : R.drawable.add_schedule_button_icon_unchecked);
@@ -126,7 +131,6 @@ public class SessionDetailsActivity extends Activity {
     }
 
     public void bind(Session session) {
-        //topView.setBackgroundColor(session.getModeColor());
         profileImageView.setImageResource(session.getSessionResource());
         title.setText(session.getTitle());
         description.setText(session.getDescription());
@@ -134,12 +138,28 @@ public class SessionDetailsActivity extends Activity {
         bind(session.getPresenter());
     }
 
-    private void bind(Presenter presenter) {
+    private void bind(final Presenter presenter) {
         TextView view = new TextView(this);
         view.setText(presenter.getName());
+        view.setPadding(10, 10, 10, 10);
+        view.setCompoundDrawablePadding(10);
+        view.setGravity(Gravity.CENTER_VERTICAL);
+        view.setBackgroundColor(Color.parseColor("#88d3d3d3"));
+        view.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_speakers), null, null, null);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                launchSpeakerDetails(presenter);
+            }
+        });
         presenters.addView(view, lp);
+    }
+
+    private void launchSpeakerDetails(Presenter presenter) {
+        startActivity(new Intent(this, SpeakerDetailsActivity.class).putExtra("presenter_id", String.valueOf(presenter.getId())));
     }
 
     private void launchFeedback() {

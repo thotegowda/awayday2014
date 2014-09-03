@@ -1,6 +1,7 @@
 package com.twi.awayday2014.services;
 
 import android.database.sqlite.SQLiteException;
+import com.orm.StringUtil;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
@@ -29,7 +30,11 @@ public class AgendaService {
     }
 
     public List<Session> getScheduledSessions() {
-        return Session.listAll(Session.class);
+        return Session.find(Session.class, StringUtil.toSQLName("isScheduled") + "=" + String.valueOf(1));
+    }
+
+    public List<Presenter> getSpeakers() {
+        return Presenter.listAll(Presenter.class);
     }
 
     private void setupSessions() {
@@ -39,21 +44,23 @@ public class AgendaService {
         }
 
         for (int i = 0; i < 10; i++) {
-            save("Martin Fowler",
+            Presenter presenter = savePresenter("Martin Fowler",
                     "This will contain presenter headline",
-                    "this is presenter description",
-                    "One year gone by, one year to come",
+                    "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum.Lorel ipsum contro borati cocum");
+                    saveSession(presenter, "One year gone by, one year to come",
                     "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum.Lorel ipsum contro borati cocum. " +
                             "Lorel ipsum contro borati cocum. Lorel ipsum contro borati cocum.",
                     "29/09/14 10.00 - 11.00");
         }
     }
 
-    private void save(String presenterName, String presenterTitle, String presenterDescription,
-                      String sessionTitle, String sessionDescription, String date) {
+    private Presenter savePresenter(String presenterName, String presenterTitle, String presenterDescription) {
         Presenter presenter = new Presenter(presenterName, presenterTitle, presenterDescription);
         presenter.save();
+        return presenter;
+    }
 
+    private void saveSession(Presenter presenter, String sessionTitle, String sessionDescription, String date) {
         new Session(presenter, sessionTitle, date, "12.00", sessionDescription, "Convention Hall").save();
     }
 
@@ -108,6 +115,7 @@ public class AgendaService {
             add(new Session(null, "DJ", "28 Sep", "22:00", null, "Convention Hall"));
         }};
     }
+
 
 
 }

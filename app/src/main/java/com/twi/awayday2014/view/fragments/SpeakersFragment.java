@@ -1,13 +1,17 @@
 package com.twi.awayday2014.view.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
-import com.twi.awayday2014.models.Speaker;
+import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.services.AgendaService;
+import com.twi.awayday2014.view.SpeakerDetailsActivity;
 
 import java.util.Arrays;
 
@@ -28,18 +32,16 @@ public class SpeakersFragment extends BaseListFragment {
 
     @Override
     protected ListAdapter getAdapter() {
-        return new SpeakersAdapter(this.getActivity(), Arrays.asList(
-                new Speaker("Sanjeev Veerawarana", "Building a successfull open source business", "detailed Message", R.drawable.speaker_00),
-                new Speaker("Kiran Chandra", "Using open source software for society's benefit", "detailed Message", R.drawable.speaker_01),
-                new Speaker("Teesta Setalvad", "Fighting communal forces", "detailed Message", R.drawable.speaker_02),
-                new Speaker("Smita Gupta", "Economic development predictor", "detailed Message", R.drawable.speaker_03),
-                new Speaker("Dr Yogesh Jain", "Health care for underprivileged", "detailed Message", R.drawable.speaker_04),
-                new Speaker("Sumangala Damodaran", "Music for change", "detailed Message", R.drawable.speaker_05)
-        ));
+        return new SpeakersAdapter(this.getActivity(), getAgendaService().getSpeakers());
+    }
+
+    private AgendaService getAgendaService() {
+        return ((AwayDayApplication)getActivity().getApplication()).getAgendaService();
     }
 
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
+        startActivity(new Intent(getActivity(), SpeakerDetailsActivity.class).putExtra("presenter_id", String.valueOf(presenter.getId())));
     }
 }

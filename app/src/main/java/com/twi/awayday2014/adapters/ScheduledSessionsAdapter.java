@@ -54,25 +54,25 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
         return view;
     }
 
-    private void setupSession(View sessionView, Session presentation) {
-        if (presentation == null) {
+    private void setupSession(View sessionView, Session session) {
+        if (session == null) {
             return;
         }
 
-//        View sessionLayout = sessionView.findViewById(R.id.session_text_layout);
-//        sessionLayout.setTag(presentation);
-//        sessionLayout.setBackgroundColor(presentation.getModeColor());
-//        sessionLayout.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                launchSessionDetails(((Presentation)view.getTag()).getId());
-//            }
-//        });
-        ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(presentation.getPresenter().profileResource());
-        ((TextView) sessionView.findViewById(R.id.presenter_title)).setText(presentation.getTitle());
-        ((TextView) sessionView.findViewById(R.id.presenter_name)).setText(presentation.getPresenter().getName());
-        ((TextView) sessionView.findViewById(R.id.presentation_date)).setText(presentation.getDate());
+        View sessionLayout = sessionView.findViewById(R.id.session_text_layout);
+        sessionLayout.setTag(session);
+        sessionLayout.setBackgroundColor(R.color.transparent_blue);
+        sessionLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                launchSessionDetails(((Session)view.getTag()).getId());
+            }
+        });
+        ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(session.getPresenter().profileResource());
+        ((TextView) sessionView.findViewById(R.id.presenter_title)).setText(session.getTitle());
+        ((TextView) sessionView.findViewById(R.id.presenter_name)).setText(session.getPresenter().getName());
+        ((TextView) sessionView.findViewById(R.id.presentation_date)).setText(session.getDate());
     }
 
     private void convertToKeynoteView(View  leftView, View rightView) {
@@ -81,7 +81,7 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
     }
 
     private void launchSessionDetails(Long id) {
-        context.startActivity(new Intent(context, SessionDetailsActivity.class).putExtra("presentation_id", String.valueOf(id)));
+        context.startActivity(new Intent(context, SessionDetailsActivity.class).putExtra("session_id", String.valueOf(id)));
     }
 
 }

@@ -15,14 +15,22 @@ import android.widget.TextView;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.utils.Fonts;
 
-import static com.twi.awayday2014.utils.Constants.DrawerConstants.AGENDA;
-
 public class DrawerHelper {
     private HomeActivity homeActivity;
     private DrawerLayout drawerlayout;
     private ActionBarDrawerToggle drawerToggle;
     private int clickCounter;
     private Handler handler;
+    private View[] selections;
+
+    private int[] resourceIds = {
+      R.drawable.ic_agenda,
+      R.drawable.ic_speakers,
+      R.drawable.ic_sessions,
+      R.drawable.ic_my_schedule,
+      R.drawable.ic_videos,
+      R.drawable.ic_tags
+    };
 
     public DrawerHelper(HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
@@ -32,7 +40,8 @@ public class DrawerHelper {
         this.drawerlayout = drawerLayout;
         setupDrawer();
         setupAdminPage();
-        homeActivity.onDrawerItemClick(AGENDA);
+
+        onNavigationItemSelect(HomeActivity.AGENDA_FRAGMENT);
     }
 
     private void setupDrawer() {
@@ -58,11 +67,11 @@ public class DrawerHelper {
         };
         drawerlayout.setDrawerListener(drawerToggle);
 
-        setupTextviews();
+        setupTextViews();
     }
 
     private void setupAdminPage() {
-        handler = new Handler(){
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 clickCounter = 0;
@@ -75,7 +84,7 @@ public class DrawerHelper {
                 clickCounter += 1;
                 handler.removeMessages(0);
                 handler.sendEmptyMessageDelayed(0, 400);
-                if(clickCounter == 9){
+                if (clickCounter == 9) {
                     clickCounter = 0;
                     Intent intent = new Intent(homeActivity, PushActivity.class);
                     homeActivity.startActivity(intent);
@@ -84,19 +93,84 @@ public class DrawerHelper {
         });
     }
 
-    private void setupTextviews() {
+    private void setupTextViews() {
+        selections = new View[]{
+                drawerlayout.findViewById(R.id.select_agenda),
+                drawerlayout.findViewById(R.id.select_speakers),
+                drawerlayout.findViewById(R.id.select_breakout),
+                drawerlayout.findViewById(R.id.select_my_schedule),
+                drawerlayout.findViewById(R.id.select_videos),
+                drawerlayout.findViewById(R.id.select_tags)
+        };
+
         TextView agendaText = (TextView) drawerlayout.findViewById(R.id.agendaText);
         agendaText.setTypeface(Fonts.openSansRegular(homeActivity));
+        agendaText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.AGENDA_FRAGMENT);
+            }
+        });
+
         TextView speakers = (TextView) drawerlayout.findViewById(R.id.speakersText);
         speakers.setTypeface(Fonts.openSansRegular(homeActivity));
+        speakers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.SPEAKERS_FRAGMENT);
+            }
+        });
+
         TextView breakoutSessions = (TextView) drawerlayout.findViewById(R.id.breakoutSessionsText);
         breakoutSessions.setTypeface(Fonts.openSansRegular(homeActivity));
+        breakoutSessions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.BREAKOUT_FRAGMENT);
+            }
+        });
+
+        TextView mySchedule = (TextView) drawerlayout.findViewById(R.id.myScheduleText);
+        mySchedule.setTypeface(Fonts.openSansRegular(homeActivity));
+        mySchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.MY_SCHEDULE_FRAGMENT);
+            }
+        });
+
         TextView videos = (TextView) drawerlayout.findViewById(R.id.videosText);
         videos.setTypeface(Fonts.openSansRegular(homeActivity));
+        videos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.VIDEOS_FRAGMENT);
+            }
+        });
+
         TextView tags = (TextView) drawerlayout.findViewById(R.id.tagsText);
         tags.setTypeface(Fonts.openSansRegular(homeActivity));
+        tags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNavigationItemSelect(HomeActivity.TAG_FRAGMENT);
+            }
+        });
+
         TextView countryText = (TextView) drawerlayout.findViewById(R.id.countryYearText);
         countryText.setTypeface(Fonts.openSansLight(homeActivity));
+    }
+
+    private void onNavigationItemSelect(int fragment) {
+        homeActivity.onNavigationItemSelected(fragment, resourceIds[fragment - 1]);
+        resetIndicators();
+        selections[fragment - 1].setVisibility(View.VISIBLE);
+    }
+
+    private void resetIndicators() {
+        for (View view : selections) {
+          view.setVisibility(View.GONE);
+        }
     }
 
     public void onPostCreate() {
