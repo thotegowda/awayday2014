@@ -21,7 +21,7 @@
 
         <View
             style="@style/HorizontalDivider"
-            android:background="@color/pink" />
+            android:background="@color/theme_color" />
 
         <FrameLayout
             android:layout_width="match_parent"

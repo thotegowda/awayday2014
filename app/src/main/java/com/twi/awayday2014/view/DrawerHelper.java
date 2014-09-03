@@ -158,7 +158,7 @@ public class DrawerHelper {
         });
 
         TextView countryText = (TextView) drawerlayout.findViewById(R.id.countryYearText);
-        countryText.setTypeface(Fonts.openSansLight(homeActivity));
+        countryText.setTypeface(Fonts.openSansRegular(homeActivity));
     }
 
     private void onNavigationItemSelect(int fragment) {

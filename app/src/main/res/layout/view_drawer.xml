@@ -25,7 +25,6 @@
             android:layout_height="@dimen/drawer_selection_buttons_layout_height"
             android:layout_gravity="bottom"
             android:background="@color/transparent_black"
-            android:drawableRight="@drawable/ic_action_expand"
             android:gravity="left"
             android:paddingBottom="@dimen/padding_small"
             android:paddingLeft="@dimen/padding"

@@ -6,8 +6,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_twitter"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/blur_background"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:id="@+id/divider"
             style="@style/HorizontalDivider"
             android:layout_below="@id/tweetsHeaderText"
-            android:background="@color/pink" />
+            android:background="@color/theme_color" />
 
         <LinearLayout
             android:id="@+id/placeholderView"
