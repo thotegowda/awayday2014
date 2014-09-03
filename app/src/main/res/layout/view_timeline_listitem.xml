@@ -31,7 +31,7 @@
             android:src="@drawable/placeholder"/>
 
         <TextView
-            android:id="@+id/speakers"
+            android:id="@+id/speakersText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/sessionImage"
@@ -46,7 +46,7 @@
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/speakers"
+            android:layout_below="@id/speakersText"
             android:layout_marginBottom="@dimen/padding"
             android:layout_marginTop="@dimen/padding_small"
             android:gravity="center"

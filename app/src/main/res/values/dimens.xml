@@ -36,6 +36,7 @@
 
     <dimen name="drawer_image_height">130dp</dimen>
     <dimen name="drawer_selection_buttons_layout_height">42dp</dimen>
+    <dimen name="drawer_list_item_height">56dp</dimen>
 
     <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>

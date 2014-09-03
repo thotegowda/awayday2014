@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,17 +85,15 @@ public class DrawerHelper {
     }
 
     private void setupTextviews() {
-        TextView agendaText = (TextView) drawerlayout.findViewById(R.id.agenda);
+        TextView agendaText = (TextView) drawerlayout.findViewById(R.id.agendaText);
         agendaText.setTypeface(Fonts.openSansRegular(homeActivity));
-        TextView myScheduleText = (TextView) drawerlayout.findViewById(R.id.mySchedule);
-        myScheduleText.setTypeface(Fonts.openSansRegular(homeActivity));
-        TextView speakers = (TextView) drawerlayout.findViewById(R.id.speakers);
+        TextView speakers = (TextView) drawerlayout.findViewById(R.id.speakersText);
         speakers.setTypeface(Fonts.openSansRegular(homeActivity));
-        TextView breakoutSessions = (TextView) drawerlayout.findViewById(R.id.breakoutSessions);
+        TextView breakoutSessions = (TextView) drawerlayout.findViewById(R.id.breakoutSessionsText);
         breakoutSessions.setTypeface(Fonts.openSansRegular(homeActivity));
-        TextView videos = (TextView) drawerlayout.findViewById(R.id.videos);
+        TextView videos = (TextView) drawerlayout.findViewById(R.id.videosText);
         videos.setTypeface(Fonts.openSansRegular(homeActivity));
-        TextView tags = (TextView) drawerlayout.findViewById(R.id.tags);
+        TextView tags = (TextView) drawerlayout.findViewById(R.id.tagsText);
         tags.setTypeface(Fonts.openSansRegular(homeActivity));
         TextView countryText = (TextView) drawerlayout.findViewById(R.id.countryYearText);
         countryText.setTypeface(Fonts.openSansLight(homeActivity));

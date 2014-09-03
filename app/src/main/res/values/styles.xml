@@ -47,13 +47,32 @@
     </style>
 
     <!--Drawer-->
-    <style name="DrawerListTextView">
+    <style name="DrawerListItem">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">left</item>
+        <item name="android:layout_height">@dimen/drawer_list_item_height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="DrawerListItemImageView">
+        <item name="android:layout_width">@dimen/drawer_list_item_height</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:padding">@dimen/padding</item>
-        <item name="android:drawablePadding">@dimen/padding</item>
+    </style>
+
+    <style name="DrawerListTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingRight">@dimen/padding</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="DrawerListIndicator">
+        <item name="android:layout_width">6dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/theme_color</item>
     </style>
 
     <!--Header-->
@@ -121,7 +140,7 @@
     <style name="ViewpagerSelectionIndicator">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">4dp</item>
-        <item name="android:background">@color/pink</item>
+        <item name="android:background">@color/theme_color</item>
     </style>
 
     <!--Twitter Activity-->

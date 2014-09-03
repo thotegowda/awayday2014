@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.twi.awayday2014.AwayDayApplication;
@@ -57,7 +56,7 @@ public class AgendaAdapter extends BaseAdapter {
             viewSource.timeTextView.setTypeface(Fonts.openSansRegular(context));
             viewSource.titleTextView = (TextView) convertView.findViewById(R.id.titleText);
             viewSource.titleTextView.setTypeface(Fonts.openSansRegular(context));
-            viewSource.speakerTextView = (TextView) convertView.findViewById(R.id.speakers);
+            viewSource.speakerTextView = (TextView) convertView.findViewById(R.id.speakersText);
             viewSource.speakerTextView.setTypeface(Fonts.openSansLight(context));
             convertView.setTag(viewSource);
         }

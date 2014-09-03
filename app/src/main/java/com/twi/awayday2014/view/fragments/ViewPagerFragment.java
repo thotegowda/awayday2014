@@ -68,11 +68,11 @@ public class ViewPagerFragment extends Fragment {
         switch (pos) {
             case 0:
                 leftIndicator.setBackgroundColor(getResources().getColor(R.color.viewpager_indicator_color));
-                rightIndicator.setBackgroundColor(getResources().getColor(R.color.pink));
+                rightIndicator.setBackgroundColor(getResources().getColor(R.color.theme_color));
                 break;
             case 1:
                 rightIndicator.setBackgroundColor(getResources().getColor(R.color.viewpager_indicator_color));
-                leftIndicator.setBackgroundColor(getResources().getColor(R.color.pink));
+                leftIndicator.setBackgroundColor(getResources().getColor(R.color.theme_color));
                 break;
             default:
                 break;

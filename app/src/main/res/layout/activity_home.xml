@@ -166,7 +166,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:alpha="0"
-                            android:background="@color/pink"/>
+                            android:background="@color/theme_dark_color"/>
 
                         <TextView
                             android:id="@+id/selectedSectionText"
@@ -194,7 +194,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/padding"
                             android:layout_marginRight="@dimen/padding_extra_large"
-                            android:background="@drawable/ic_twitter" />
+                            android:background="@drawable/ic_twitter_actionbar" />
                     </RelativeLayout>
 
                 </LinearLayout>

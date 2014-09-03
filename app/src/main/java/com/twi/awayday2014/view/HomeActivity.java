@@ -39,7 +39,7 @@ import java.util.List;
 
 import static com.twi.awayday2014.utils.Constants.DrawerConstants.AGENDA;
 
-public class HomeActivity extends FragmentActivity{
+public class HomeActivity extends FragmentActivity {
     private static final String TAG = "HomeActivity";
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
@@ -97,15 +97,15 @@ public class HomeActivity extends FragmentActivity{
         scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
             @Override
             public void onScrollChanged() {
-                int distanceToTravel  = defaultActionbarTopPos - defaultHeaderTopPos;
+                int distanceToTravel = defaultActionbarTopPos - defaultHeaderTopPos;
                 int currentDistanceTravelled = getAbsTop(customActionbar) - defaultHeaderTopPos;
-                float ratioTravelled = (float)currentDistanceTravelled/distanceToTravel;
+                float ratioTravelled = (float) currentDistanceTravelled / distanceToTravel;
                 Log.e(TAG, "ratio: " + ratioTravelled);
                 if (ratioTravelled <= 0 && currentCustomActionbarState == CustomActionbarState.FLOATING) {
                     currentCustomActionbarState = CustomActionbarState.STICKY;
                     Log.d(TAG, "actionbar is now sticky");
                     notifyCustomActionbarStateChange(CustomActionbarState.STICKY);
-                }else if(ratioTravelled > 0 && currentCustomActionbarState == CustomActionbarState.STICKY){
+                } else if (ratioTravelled > 0 && currentCustomActionbarState == CustomActionbarState.STICKY) {
                     currentCustomActionbarState = CustomActionbarState.FLOATING;
                     Log.d(TAG, "actionbar is now floating");
                     notifyCustomActionbarStateChange(CustomActionbarState.FLOATING);
@@ -162,6 +162,13 @@ public class HomeActivity extends FragmentActivity{
     }
 
 
+    public void onDrawerSlide(float slideOffset) {
+        actionbarDrawable.setAlpha((int) (255 * slideOffset));
+        if (slideOffset < 1) {
+            getActionBar().setTitle("");
+        }
+    }
+
     public void onDrawerItemClick(int itemId) {
         Fragment fragment = getFragment(itemId);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -170,12 +177,8 @@ public class HomeActivity extends FragmentActivity{
         fragmentTransaction.commit();
     }
 
-    public void onDrawerSlide(float slideOffset) {
-        actionbarDrawable.setAlpha((int) (255 * slideOffset));
-    }
-
-    private int getAbsTop(View view){
-        int[] coords = {0,0};
+    private int getAbsTop(View view) {
+        int[] coords = {0, 0};
         view.getLocationOnScreen(coords);
         return coords[1];
     }
@@ -191,7 +194,7 @@ public class HomeActivity extends FragmentActivity{
     private void setupHeader() {
         headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
         Bitmap[] bitmaps = new Bitmap[4];
-        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.picture0);
+        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
         bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
         bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
         bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
@@ -228,7 +231,7 @@ public class HomeActivity extends FragmentActivity{
         int width = getWindowManager().getDefaultDisplay().getWidth();
         int height = getWindowManager().getDefaultDisplay().getHeight();
 
-        Bitmap bitmapWithoutStatusBar = Bitmap.createBitmap(b, 0, statusBarHeight, width, height  - statusBarHeight);
+        Bitmap bitmapWithoutStatusBar = Bitmap.createBitmap(b, 0, statusBarHeight, width, height - statusBarHeight);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapWithoutStatusBar,
                 bitmapWithoutStatusBar.getWidth() / 2, bitmapWithoutStatusBar.getHeight() / 2, false);
         bitmapWithoutStatusBar.recycle();
@@ -272,6 +275,7 @@ public class HomeActivity extends FragmentActivity{
         actionBar.setTitle("");
         appIcon = getResources().getDrawable(R.drawable.ic_launcher);
         actionBar.setIcon(appIcon);
+        actionBar.setDisplayShowTitleEnabled(true);
         actionbarDrawable = getResources().getDrawable(R.drawable.ab_solid_awayday);
         actionbarDrawable.setAlpha(0);
         actionBar.setBackgroundDrawable(actionbarDrawable);
@@ -299,11 +303,11 @@ public class HomeActivity extends FragmentActivity{
         FLOATING;
     }
 
-    public interface CustomActionbarStateListener{
+    public interface CustomActionbarStateListener {
         void onActionbarStateChange(CustomActionbarState customActionbarState);
     }
 
-    private class ParseCallbackListener implements ParseDataService.ParseDataListener{
+    private class ParseCallbackListener implements ParseDataService.ParseDataListener {
 
         @Override
         public void onThemeFetched(Theme theme) {
