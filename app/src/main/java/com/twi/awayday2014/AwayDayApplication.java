@@ -19,10 +19,6 @@ import static java.util.Arrays.asList;
 
 public class AwayDayApplication extends SugarApp {
 
-    private static final String YOUR_APPLICATION_ID = "cRkqJtkVvjyuC5pvKRzLNz8CFm6WgrbPqX0uKX7a";
-    private static final String YOUR_CLIENT_KEY = "o4Dr0m1oV8PBWw0DQSeaYmd9T3LSayKIPJCkbIxd";
-
-
     private static AgendaService agendaService;
     private TwitterService twitterService;
     private ParseDataService parseDataService;
@@ -31,28 +27,15 @@ public class AwayDayApplication extends SugarApp {
     public void onCreate() {
         super.onCreate();
 
-        setupParse();
+        parseDataService = new ParseDataService(this);
     }
 
-    public AgendaService getAgendaService(){
-        if(agendaService == null){
+    public AgendaService getAgendaService() {
+        if (agendaService == null) {
             agendaService = new AgendaService();
         }
         return agendaService;
     }
-
-    private void setupParse() {
-        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
-
-        ParseUser.enableAutomaticUser();
-
-        ParseACL defaultACL = new ParseACL();
-        defaultACL.setPublicReadAccess(true);
-        ParseACL.setDefaultACL(defaultACL, true);
-
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-    }
-
 
     public TwitterService getTwitterService() {
         if (twitterService == null) {
@@ -61,10 +44,7 @@ public class AwayDayApplication extends SugarApp {
         return twitterService;
     }
 
-    public ParseDataService getParseDataService(){
-        if(parseDataService == null){
-            parseDataService = new ParseDataService();
-        }
+    public ParseDataService getParseDataService() {
         return parseDataService;
     }
 }

@@ -3,9 +3,13 @@ package com.twi.awayday2014.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.models.Feedback;
 import com.twi.awayday2014.models.Session;
 
 public class FeedbackActivity extends Activity {
@@ -13,6 +17,7 @@ public class FeedbackActivity extends Activity {
     private RatingBar[] ratingsView = new RatingBar[3];
     private Session session;
     private TextView sessionTitleView;
+    private EditText tellUsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,6 @@ public class FeedbackActivity extends Activity {
     }
 
     private void bind(Session presentation) {
-//        sessionTitleView.setBackgroundColor(presentation.getModeColor());
         sessionTitleView.setText(presentation.getTitle());
     }
 
@@ -44,17 +48,35 @@ public class FeedbackActivity extends Activity {
 
         sessionTitleView = (TextView) findViewById(R.id.session_title);
 
+        tellUsView = (EditText) findViewById(R.id.edt_tell_us);
+
         findViewById(R.id.submit_feedback).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                submit();
-                finish();
+                if (submit()) {
+                    finish();
+                }
             }
         });
     }
 
-    private void submit() {
+    private boolean submit() {
+        Feedback feedback = new Feedback(session.getId(), session.getTitle());
+        feedback.setOverallRating((int) ratingsView[0].getRating());
+        feedback.setRelevantContentRating((int) ratingsView[1].getRating());
+        feedback.setSpeakerQuality((int) ratingsView[2].getRating());
+        feedback.setAnythingElse(tellUsView.getText().toString().trim());
 
+        if (!feedback.isEmpty()) {
+            return submit(feedback);
+        } else {
+            Toast.makeText(this, "Feedback is very valuable. Please provide valid feedback", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    private boolean submit(Feedback feedback) {
+        return ((AwayDayApplication) getApplication()).getParseDataService().post(feedback);
     }
 }

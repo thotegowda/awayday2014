@@ -1,13 +1,10 @@
 package com.twi.awayday2014.services;
 
+import android.app.Application;
 import android.util.Log;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.*;
+import com.twi.awayday2014.models.Feedback;
 import com.twi.awayday2014.models.Theme;
 
 import org.json.JSONArray;
@@ -20,10 +17,27 @@ import static com.twi.awayday2014.utils.Constants.Parse.*;
 
 public class ParseDataService {
     private static final String TAG = "ParseDataService";
+
+    private static final String YOUR_APPLICATION_ID = "cRkqJtkVvjyuC5pvKRzLNz8CFm6WgrbPqX0uKX7a";
+    private static final String YOUR_CLIENT_KEY = "o4Dr0m1oV8PBWw0DQSeaYmd9T3LSayKIPJCkbIxd";
+
     private List<ParseDataListener> parseDataListener;
 
-    public ParseDataService() {
+    public ParseDataService(Application application) {
+        setupParse(application);
         parseDataListener = new ArrayList<ParseDataListener>();
+    }
+
+    private void setupParse(Application application) {
+        Parse.initialize(application, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+
+        ParseUser.enableAutomaticUser();
+
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicReadAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     public void fetchThemeInBackground() {
@@ -112,6 +126,18 @@ public class ParseDataService {
 
     public void removeListener(ParseDataListener listener){
         parseDataListener.remove(listener);
+    }
+
+    public boolean post(Feedback feedback) {
+        ParseObject pObject = new ParseObject("Feedback");
+        pObject.put("sessionId", feedback.getSessionId());
+        pObject.put("sessionTitle", feedback.getSessionTitle());
+        pObject.put("overallRating", feedback.getOverallRating());
+        pObject.put("relevantContentRating", feedback.getRelevantContentRating());
+        pObject.put("speakerQuality", feedback.getSpeakerQuality());
+        pObject.put("anythingElse", feedback.getAnythingElse());
+        pObject.saveInBackground();
+        return true;
     }
 
     public interface ParseDataListener {
