@@ -45,9 +45,8 @@ public class HomeActivity extends FragmentActivity {
     public static final int AGENDA_FRAGMENT = 1;
     public static final int SPEAKERS_FRAGMENT = 2;
     public static final int BREAKOUT_FRAGMENT = 3;
-    public static final int MY_SCHEDULE_FRAGMENT = 4;
-    public static final int VIDEOS_FRAGMENT = 5;
-    public static final int TAG_FRAGMENT = 6;
+    public static final int VIDEOS_FRAGMENT = 4;
+    public static final int TAG_FRAGMENT = 5;
 
     private DrawerHelper drawerHelper;
     private Drawable actionbarDrawable;
@@ -330,8 +329,6 @@ public class HomeActivity extends FragmentActivity {
                 return "Speakers";
             case BREAKOUT_FRAGMENT:
                 return "Breakout Sessions";
-            case MY_SCHEDULE_FRAGMENT:
-                return "My Schedule";
             case VIDEOS_FRAGMENT:
                 return "Videos";
             case TAG_FRAGMENT:

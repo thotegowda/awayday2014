@@ -27,7 +27,6 @@ public class DrawerHelper {
       R.drawable.ic_agenda,
       R.drawable.ic_speakers,
       R.drawable.ic_sessions,
-      R.drawable.ic_my_schedule,
       R.drawable.ic_videos,
       R.drawable.ic_tags
     };
