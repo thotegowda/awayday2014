@@ -98,7 +98,6 @@ public class DrawerHelper {
                 drawerlayout.findViewById(R.id.select_agenda),
                 drawerlayout.findViewById(R.id.select_speakers),
                 drawerlayout.findViewById(R.id.select_breakout),
-                drawerlayout.findViewById(R.id.select_my_schedule),
                 drawerlayout.findViewById(R.id.select_videos),
                 drawerlayout.findViewById(R.id.select_tags)
         };
@@ -127,15 +126,6 @@ public class DrawerHelper {
             @Override
             public void onClick(View view) {
                 onNavigationItemSelect(HomeActivity.BREAKOUT_FRAGMENT);
-            }
-        });
-
-        TextView mySchedule = (TextView) drawerlayout.findViewById(R.id.myScheduleText);
-        mySchedule.setTypeface(Fonts.openSansRegular(homeActivity));
-        mySchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onNavigationItemSelect(HomeActivity.MY_SCHEDULE_FRAGMENT);
             }
         });
 

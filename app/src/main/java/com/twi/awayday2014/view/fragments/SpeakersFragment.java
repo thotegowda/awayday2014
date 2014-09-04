@@ -1,19 +1,17 @@
 package com.twi.awayday2014.view.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.services.AgendaService;
 import com.twi.awayday2014.view.SpeakerDetailsActivity;
-
-import java.util.Arrays;
 
 public class SpeakersFragment extends BaseListFragment {
 

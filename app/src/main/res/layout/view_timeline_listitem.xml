@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/agenda_card_image_height"
             android:scaleType="centerCrop"
-            android:src="@drawable/sessions_placeholder" />
+            android:src="@drawable/awayday_2014_placeholder" />
 
         <com.twi.awayday2014.view.custom.CircularImageView
             android:id="@+id/userImage"

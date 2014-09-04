@@ -1,11 +1,11 @@
 package com.twi.awayday2014.view.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.twi.awayday2014.R;
-import android.app.Fragment;
 
 public class BreakoutFragment extends Fragment {
 

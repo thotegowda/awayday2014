@@ -1,8 +1,10 @@
 package com.twi.awayday2014.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+
 import com.twi.awayday2014.view.fragments.AgendaTimeLineFragment;
 
 import org.joda.time.DateTime;
@@ -16,6 +18,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+        Log.e("DEBUG", "getItem");
         DateTime day1 = new DateTime().withDayOfMonth(27).withMonthOfYear(9);
         DateTime day2 = new DateTime().withDayOfMonth(28).withMonthOfYear(9);
         if (i == 0) {

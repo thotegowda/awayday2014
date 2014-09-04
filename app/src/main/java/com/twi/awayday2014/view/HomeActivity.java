@@ -1,8 +1,6 @@
 package com.twi.awayday2014.view;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -10,6 +8,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,14 +33,13 @@ import com.twi.awayday2014.view.custom.KenBurnsView;
 import com.twi.awayday2014.view.custom.ObservableScrollView;
 import com.twi.awayday2014.view.fragments.AgendaFragment;
 import com.twi.awayday2014.view.fragments.BreakoutFragment;
-import com.twi.awayday2014.view.fragments.MyScheduleFragment;
 import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends FragmentActivity {
     private static final String TAG = "HomeActivity";
 
     public static final int AGENDA_FRAGMENT = 1;
@@ -61,6 +63,7 @@ public class HomeActivity extends Activity {
     private double mCurrentPosition;
     private Fragment currentFragment;
     private TextView selectedSectionText;
+    private ImageView selectedSectionIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +221,8 @@ public class HomeActivity extends Activity {
                 HomeActivity.this.startActivity(intent);
             }
         });
+
+        selectedSectionIcon = (ImageView) findViewById(R.id.selectedSectionIcon);
     }
 
     public Bitmap getScreenShot() {
@@ -275,7 +280,7 @@ public class HomeActivity extends Activity {
 
         if (selectedSectionText != null) {
             selectedSectionText.setText(getFragmentTitle(position));
-            selectedSectionText.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(resourceId), null, null, null);
+            selectedSectionIcon.setImageResource(resourceId);
         }
     }
 
@@ -286,21 +291,21 @@ public class HomeActivity extends Activity {
 
     private void startFragment(int position) {
         currentFragment = getFragment(position);
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        android.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_frame, currentFragment);
         transaction.commit();
     }
 
-    public android.app.Fragment getFragment(int position) {
-        android.app.Fragment fragment = getFragmentManager().findFragmentById(position);
+    public Fragment getFragment(int position) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(position);
         if (fragment == null) {
             fragment = createFragment(position);
         }
         return fragment;
     }
 
-    public android.app.Fragment createFragment(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
             default:
             case AGENDA_FRAGMENT:
@@ -309,8 +314,6 @@ public class HomeActivity extends Activity {
                 return SpeakersFragment.newInstance(position);
             case BREAKOUT_FRAGMENT:
                 return BreakoutFragment.newInstance(position);
-            case MY_SCHEDULE_FRAGMENT:
-                return MyScheduleFragment.newInstance(position);
             case VIDEOS_FRAGMENT:
                 return BreakoutFragment.newInstance(position);
             case TAG_FRAGMENT:
