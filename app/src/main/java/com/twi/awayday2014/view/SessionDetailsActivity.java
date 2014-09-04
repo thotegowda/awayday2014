@@ -8,13 +8,19 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
+import com.twi.awayday2014.utils.Fonts;
 
 import java.util.List;
 
@@ -40,55 +46,30 @@ public class SessionDetailsActivity extends Activity {
 
         String sessionId = getIntent().getStringExtra("session_id");
         session = Session.findById(Session.class, Long.valueOf(sessionId));
-        setupViews();
-        bind(session);
+
+        setupHeader();
+        setupFeedbackButton();
     }
 
-    public void setupViews() {
-        profileImageView = ((ImageView) findViewById(R.id.profile_image));
-        title = (TextView)findViewById(R.id.session_title);
-        description = (TextView) findViewById(R.id.session_description);
-
-        presenters = (LinearLayout) findViewById(R.id.presenters_layout);
-
-        duration = (TextView) findViewById(R.id.session_duration);
-
-        findViewById(R.id.btn_feedback).setOnClickListener(new View.OnClickListener() {
+    private void setupFeedbackButton() {
+        final Button feedbackButton = (Button) findViewById(R.id.feedbackButton);
+        feedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 launchFeedback();
             }
         });
+    }
 
-        scheduleButton = (ImageView) findViewById(R.id.btn_add_to_my_schedule);
-        setScheduleButton(session.isScheduled());
-        scheduleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(session.isScheduled()) {
-                    session.setScheduled(false);
-                    setScheduleButton(false);
-                } else {
-                    session.setScheduled(true);
-                    setScheduleButton(true);
-                }
-                session.save();
-            }
-        });
+    private void setupHeader() {
+        TextView sessionHeaderText = (TextView) findViewById(R.id.sessionHeading);
+        sessionHeaderText.setTypeface(Fonts.openSansRegular(this));
 
-        topView = findViewById(R.id.top_view);
+        TextView speakerName = (TextView) findViewById(R.id.speakerName);
+        speakerName.setTypeface(Fonts.openSansLight(this));
 
-        questionHolder = (LinearLayout) findViewById(R.id.questions_holder);
-        addAllQuestions();
-
-        question = (EditText) findViewById(R.id.question);
-        findViewById(R.id.ask).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                askQuestion(question.getText().toString().trim());
-            }
-        });
+        TextView sessionTimeText = (TextView) findViewById(R.id.sessionTime);
+        sessionTimeText.setTypeface(Fonts.openSansLightItalic(this));
     }
 
     private void askQuestion(String question) {
@@ -124,20 +105,6 @@ public class SessionDetailsActivity extends Activity {
         }
     }
 
-    private void setScheduleButton(boolean isScheduled) {
-        scheduleButton.setImageResource(isScheduled ?
-                R.drawable.add_schedule_button_icon_checked : R.drawable.add_schedule_button_icon_unchecked);
-        scheduleButton.setSelected(isScheduled ? true : false);
-    }
-
-    public void bind(Session session) {
-        profileImageView.setImageResource(session.getSessionResource());
-        title.setText(session.getTitle());
-        description.setText(session.getDescription());
-        duration.setText(session.getDate());
-        bind(session.getPresenter());
-    }
-
     private void bind(final Presenter presenter) {
         TextView view = new TextView(this);
         view.setText(presenter.getName());
@@ -163,10 +130,6 @@ public class SessionDetailsActivity extends Activity {
     }
 
     private void launchFeedback() {
-//        if (!DateUtil.isAlreadyHappened(session)) {
-//            Toast.makeText(this, "Please wait for the session to get over!", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         startActivity(new Intent(this, FeedbackActivity.class).putExtra("session_id", String.valueOf(session.getId())));
     }
 }

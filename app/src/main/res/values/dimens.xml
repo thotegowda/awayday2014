@@ -64,8 +64,15 @@
     <dimen name="speaker_image_diameter">60dp</dimen>
     <dimen name="speaker_image_top_margin">114dp</dimen>
 
+    <dimen name="agenda_details_header_image_height">180dp</dimen>
+    <dimen name="agenda_details_header_title_text">20sp</dimen>
+    <dimen name="agenda_details_header_name_text">16sp</dimen>
+    <dimen name="agenda_details_header_time_text">16sp</dimen>
+
     <dimen name="card_view_gap_small">5dp</dimen>
     <dimen name="card_view_shadow_gap">5dp</dimen>
     <dimen name="background_corner_radius">3dp</dimen>
     <dimen name="card_background_radius">1dp</dimen>
+
+
 </resources>
