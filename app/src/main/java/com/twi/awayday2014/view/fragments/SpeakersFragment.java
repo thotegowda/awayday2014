@@ -1,13 +1,18 @@
 package com.twi.awayday2014.view.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.twi.awayday2014.AwayDayApplication;
+import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.SpeakersAdapter;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.services.AgendaService;
@@ -26,6 +31,18 @@ public class SpeakersFragment extends BaseListFragment {
     }
 
     public SpeakersFragment() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        listView = (ListView) inflater.inflate(R.layout.fragment_speakers, container, false);
+        header = inflater.inflate(R.layout.view_fake_header, listView, false);
+        return listView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override

@@ -5,19 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.utils.Fonts;
 
 import java.util.List;
 
 public class SpeakersAdapter extends BaseAdapter {
 
+    private Context context;
     private List<Presenter> speakers;
     private LayoutInflater inflater;
 
     public SpeakersAdapter(Context context, List<Presenter> speakers) {
+        this.context = context;
         this.speakers = speakers;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -39,14 +42,21 @@ public class SpeakersAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-       if (view == null) {
-           view = inflater.inflate(R.layout.speaker_item, viewGroup, false);
-       }
+        ViewSource viewSource;
+        if (view == null) {
+            view = inflater.inflate(R.layout.view_speaker_listitem, viewGroup, false);
+            viewSource = new ViewSource();
+            viewSource.speakerName = (TextView) view.findViewById(R.id.speakerName);
+            viewSource.speakerName.setTypeface(Fonts.openSansRegular(context));
+            view.setTag(viewSource);
+        }
 
-        ((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(speakers.get(i).profileResource());
-        ((TextView)view.findViewById(R.id.video_title)).setText(speakers.get(i).getName());
-        ((TextView)view.findViewById(R.id.video_sub_title)).setText(speakers.get(i).getDescription());
-        view.setTag(speakers.get(i));
+        viewSource = (ViewSource) view.getTag();
         return view;
     }
+
+    private class ViewSource{
+        TextView speakerName;
+    }
+
 }

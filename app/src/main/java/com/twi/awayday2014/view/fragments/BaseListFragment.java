@@ -11,8 +11,8 @@ import com.twi.awayday2014.view.HomeActivity;
 public abstract class BaseListFragment extends Fragment implements HomeActivity.CustomActionbarStateListener {
     private static final String TAG = "BaseFragment";
 
-    private ListView listView;
-    private View header;
+    protected ListView listView;
+    protected View header;
     private boolean interceptingTouchEvents;
 
     @Override

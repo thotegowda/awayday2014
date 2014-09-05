@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Video;
@@ -40,12 +38,11 @@ public class VideosAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-       if (view == null) {
-           view = inflater.inflate(R.layout.speaker_item, viewGroup, false);
-       }
+        if (view == null) {
+            view = inflater.inflate(R.layout.view_speaker_listitem, viewGroup, false);
+        }
 
-        ((ImageView)view.findViewById(R.id.video_thumbnail)).setImageResource(videos.get(i).thumbnail());
-        ((TextView)view.findViewById(R.id.video_title)).setText(videos.get(i).name());
+
         view.setTag(videos.get(i));
         return view;
     }

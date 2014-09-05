@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/padding"
+    android:gravity="center_vertical"
+    android:paddingBottom="@dimen/padding"
+    android:paddingLeft="@dimen/padding_large"
+    android:paddingRight="@dimen/padding_large"
+    android:background="@android:color/white">
+
+    <com.twi.awayday2014.view.custom.CircularImageView
+        android:id="@+id/profile_image"
+        android:layout_width="@dimen/speaker_image_diameter"
+        android:layout_height="@dimen/speaker_image_diameter"
+        android:src="@drawable/placeholder"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@id/speakerName"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_large"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="Speaker Name"/>
+</LinearLayout>

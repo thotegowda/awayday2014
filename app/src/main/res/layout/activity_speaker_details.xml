@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<com.twi.awayday2014.view.custom.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:parallax_factor="1.9">
 
     <LinearLayout
-            android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
+            android:layout_height="@dimen/agenda_details_header_image_height">
 
-        <ImageView
+            <ImageView
+                android:id="@+id/backgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/agenda_details_header_image_height"
+                android:scaleType="centerCrop"
+                android:src="@drawable/awayday_2014_background_blur" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent_light_black"/>
+
+            <com.twi.awayday2014.view.custom.CircularImageView
                 android:id="@+id/profile_image"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/speaker_00"/>
+                android:layout_gravity="center"
+                android:layout_width="@dimen/speaker_image_big_diameter"
+                android:layout_height="@dimen/speaker_image_big_diameter"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
+
+
+        </FrameLayout>
 
         <TextView
-                android:id="@+id/speaker_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/theme_color"
+            android:gravity="center"
+            android:text="Speaker Name"
+            android:padding="@dimen/padding"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
 
         <TextView
-                android:id="@+id/speaker_headline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"/>\
-
-        <TextView
-                android:id="@+id/speaker_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="14sp"/>
-
-        <TextView
-                android:id="@+id/speaker_blog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"/>
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_large"
+            android:text="@string/placeHolderTextLarge"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="16sp" />
     </LinearLayout>
-</ScrollView>
+</com.twi.awayday2014.view.custom.ParallaxScrollView>
