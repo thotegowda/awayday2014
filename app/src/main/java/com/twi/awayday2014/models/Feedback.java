@@ -4,14 +4,14 @@ import com.parse.codec.binary.StringUtils;
 
 public class Feedback {
 
-    private Long sessionId;
+    private String sessionId;
     private String sessionTitle;
     private int overallRating = 0;
     private int relevantContentRating = 0;
     private int speakerQuality = 0;
     private String anythingElse;
 
-    public Feedback(Long sessionId, String SessionTitle) {
+    public Feedback(String sessionId, String SessionTitle) {
         this.sessionId = sessionId;
         sessionTitle = SessionTitle;
     }
@@ -32,7 +32,7 @@ public class Feedback {
         this.anythingElse = anythingElse;
     }
 
-    public Long getSessionId() {
+    public String getSessionId() {
         return sessionId;
     }
 

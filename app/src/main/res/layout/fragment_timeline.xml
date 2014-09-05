@@ -1,7 +1,47 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/list"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:background="@color/offWhite"/>
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/placeholderView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/home_activity_header_bar_height"
+        android:paddingTop="@dimen/home_activity_header_bar_height"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/placeholderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding"
+            android:layout_marginRight="@dimen/padding"
+            android:indeterminate="true"
+            app:spb_color="@color/theme_color"
+            app:spb_mirror_mode="true"
+            app:spb_progressiveStart_activated="true"
+            app:spb_progressiveStart_speed="1.5"
+            app:spb_progressiveStop_speed="3.4"
+            app:spb_reversed="false"
+            app:spb_sections_count="4"
+            app:spb_speed="1.0"
+            app:spb_stroke_separator_length="2dp"
+            app:spb_stroke_width="2dp" />
+    </LinearLayout>
+
+    <ListView android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:background="@color/offWhite"/>
+</FrameLayout>

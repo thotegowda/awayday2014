@@ -23,10 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Theme;
 import com.twi.awayday2014.services.ParseDataService;
+import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.utils.Blur;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.custom.KenBurnsView;

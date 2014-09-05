@@ -11,6 +11,8 @@ import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Feedback;
 import com.twi.awayday2014.models.Session;
+import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
+import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 
 public class FeedbackActivity extends Activity {
 
@@ -28,7 +30,8 @@ public class FeedbackActivity extends Activity {
         setupViews();
 
         String sessionId = getIntent().getStringExtra("session_id");
-        session = Session.findById(Session.class, Long.valueOf(sessionId));
+        AgendaParseDataFetcher agendaParseDataFetcher = ((AwayDayApplication) getApplication()).getAgendaParseDataFetcher();
+        session = agendaParseDataFetcher.getDataById(sessionId);
         bind(session);
     }
 

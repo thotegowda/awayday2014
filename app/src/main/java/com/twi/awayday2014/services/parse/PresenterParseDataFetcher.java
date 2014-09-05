@@ -1,0 +1,188 @@
+package com.twi.awayday2014.services.parse;
+
+import android.util.Log;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.models.Session;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION2;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_NAME;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_OBJECT_ID;
+import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
+import static com.twi.awayday2014.utils.Constants.Parse.ERROR_NO_DATA_FOUND;
+import static com.twi.awayday2014.utils.Constants.Parse.TABLE_IMAGES;
+import static com.twi.awayday2014.utils.Constants.Parse.TABLE_SPEAKERS;
+
+public class PresenterParseDataFetcher implements ParseDataFetcher<Presenter> {
+    private static final String TAG = "PresenterParseDataFetcher";
+    private List<ParseDataListener> listeners = new ArrayList<ParseDataListener>();
+    private List<Presenter> presenters = new ArrayList<Presenter>();
+    private boolean isFetching;
+    private boolean isDataFetched;
+
+    @Override
+    public boolean isDataOutdated() {
+        return false;
+    }
+
+    @Override
+    public void fetchData() {
+        if(isFetching){
+            Log.d(TAG, "Already fetching data");
+            return;
+        }
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_SPEAKERS);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        Log.d(TAG, "Fetching speakers.");
+        if (query.hasCachedResult()) {
+            Log.d(TAG, "Cache Hit : true");
+            for (ParseDataListener listener : listeners) {
+                listener.fetchingFromCache();
+            }
+        } else {
+            Log.d(TAG, "Cache Hit : false");
+            for (ParseDataListener listener : listeners) {
+                listener.fetchingFromNetwork();
+            }
+        }
+
+        isFetching = true;
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> data, ParseException e) {
+                if (e == null) {
+                    List<Presenter> presenters = new ArrayList<Presenter>();
+                    List<String> imageObjectIds = new ArrayList<String>();
+                    Log.d(TAG, "Number of presenters: " + data.size());
+                    if (data.size() == 0) {
+                        for (ParseDataListener listener : listeners) {
+                            listener.onDataFetchError(ERROR_NO_DATA_FOUND);
+                        }
+                    }
+                    for (ParseObject d : data) {
+                        String id = d.getObjectId();
+                        String name = d.getString(COL_NAME);
+                        String writeUp = d.getString(COL_DESCRIPTION2);
+                        String image = d.getString(COL_IMAGE);
+                        Presenter presenter = new Presenter(id, name, writeUp);
+
+                        if(image != null){
+                            imageObjectIds.add(image);
+                            presenter.setImageId(image);
+                        }
+                        presenters.add(presenter);
+                    }
+                    Log.d(TAG, imageObjectIds.size() + " presenters have image");
+                    fetchImageUrlAndNotify(presenters, imageObjectIds);
+                } else {
+                    e.printStackTrace();
+                    isFetching = false;
+                    for (ParseDataListener listener : listeners) {
+                        listener.onDataFetchError(ERROR_EXCEPTION_THROWN);
+                    }
+                }
+            }
+
+            private void fetchImageUrlAndNotify(final List<Presenter> presenters, final List<String> imageObjectIds) {
+                if(imageObjectIds.size() == 0){
+                    notifyDataFetch(presenters);
+                    return;
+                }
+
+                List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+                for (String imageObject : imageObjectIds) {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_IMAGES);
+                    query.whereEqualTo(COL_OBJECT_ID, imageObject);
+                    queries.add(query);
+                }
+                ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+                mainQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                Log.d(TAG, "Cache Hit for images query: " + mainQuery.hasCachedResult());
+                mainQuery.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> results, ParseException e) {
+                        if (e == null) {
+                            Map<String, String> images = new HashMap<String, String>();
+                            for (ParseObject result : results) {
+                                String id = result.getObjectId();
+                                ParseFile parseFile = result.getParseFile(COL_IMAGE);
+                                images.put(id, parseFile.getUrl());
+                            }
+
+                            for (Presenter presenter : presenters) {
+                                if(images.containsKey(presenter.getImageId())){
+                                    presenter.setImageUrl(images.get(presenter.getImageId()));
+                                }
+                            }
+
+                            notifyDataFetch(presenters);
+                        }else{
+                            Log.e(TAG, "Error: " + e.getMessage());
+                            isFetching = false;
+                            for (ParseDataListener dataListener : listeners) {
+                                dataListener.onDataFetchError(ERROR_EXCEPTION_THROWN);
+                            }
+                        }
+                    }
+                });
+                notifyDataFetch(presenters);
+            }
+
+            private void notifyDataFetch(List<Presenter> presenters) {
+                isFetching = false;
+                isDataFetched = true;
+                PresenterParseDataFetcher.this.presenters = presenters;
+                for (ParseDataListener dataListener : listeners) {
+                    dataListener.onDataFetched(presenters);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void invalidateAndFetchFreshData() {
+
+    }
+
+    @Override
+    public boolean isDataFetched() {
+        return isDataFetched;
+    }
+
+    @Override
+    public List<Presenter> getFetchedData() {
+        return presenters;
+    }
+
+    @Override
+    public Presenter getDataById(String id) {
+        for (Presenter presenter : presenters) {
+            if(presenter.getId().equals(id)){
+                return presenter;
+            }
+        }
+        return null;
+    }
+
+
+    @Override
+    public void addListener(ParseDataListener parseDataListener) {
+        if (parseDataListener != null) {
+            listeners.add(parseDataListener);
+        }
+    }
+
+    @Override
+    public void removeListener(ParseDataListener parseDataListener) {
+        listeners.remove(parseDataListener);
+    }
+}

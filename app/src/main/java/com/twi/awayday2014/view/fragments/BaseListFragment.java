@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.HomeActivity;
 
 public abstract class BaseListFragment extends Fragment implements HomeActivity.CustomActionbarStateListener {
@@ -14,6 +15,8 @@ public abstract class BaseListFragment extends Fragment implements HomeActivity.
     protected ListView listView;
     protected View header;
     private boolean interceptingTouchEvents;
+    protected View placeHolderView;
+    protected TextView placeHolderText;
 
     @Override
     public void onAttach(android.app.Activity activity) {
@@ -122,9 +125,13 @@ public abstract class BaseListFragment extends Fragment implements HomeActivity.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listView = (ListView) inflater.inflate(R.layout.fragment_timeline, container, false);
+        View rootlayout = inflater.inflate(R.layout.fragment_timeline, container, false);
+        listView = (ListView) rootlayout.findViewById(R.id.list);
         header = inflater.inflate(R.layout.view_fake_header, listView, false);
-        return listView;
+        placeHolderView = rootlayout.findViewById(R.id.placeholderView);
+        placeHolderText = (TextView) rootlayout.findViewById(R.id.placeholderText);
+        placeHolderText.setTypeface(Fonts.openSansLight(getActivity()));
+        return rootlayout;
     }
 
     @Override

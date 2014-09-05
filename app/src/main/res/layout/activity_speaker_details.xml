@@ -38,6 +38,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/speakerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/theme_color"

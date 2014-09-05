@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/agenda_details_header_image_height"
             android:scaleType="centerCrop"
-            android:src="@drawable/awayday_2014_placeholder" />
+            android:src="@drawable/awayday_2014_placeholder"/>
 
 
         <LinearLayout
@@ -47,6 +47,7 @@
                 android:textSize="@dimen/agenda_details_header_time_text" />
 
             <LinearLayout
+                android:id="@+id/speakerInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding"
@@ -64,11 +65,20 @@
                     android:background="@color/white"/>
 
                 <com.twi.awayday2014.view.custom.CircularImageView
-                    android:id="@+id/profile_image"
+                    android:id="@+id/profile_image1"
                     android:layout_width="@dimen/speaker_image_diameter"
                     android:layout_height="@dimen/speaker_image_diameter"
                     android:scaleType="centerCrop"
                     android:src="@drawable/placeholder" />
+
+                <com.twi.awayday2014.view.custom.CircularImageView
+                    android:id="@+id/profile_image2"
+                    android:layout_width="@dimen/speaker_image_diameter"
+                    android:layout_height="@dimen/speaker_image_diameter"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    android:visibility="gone"/>
 
                 <View
                     android:layout_width="0dp"
@@ -92,6 +102,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/detailsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_large"

@@ -16,7 +16,7 @@
             style="@style/ViewpagerIndicatorLayout">
             <TextView
                 style="@style/ViewpagerIndicatorTextView"
-                android:text="Sep 27"/>
+                android:text="Sep 19"/>
             <View
                 android:id="@+id/selectionIndicatorLeft"
                 style="@style/ViewpagerSelectionIndicator"/>
@@ -32,7 +32,7 @@
             style="@style/ViewpagerIndicatorLayout">
             <TextView
                 style="@style/ViewpagerIndicatorTextView"
-                android:text="Sep 28"/>
+                android:text="Sep 20"/>
             <View
                 android:id="@+id/selectionIndicatorRight"
                 style="@style/ViewpagerSelectionIndicator"/>

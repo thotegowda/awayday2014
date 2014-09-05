@@ -67,7 +67,7 @@ public class TweetsAdapter extends BaseAdapter {
             viewSource.timeText = (TextView) convertView.findViewById(R.id.timeText);
             viewSource.timeText.setTypeface(Fonts.openSansItalic(context));
             viewSource.imageView = (ImageView) convertView.findViewById(R.id.image);
-            viewSource.userImage = (CircularImageView) convertView.findViewById(R.id.userImage);
+            viewSource.userImage = (CircularImageView) convertView.findViewById(R.id.userImage1);
             convertView.setTag(viewSource);
         }
 

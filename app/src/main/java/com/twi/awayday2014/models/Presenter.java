@@ -1,20 +1,21 @@
 package com.twi.awayday2014.models;
 
-import com.orm.SugarRecord;
 import com.twi.awayday2014.R;
 
-public class Presenter extends SugarRecord<Presenter> {
+public class Presenter{
+    private String id;
+    private String imageUrl;
+    private String imageId;
+    private String writeUp;
     private String name;
-    private String title;
-    private String description;
 
     public Presenter() {
     }
 
-    public Presenter(String name, String title, String description) {
-        this.name = name;
-        this.title = title;
-        this.description = description;
+    public Presenter(String id, String name, String writeUp) {
+        this.id = id;
+        this.writeUp = name;
+        this.name = writeUp;
     }
 
     public int profileResource() {
@@ -22,14 +23,38 @@ public class Presenter extends SugarRecord<Presenter> {
     }
 
     public String getName() {
+        return writeUp;
+    }
+
+    public String getWriteUp() {
         return name;
     }
 
-    public String getTitle() {
-        return title;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getDescription() {
-        return description;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setName(String name) {
+        this.writeUp = name;
+    }
+
+    public void setWriteUp(String writeUp) {
+        this.name = writeUp;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 }

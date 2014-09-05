@@ -28,7 +28,7 @@ public class MyScheduleFragment extends BaseListFragment {
     }
 
     protected ListAdapter getAdapter() {
-        return new ScheduledSessionsAdapter(getActivity(), getApplication().getAgendaService());
+        return null;
     }
 
     @Override
@@ -37,9 +37,9 @@ public class MyScheduleFragment extends BaseListFragment {
         launchSessionDetails(session.getId());
     }
 
-    private void launchSessionDetails(Long id) {
+    private void launchSessionDetails(String id) {
         getActivity().startActivity(
-                new Intent(getActivity(), SessionDetailsActivity.class).putExtra("session_id", String.valueOf(id)));
+                new Intent(getActivity(), SessionDetailsActivity.class).putExtra("session_id", id));
     }
 
     private AwayDayApplication getApplication() {

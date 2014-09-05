@@ -62,7 +62,7 @@
 
     <dimen name="agenda_card_image_height">144dp</dimen>
     <dimen name="speaker_image_diameter">60dp</dimen>
-    <dimen name="speaker_image_big_diameter">84dp</dimen>
+    <dimen name="speaker_image_big_diameter">104dp</dimen>
     <dimen name="speaker_image_top_margin">114dp</dimen>
 
     <dimen name="agenda_details_header_image_height">180dp</dimen>

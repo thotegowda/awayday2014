@@ -7,20 +7,19 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Session;
-import com.twi.awayday2014.services.AgendaService;
 import com.twi.awayday2014.view.SessionDetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ScheduledSessionsAdapter extends BaseAdapter {
 
     private final Context context;
-    private final List<Session> scheduledSessions;
+    private final List<Session> scheduledSessions = new ArrayList<Session>();
 
-    public ScheduledSessionsAdapter(Context context, AgendaService agendaService) {
+    public ScheduledSessionsAdapter(Context context) {
         this.context = context;
-        this.scheduledSessions = agendaService.getScheduledSessions();
     }
 
     @Override
@@ -69,10 +68,8 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
                 launchSessionDetails(((Session)view.getTag()).getId());
             }
         });
-        ((ImageView) sessionView.findViewById(R.id.profile_image)).setImageResource(session.getPresenter().profileResource());
         ((TextView) sessionView.findViewById(R.id.presenter_title)).setText(session.getTitle());
-        ((TextView) sessionView.findViewById(R.id.presenter_name)).setText(session.getPresenter().getName());
-        ((TextView) sessionView.findViewById(R.id.presentation_date)).setText(session.getDate());
+//        ((TextView) sessionView.findViewById(R.id.presentation_date)).setText(session.getDate());
     }
 
     private void convertToKeynoteView(View  leftView, View rightView) {
@@ -80,8 +77,8 @@ public class ScheduledSessionsAdapter extends BaseAdapter {
         rightView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0));
     }
 
-    private void launchSessionDetails(Long id) {
-        context.startActivity(new Intent(context, SessionDetailsActivity.class).putExtra("session_id", String.valueOf(id)));
+    private void launchSessionDetails(String id) {
+        context.startActivity(new Intent(context, SessionDetailsActivity.class).putExtra("session_id", id));
     }
 
 }

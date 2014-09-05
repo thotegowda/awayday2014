@@ -11,60 +11,86 @@
         android:layout_marginLeft="@dimen/padding"
         android:layout_marginRight="@dimen/padding"
         android:layout_marginTop="@dimen/padding"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:background="@drawable/card"
         android:paddingBottom="2dp"
-        android:background="@drawable/card">
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp">
 
-        <ImageView
-            android:id="@+id/sessionImage"
+        <FrameLayout
+            android:id="@+id/sessionImageHolder"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/agenda_card_image_height"
-            android:scaleType="centerCrop"
-            android:src="@drawable/awayday_2014_placeholder" />
+            android:layout_height="@dimen/agenda_card_image_height">
 
-        <com.twi.awayday2014.view.custom.CircularImageView
-            android:id="@+id/userImage"
-            style="@style/SpeakerImageView"
+            <ImageView
+                android:id="@+id/sessionImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent_medium_black"
+                android:gravity="center"
+                android:padding="@dimen/padding_large"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/userImageHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/padding"
             android:layout_marginTop="@dimen/speaker_image_top_margin"
-            android:src="@drawable/placeholder"/>
+            android:orientation="horizontal">
+
+            <com.twi.awayday2014.view.custom.CircularImageView
+                android:id="@+id/userImage1"
+                style="@style/SpeakerImageView"
+                android:src="@drawable/placeholder" />
+
+            <com.twi.awayday2014.view.custom.CircularImageView
+                android:id="@+id/userImage2"
+                android:layout_marginLeft="@dimen/padding"
+                style="@style/SpeakerImageView"
+                android:src="@drawable/placeholder" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/speakersText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/sessionImage"
+            android:layout_below="@id/sessionImageHolder"
             android:layout_marginBottom="@dimen/padding_small"
             android:layout_marginTop="@dimen/padding_extra_large"
             android:gravity="center"
             android:paddingLeft="@dimen/padding"
-            android:paddingRight="@dimen/padding"
-            android:text="Speaker Name"/>
+            android:paddingRight="@dimen/padding"/>
 
         <TextView
-            android:id="@+id/titleText"
+            android:id="@+id/locationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/speakersText"
-            android:layout_marginBottom="@dimen/padding"
-            android:layout_marginTop="@dimen/padding_small"
             android:gravity="center"
-            android:paddingLeft="@dimen/padding"
-            android:paddingRight="@dimen/padding"
-            android:text="This Session Is About Something Interesting"
-            android:textSize="18sp" />
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@id/timeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titleText"
-            android:background="#6faba7"
+            android:layout_below="@id/locationText"
             android:gravity="center"
             android:padding="@dimen/padding_small"
-            android:textColor="@android:color/white"
-            android:text="15:30 - 16:30"
+            android:textColor="@android:color/black"
             android:textSize="16sp" />
 
     </RelativeLayout>
