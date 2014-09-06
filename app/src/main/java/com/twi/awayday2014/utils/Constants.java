@@ -17,6 +17,7 @@ public class Constants {
         public static final String TABLE_IMAGES = "images";
         public static final String TABLE_AGENDA = "Agenda";
         public static final String TABLE_SPEAKERS = "Speakers";
+        public static final String TABLE_DATA_TIMESTAMPS = "DataTimeStamps";
         public static final String COL_OBJECT_ID = "objectId";
         public static final String COL_ACTIVE = "active";
         public static final String COL_HEADER_TEXT = "headerText";
@@ -33,6 +34,8 @@ public class Constants {
         public static final String COL_END = "End";
         public static final String COL_LOCATION = "Location";
         public static final String COL_NAME = "Name";
+        public static final String COL_TABLE = "table";
+        public static final String COL_CHANGE_COUNTER = "changeCounter";
 
         public static final int ERROR_NO_DATA_FOUND = 101;
         public static final int ERROR_EXCEPTION_THROWN = 102;

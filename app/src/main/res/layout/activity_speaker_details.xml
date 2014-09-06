@@ -49,11 +49,13 @@
             android:textSize="22sp" />
 
         <TextView
+            android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_large"
             android:text="@string/placeHolderTextLarge"
             android:textColor="@android:color/primary_text_light"
+            android:background="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
 </com.twi.awayday2014.view.custom.ParallaxScrollView>

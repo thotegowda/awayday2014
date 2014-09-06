@@ -82,6 +82,14 @@ public class HomeActivity extends FragmentActivity {
         fetchData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AwayDayApplication application = (AwayDayApplication) getApplication();
+        application.getPresenterParseDataFetcher().checkDataOutdated();
+        application.getAgendaParseDataFetcher().checkDataOutdated();
+    }
+
     private void fetchData() {
         AwayDayApplication application = (AwayDayApplication) getApplication();
         ParseDataService parseDataService = application.getParseDataService();

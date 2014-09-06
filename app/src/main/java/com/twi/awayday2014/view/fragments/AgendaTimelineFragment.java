@@ -128,6 +128,16 @@ public class AgendaTimeLineFragment extends BaseListFragment{
         public void fetchingFromCache() {
 
         }
+
+        @Override
+        public void onDataValidationError(int errorStatus) {
+
+        }
+
+        @Override
+        public void dataIsOutdated() {
+
+        }
     }
 
     private class SpeakersDataListener implements ParseDataListener<Presenter>{
@@ -153,6 +163,16 @@ public class AgendaTimeLineFragment extends BaseListFragment{
 
         @Override
         public void fetchingFromCache() {
+        }
+
+        @Override
+        public void onDataValidationError(int errorStatus) {
+
+        }
+
+        @Override
+        public void dataIsOutdated() {
+
         }
     }
 }

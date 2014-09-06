@@ -41,6 +41,12 @@ public class SpeakerDetailsActivity extends Activity {
         PresenterParseDataFetcher presenterParseDataFetcher = application.getPresenterParseDataFetcher();
         presenter = presenterParseDataFetcher.getDataById(presenterId);
         setupHeader();
+        setupDetails();
+    }
+
+    private void setupDetails() {
+        TextView descriptionText = (TextView) findViewById(R.id.descriptionText);
+        descriptionText.setText(presenter.getWriteUp());
     }
 
     public void setupHeader() {
@@ -64,34 +70,6 @@ public class SpeakerDetailsActivity extends Activity {
                     .error(colorDrawable)
                     .transform(new BlurTransformation())
                     .into(backgroundImage);
-        }
-    }
-
-    public class BlurBackgroundTask extends AsyncTask<Void, Void, Bitmap> {
-
-        private Bitmap src;
-
-        public BlurBackgroundTask(Bitmap src){
-
-            this.src = src;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            Blur blur = new Blur(SpeakerDetailsActivity.this);
-            Bitmap result = blur.blur(src, 14);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            Bitmap placeHolderImage = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background_blur);
-            BitmapDrawable[] bitmapDrawables = new BitmapDrawable[2];
-            bitmapDrawables[0] = new BitmapDrawable(getResources(), placeHolderImage);
-            bitmapDrawables[1] = new BitmapDrawable(getResources(), bitmap);
-            TransitionDrawable transitionDrawable = new TransitionDrawable(bitmapDrawables);
-            backgroundImage.setImageDrawable(transitionDrawable);
-            transitionDrawable.startTransition(500);
         }
     }
 

@@ -29,14 +29,14 @@ public class AwayDayApplication extends SugarApp {
 
     public AgendaParseDataFetcher getAgendaParseDataFetcher() {
         if(agendaParseDataFetcher == null){
-            agendaParseDataFetcher = new AgendaParseDataFetcher();
+            agendaParseDataFetcher = new AgendaParseDataFetcher(this);
         }
         return agendaParseDataFetcher;
     }
 
     public PresenterParseDataFetcher getPresenterParseDataFetcher() {
         if(presenterParseDataFetcher == null){
-            presenterParseDataFetcher = new PresenterParseDataFetcher();
+            presenterParseDataFetcher = new PresenterParseDataFetcher(this);
         }
         return presenterParseDataFetcher;
     }

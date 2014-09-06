@@ -27,6 +27,7 @@ public class SpeakersFragment extends BaseListFragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private SpeakersAdapter speakersAdapter;
     private SpeakersDataListener parseDataListener;
+    private PresenterParseDataFetcher presenterParseDataFetcher;
 
     public static Fragment newInstance(int sectionNumber) {
         SpeakersFragment fragment = new SpeakersFragment();
@@ -50,7 +51,7 @@ public class SpeakersFragment extends BaseListFragment {
     public void onStart() {
         super.onStart();
         AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
-        PresenterParseDataFetcher presenterParseDataFetcher = application.getPresenterParseDataFetcher();
+        presenterParseDataFetcher = application.getPresenterParseDataFetcher();
         if (presenterParseDataFetcher.isDataFetched()) {
             speakersAdapter.onDataChange(presenterParseDataFetcher.getFetchedData());
         }else {
@@ -112,6 +113,15 @@ public class SpeakersFragment extends BaseListFragment {
 
         @Override
         public void fetchingFromCache() {
+        }
+
+        @Override
+        public void onDataValidationError(int errorStatus) {
+
+        }
+
+        @Override
+        public void dataIsOutdated() {
         }
     }
 }

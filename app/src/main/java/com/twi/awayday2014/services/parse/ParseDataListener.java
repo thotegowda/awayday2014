@@ -8,4 +8,6 @@ public interface ParseDataListener<T>{
     void onDataFetchError(int errorStatus);
     void fetchingFromNetwork();
     void fetchingFromCache();
+    void onDataValidationError(int errorStatus);
+    void dataIsOutdated();
 }
