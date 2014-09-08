@@ -7,16 +7,16 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.models.Presenter;
-import com.twi.awayday2014.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.twi.awayday2014.utils.Constants.Parse.COL_AWAYDAY_WRITEUP;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION2;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_LINKS;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_NAME;
 import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
 import static com.twi.awayday2014.utils.Constants.Parse.ERROR_NO_DATA_FOUND;
@@ -75,8 +75,10 @@ public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
                         String id = d.getObjectId();
                         String name = d.getString(COL_NAME);
                         String writeUp = d.getString(COL_DESCRIPTION2);
+                        String awayDayWriteup = d.getString(COL_AWAYDAY_WRITEUP);
                         String image = d.getString(COL_IMAGE);
-                        Presenter presenter = new Presenter(id, name, writeUp);
+                        String link = d.getString(COL_LINKS);
+                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp);
 
                         if(image != null){
                             imageObjectIds.add(image);

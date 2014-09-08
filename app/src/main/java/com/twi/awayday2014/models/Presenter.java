@@ -7,14 +7,18 @@ public class Presenter{
     private String imageUrl;
     private String imageId;
     private String writeUp;
+    private String awayDayWriteup;
+    private String link;
     private String name;
 
     public Presenter() {
     }
 
-    public Presenter(String id, String name, String writeUp) {
+    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp) {
         this.id = id;
         this.writeUp = name;
+        this.awayDayWriteup = awayDayWriteup;
+        this.link = link;
         this.name = writeUp;
     }
 
@@ -56,5 +60,13 @@ public class Presenter{
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public String getAwayDayWriteup() {
+        return awayDayWriteup;
+    }
+
+    public String getLink() {
+        return link;
     }
 }

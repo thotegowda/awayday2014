@@ -28,6 +28,8 @@ public class Constants {
         public static final String COL_IMAGE = "image";
         public static final String COL_DESCRIPTION = "description";
         public static final String COL_DESCRIPTION2 = "Description";
+        public static final String COL_AWAYDAY_WRITEUP = "awaydayWriteup";
+        public static final String COL_LINKS = "Links";
         public static final String COL_DATE = "Date";
         public static final String COL_SESSION_TITLE = "Item";
         public static final String COL_START = "Start";

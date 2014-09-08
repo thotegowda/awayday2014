@@ -24,38 +24,84 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/transparent_light_black"/>
+                android:background="@color/transparent_light_black" />
 
             <com.twi.awayday2014.view.custom.CircularImageView
                 android:id="@+id/profile_image"
-                android:layout_gravity="center"
                 android:layout_width="@dimen/speaker_image_big_diameter"
                 android:layout_height="@dimen/speaker_image_big_diameter"
+                android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder" />
 
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/speakerName"
+        <LinearLayout
+            android:id="@+id/speakerDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@color/theme_color"
-            android:gravity="center"
-            android:text="Speaker Name"
-            android:padding="@dimen/padding"
-            android:textColor="@android:color/white"
-            android:textSize="22sp" />
+            >
+
+            <TextView
+                android:id="@+id/speakerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding"
+                android:paddingTop="@dimen/padding"
+                android:text="Speaker Name"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/blog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding"
+                android:text="Blog"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="@dimen/padding_large"
             android:text="@string/placeHolderTextLarge"
             android:textColor="@android:color/primary_text_light"
-            android:background="@color/white"
             android:textSize="16sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="200dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="@color/gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/awayDayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/padding_large"
+            android:text="@string/placeHolderTextLarge"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
     </LinearLayout>
 </com.twi.awayday2014.view.custom.ParallaxScrollView>
