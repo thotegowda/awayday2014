@@ -17,6 +17,7 @@ import com.twi.awayday2014.adapters.SpeakersAdapter;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.services.parse.ParseDataListener;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
+import com.twi.awayday2014.view.HomeActivity;
 import com.twi.awayday2014.view.SpeakerDetailsActivity;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
 public class SpeakersFragment extends BaseListFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String PRESENTER_ID = "presenter_id";
     private SpeakersAdapter speakersAdapter;
     private SpeakersDataListener parseDataListener;
     private PresenterParseDataFetcher presenterParseDataFetcher;
@@ -87,7 +89,9 @@ public class SpeakersFragment extends BaseListFragment {
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
-        startActivity(new Intent(getActivity(), SpeakerDetailsActivity.class).putExtra("presenter_id", presenter.getId()));
+        Intent intent = new Intent(getActivity(), SpeakerDetailsActivity.class);
+        intent.putExtra(PRESENTER_ID, presenter.getId());
+        startActivity(intent);
     }
 
     private class SpeakersDataListener implements ParseDataListener<Presenter> {

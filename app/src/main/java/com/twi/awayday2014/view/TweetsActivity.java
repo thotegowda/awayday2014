@@ -134,6 +134,7 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
     }
 
     private void startTwitterButtonMoveUpAnimation() {
+        twitterButton.setClickable(false);
         twitterButton.animate()
                 .alpha(0f)
                 .rotation(360)
@@ -148,6 +149,7 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
                 .setInterpolator(new SmoothInterpolator())
                 .start();
         cancelButton.setVisibility(View.VISIBLE);
+        cancelButton.setClickable(false);
         cancelButton.setAlpha(0);
         cancelButton.animate()
                 .alpha(1f)
@@ -159,7 +161,6 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         cancelButton.setClickable(true);
-                        twitterButton.setClickable(false);
                         //just a placeholder to override the other listener
                     }
                 })
@@ -177,13 +178,13 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         twitterButton.setClickable(true);
-                        cancelButton.setClickable(false);
                         //just a placeholder to override the other listener
                     }
                 })
                 .setDuration(CLOSE_ANIMATION_DURATION)
                 .start();
 
+        cancelButton.setClickable(false);
         cancelButton.animate()
                 .alpha(0f)
                 .rotation(-360)

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.adapters.AgendaAdapter;
@@ -25,7 +26,7 @@ import java.util.List;
 import static android.view.View.VISIBLE;
 
 
-public class AgendaTimeLineFragment extends BaseListFragment{
+public class AgendaTimeLineFragment extends BaseListFragment {
     private static final String TAG = "AgendaTimelineFragment";
     private static final String DAY = "day";
     private static final String POSITION = "position";
@@ -53,7 +54,11 @@ public class AgendaTimeLineFragment extends BaseListFragment{
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Session session = (Session) getListView().getAdapter().getItem(position);
-        launchSessionDetails(session.getId());
+        if (session.getDescription() == null) {
+            Toast.makeText(getActivity(), "No detailed description is available for this section", Toast.LENGTH_SHORT).show();
+        } else {
+            launchSessionDetails(session.getId());
+        }
     }
 
 
@@ -90,7 +95,7 @@ public class AgendaTimeLineFragment extends BaseListFragment{
         DateTime agendaDay = dateTimeParser.parseDateTime(day);
         for (Session session : sessions) {
             DateTime dateTime = dateTimeParser.parseDateTime(session.getDate());
-            if(dateTime.dayOfMonth().equals(agendaDay.dayOfMonth())){
+            if (dateTime.dayOfMonth().equals(agendaDay.dayOfMonth())) {
                 result.add(session);
             }
         }
@@ -98,7 +103,7 @@ public class AgendaTimeLineFragment extends BaseListFragment{
         return result;
     }
 
-    private class AgendaDataListener implements ParseDataListener<Session>{
+    private class AgendaDataListener implements ParseDataListener<Session> {
 
         @Override
         public void onDataValidation(boolean status) {
@@ -140,7 +145,7 @@ public class AgendaTimeLineFragment extends BaseListFragment{
         }
     }
 
-    private class SpeakersDataListener implements ParseDataListener<Presenter>{
+    private class SpeakersDataListener implements ParseDataListener<Presenter> {
 
         @Override
         public void onDataValidation(boolean status) {

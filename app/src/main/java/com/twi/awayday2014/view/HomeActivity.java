@@ -65,12 +65,14 @@ public class HomeActivity extends FragmentActivity {
     private Fragment currentFragment;
     private TextView selectedSectionText;
     private ImageView selectedSectionIcon;
+    private float ratioTravelled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        ratioTravelled = 1;
         drawerHelper = new DrawerHelper(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerHelper.onCreate(drawerLayout);
@@ -88,6 +90,7 @@ public class HomeActivity extends FragmentActivity {
         AwayDayApplication application = (AwayDayApplication) getApplication();
         application.getPresenterParseDataFetcher().checkDataOutdated();
         application.getAgendaParseDataFetcher().checkDataOutdated();
+        appIcon.setAlpha((int) (255 * ratioTravelled));
     }
 
     private void fetchData() {
@@ -116,11 +119,12 @@ public class HomeActivity extends FragmentActivity {
         });
 
         scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
+
             @Override
             public void onScrollChanged() {
                 int distanceToTravel = defaultActionbarTopPos - defaultHeaderTopPos;
                 int currentDistanceTravelled = getAbsTop(customActionbar) - defaultHeaderTopPos;
-                float ratioTravelled = (float) currentDistanceTravelled / distanceToTravel;
+                ratioTravelled = (float) currentDistanceTravelled / distanceToTravel;
                 Log.e(TAG, "ratio: " + ratioTravelled);
                 if (ratioTravelled <= 0 && currentCustomActionbarState == CustomActionbarState.FLOATING) {
                     currentCustomActionbarState = CustomActionbarState.STICKY;
@@ -232,27 +236,6 @@ public class HomeActivity extends FragmentActivity {
         });
 
         selectedSectionIcon = (ImageView) findViewById(R.id.selectedSectionIcon);
-    }
-
-    public Bitmap getScreenShot() {
-        View decorView = getWindow().getDecorView();
-        decorView.setDrawingCacheEnabled(true);
-        Bitmap b = decorView.getDrawingCache();
-
-        Rect frame = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
-        int width = getWindowManager().getDefaultDisplay().getWidth();
-        int height = getWindowManager().getDefaultDisplay().getHeight();
-
-        Bitmap bitmapWithoutStatusBar = Bitmap.createBitmap(b, 0, statusBarHeight, width, height - statusBarHeight);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapWithoutStatusBar,
-                bitmapWithoutStatusBar.getWidth() / 2, bitmapWithoutStatusBar.getHeight() / 2, false);
-        bitmapWithoutStatusBar.recycle();
-
-        decorView.destroyDrawingCache();
-        Blur blur = new Blur(this);
-        return blur.blur(scaledBitmap, 10);
     }
 
     private void setupHeaderText() {

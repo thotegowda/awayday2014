@@ -100,6 +100,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" />
 
+        <fragment
+            android:id="@+id/tweetFragment"
+            android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 
 </FrameLayout>

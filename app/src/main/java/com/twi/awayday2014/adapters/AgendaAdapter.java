@@ -53,15 +53,6 @@ public class AgendaAdapter extends BaseAdapter {
     }
 
     @Override
-    public boolean isEnabled(int position) {
-        if(agenda.get(position).getDescription() == null){
-            return false;
-        }else{
-            return true;
-        }
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewSource viewSource = null;
         if(convertView == null){
@@ -94,7 +85,6 @@ public class AgendaAdapter extends BaseAdapter {
 
     private void setupSessionImage(ViewSource viewSource, Session session) {
         if(session.getImageUrl() != null){
-            Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context)
                     .load(session.getImageUrl())
                     .placeholder(new ColorDrawable(context.getResources().getColor(R.color.theme_color)))

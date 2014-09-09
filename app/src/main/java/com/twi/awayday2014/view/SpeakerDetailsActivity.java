@@ -26,12 +26,15 @@ import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 import com.twi.awayday2014.utils.Blur;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.custom.CircularImageView;
+import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
 public class SpeakerDetailsActivity extends Activity {
 
     private CircularImageView profileImageView;
     private ImageView backgroundImage;
     private Presenter presenter;
+    private int actionbarIconAlpha;
+    private Drawable appIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class SpeakerDetailsActivity extends Activity {
 
         setContentView(R.layout.activity_speaker_details);
 
-        String presenterId = getIntent().getStringExtra("presenter_id");
+        String presenterId = getIntent().getStringExtra(SpeakersFragment.PRESENTER_ID);
         AwayDayApplication application = (AwayDayApplication) getApplication();
         PresenterParseDataFetcher presenterParseDataFetcher = application.getPresenterParseDataFetcher();
         presenter = presenterParseDataFetcher.getDataById(presenterId);
@@ -49,6 +52,13 @@ public class SpeakerDetailsActivity extends Activity {
         }
         setupHeader();
         setupDetails();
+        setupActionbar();
+    }
+
+    private void setupActionbar() {
+        appIcon = getResources().getDrawable(R.drawable.ic_launcher);
+        appIcon.setAlpha(255);
+        getActionBar().setIcon(appIcon);
     }
 
     private void setupDetails() {
