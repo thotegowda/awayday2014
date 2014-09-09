@@ -1,6 +1,8 @@
 package com.twi.awayday2014.view;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,8 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.utils.Fonts;
 
 public class DrawerHelper {
+    public static final String ADMIN_SETTINGS = "admin_settings";
+    public static final String CAN_SEND_NOTIFICATION = "can_send_notification";
     private HomeActivity homeActivity;
     private DrawerLayout drawerlayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -26,10 +30,9 @@ public class DrawerHelper {
     private int[] resourceIds = {
       R.drawable.ic_agenda,
       R.drawable.ic_speakers,
-      R.drawable.ic_sessions,
-      R.drawable.ic_videos,
-      R.drawable.ic_tags
+      R.drawable.ic_sessions
     };
+    private TextView sendNotificationView;
 
     public DrawerHelper(HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
@@ -67,6 +70,10 @@ public class DrawerHelper {
         drawerlayout.setDrawerListener(drawerToggle);
 
         setupTextViews();
+
+        if (isAuthorizedToSendPushNotifications(homeActivity)) {
+            showSendNotificationView();
+        }
     }
 
     private void setupAdminPage() {
@@ -85,8 +92,8 @@ public class DrawerHelper {
                 handler.sendEmptyMessageDelayed(0, 400);
                 if (clickCounter == 9) {
                     clickCounter = 0;
-                    Intent intent = new Intent(homeActivity, PushActivity.class);
-                    homeActivity.startActivity(intent);
+                    rememberAdmin(homeActivity);
+                    showSendNotificationView();
                 }
             }
         });
@@ -96,9 +103,7 @@ public class DrawerHelper {
         selections = new View[]{
                 drawerlayout.findViewById(R.id.select_agenda),
                 drawerlayout.findViewById(R.id.select_speakers),
-                drawerlayout.findViewById(R.id.select_breakout),
-                drawerlayout.findViewById(R.id.select_videos),
-                drawerlayout.findViewById(R.id.select_tags)
+                drawerlayout.findViewById(R.id.select_breakout)
         };
 
         TextView agendaText = (TextView) drawerlayout.findViewById(R.id.agendaText);
@@ -128,21 +133,31 @@ public class DrawerHelper {
             }
         });
 
-        TextView videos = (TextView) drawerlayout.findViewById(R.id.videosText);
-        videos.setTypeface(Fonts.openSansRegular(homeActivity));
-        videos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onNavigationItemSelect(HomeActivity.VIDEOS_FRAGMENT);
-            }
-        });
+//        TextView videos = (TextView) drawerlayout.findViewById(R.id.videosText);
+//        videos.setTypeface(Fonts.openSansRegular(homeActivity));
+//        videos.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onNavigationItemSelect(HomeActivity.VIDEOS_FRAGMENT);
+//            }
+//        });
+//
+//        TextView tags = (TextView) drawerlayout.findViewById(R.id.tagsText);
+//        tags.setTypeface(Fonts.openSansRegular(homeActivity));
+//        tags.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onNavigationItemSelect(HomeActivity.TAG_FRAGMENT);
+//            }
+//        });
 
-        TextView tags = (TextView) drawerlayout.findViewById(R.id.tagsText);
-        tags.setTypeface(Fonts.openSansRegular(homeActivity));
-        tags.setOnClickListener(new View.OnClickListener() {
+        sendNotificationView = (TextView) drawerlayout.findViewById(R.id.btn_send_notification);
+        sendNotificationView.setTypeface(Fonts.openSansRegular(homeActivity));
+        sendNotificationView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                onNavigationItemSelect(HomeActivity.TAG_FRAGMENT);
+                startPushActivity();
             }
         });
 
@@ -180,5 +195,25 @@ public class DrawerHelper {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item);
+    }
+
+    public void rememberAdmin(Activity activity) {
+        SharedPreferences prefs = activity.getSharedPreferences(ADMIN_SETTINGS, 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(CAN_SEND_NOTIFICATION, true);
+        editor.commit();
+    }
+
+    public boolean isAuthorizedToSendPushNotifications(Activity activity) {
+        return activity.getSharedPreferences(ADMIN_SETTINGS, 0).getBoolean(CAN_SEND_NOTIFICATION, false);
+    }
+
+    private void startPushActivity() {
+        Intent intent = new Intent(homeActivity, PushActivity.class);
+        homeActivity.startActivity(intent);
+    }
+
+    private void showSendNotificationView() {
+        sendNotificationView.setVisibility(View.VISIBLE);
     }
 }
