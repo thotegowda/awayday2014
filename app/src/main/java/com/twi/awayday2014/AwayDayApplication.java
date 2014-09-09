@@ -4,6 +4,7 @@ import com.orm.SugarApp;
 import com.twi.awayday2014.services.ParseDataService;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
+import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.services.twitter.TwitterPreference;
 import com.twi.awayday2014.services.twitter.TwitterService;
 
@@ -13,6 +14,7 @@ public class AwayDayApplication extends SugarApp {
     private ParseDataService parseDataService;
     private AgendaParseDataFetcher agendaParseDataFetcher;
     private PresenterParseDataFetcher presenterParseDataFetcher;
+    private QuestionService questionService;
 
     @Override
     public void onCreate() {
@@ -43,5 +45,12 @@ public class AwayDayApplication extends SugarApp {
 
     public ParseDataService getParseDataService() {
         return parseDataService;
+    }
+
+    public QuestionService getQuestionService() {
+        if (questionService == null) {
+            questionService = new QuestionService();
+        }
+        return questionService;
     }
 }

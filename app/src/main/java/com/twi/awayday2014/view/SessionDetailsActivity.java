@@ -2,29 +2,19 @@ package com.twi.awayday2014.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 
-import com.parse.FindCallback;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.models.Question;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
+import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.utils.Fonts;
 
 import java.util.ArrayList;
@@ -34,6 +24,13 @@ public class SessionDetailsActivity extends Activity {
 
     private Session session;
     private List<Presenter> presenters;
+    private LinearLayout questionsHolderView;
+    private EditText questionView;
+    private EditText questionerNameView;
+    private View questionFrameView;
+    private ImageView toggleQuestionFrameBtn;
+    private TextView questionsTitleView;
+    private QuestionService questionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +50,7 @@ public class SessionDetailsActivity extends Activity {
         setupHeader();
         setupDetailText();
         setupFeedbackButton();
+        setupQuestionsView();
     }
 
     private void setupDetailText() {
@@ -121,45 +119,120 @@ public class SessionDetailsActivity extends Activity {
                     .into(userImage2);
             speakerName.setText(presenters.get(0).getName() + ", " + presenters.get(1).getName());
         }
-
-
     }
 
-    private void askQuestion(String question) {
-        ParseObject qn = new ParseObject("Question");
-        qn.put("Name", "Thote");
-        qn.put("Session", "Keynote");
-        qn.put("Question", question);
-        qn.saveInBackground();
-    }
+    private void setupQuestionsView() {
+        questionFrameView = findViewById(R.id.question_frame);
+        questionFrameView.setVisibility(View.GONE);
 
-    private void addAllQuestions() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Question");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        questionsTitleView = (TextView) findViewById(R.id.questions_title);
+        questionsTitleView.setTypeface(Fonts.openSansBold(this));
+        toggleQuestionFrameBtn = (ImageView) findViewById(R.id.btn_toggle_question_frame);
+
+        questionView = (EditText) findViewById(R.id.edt_question);
+        questionerNameView = (EditText) findViewById(R.id.edt_name);
+        toggleQuestionFrameBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-                if (e == null) {
-                    Log.d("Question", "Retrieved " + parseObjects.size() + " scores");
-                    addQuestions(parseObjects);
-                } else {
-                    Log.d("Question", "Error: " + e.getMessage());
-                }
+            public void onClick(View view) {
+                toggleQuestionFrameView();
+            }
+        });
+        findViewById(R.id.btn_ask_question).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                onPostQuestionClick();
+            }
+        });
+        questionsHolderView = (LinearLayout) findViewById(R.id.questions_holder);
+
+        questionService = ((AwayDayApplication) getApplication()).getQuestionService();
+        loadQuestions();
+    }
+
+    private void loadQuestions() {
+        questionService.loadQuestions(session.getId(), new QuestionService.OnQuestionLoadListener() {
+            @Override
+            public void onQuestionLoaded(List<Question> questions) {
+                displayQuestions(questions);
             }
         });
     }
 
-    private void addQuestions(List<ParseObject> questions) {
-        for (ParseObject question : questions) {
-            Log.d("Question", " question : " + question.get("Name") + " : " + question.get("Session") + " : " + question.get("Question"));
+    private void onPostQuestionClick() {
+        String questionerName = questionerNameView.getText().toString().trim();
+        String question = questionView.getText().toString().trim();
 
-            TextView textView = new TextView(this);
-            textView.setText(question.get("Name") + " : " + question.get("Session") + " : " + question.get("Question"));
-//            questionHolder.addView(textView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        if (question.length() <= 0) {
+            Toast.makeText(this, "Please enter the question ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (questionerName.length() <= 0) {
+            Toast.makeText(this, "Please enter your name ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        questionService.askQuestion(new Question(session.getId(), session.getTitle(), questionerName, question));
+        questionFrameView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshQuestions();
+            }
+        },  2000);
+
+        questionerNameView.setText("");
+        questionView.setText("");
+        toggleQuestionFrameView();
+    }
+
+    private void refreshQuestions() {
+        loadQuestions();
+    }
+
+
+    private void toggleQuestionFrameView() {
+        boolean show = questionFrameView.getVisibility() == View.GONE;
+        questionFrameView.setVisibility(show == true ? View.VISIBLE : View.GONE);
+        toggleQuestionFrameBtn.setImageResource(show == true ? R.drawable.ic_action_collapse_black : R.drawable.ic_action_new);
+    }
+
+    private void displayQuestions(List<Question> questions) {
+        questionsHolderView.removeAllViewsInLayout();
+
+        if (questions.size() == 0) {
+            bindQuestion(newQuestionView(), noQuestion());
+        }
+
+        for (Question question : questions) {
+            bindQuestion(newQuestionView(), question);
         }
     }
 
-    private void launchSpeakerDetails(Presenter presenter) {
-        startActivity(new Intent(this, SpeakerDetailsActivity.class).putExtra("presenter_id", String.valueOf(presenter.getId())));
+    private Question noQuestion() {
+        return new Question("", "", "No questions yet.", "You can be the first one!");
+    }
+
+    private View newQuestionView() {
+        return getLayoutInflater().inflate(R.layout.question_item, questionsHolderView, false);
+    }
+
+    private void bindQuestion(View view, Question question) {
+
+        TextView questionerName = (TextView) view.findViewById(R.id.questioner_name);
+        questionerName.setTypeface(Fonts.openSansSemiBold(this));
+        questionerName.setText(question.getName());
+
+        TextView questionTime = (TextView) view.findViewById(R.id.question_time);
+        questionTime.setTypeface(Fonts.openSansLight(this));
+        questionTime.setText(QuestionService.formatDate(question.getCreatedDate()));
+
+        TextView questionText = (TextView) view.findViewById(R.id.question_text);
+        questionText.setTypeface(Fonts.openSansRegular(this));
+        questionText.setText(question.getQuestion());
+
+        questionsHolderView.addView(view);
     }
 
     private void launchFeedback() {
