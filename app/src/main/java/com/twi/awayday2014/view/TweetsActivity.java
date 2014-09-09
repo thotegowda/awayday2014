@@ -2,8 +2,10 @@ package com.twi.awayday2014.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -12,20 +14,26 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.TweetsAdapter;
 import com.twi.awayday2014.animations.SmoothInterpolator;
+import com.twi.awayday2014.services.twitter.TwitterService;
 import com.twi.awayday2014.tasks.AsyncTweeterTasks;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.utils.OsUtils;
 import com.twi.awayday2014.view.custom.MultiSwipeRefreshLayout;
+import com.twi.awayday2014.view.fragments.SlidingFragment;
 import com.twi.awayday2014.view.fragments.TwitterLoginFragment;
+import com.twi.awayday2014.view.fragments.TwitterTweetFragment;
 
 import java.util.List;
 
 import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.auth.RequestToken;
 
 import static android.widget.AbsListView.OnScrollListener;
 import static com.twi.awayday2014.tasks.AsyncTweeterTasks.TwitterCallbacks;
@@ -34,37 +42,87 @@ import static com.twi.awayday2014.view.fragments.TwitterLoginFragment.OPEN_ANIMA
 
 public class TweetsActivity extends FragmentActivity implements TwitterCallbacks, MultiSwipeRefreshLayout.CanChildScrollUpCallback {
     private static final String TAG = "TweetsActivity";
+    private static final int INTENT_TWITTER_AUTH = 0;
+
     private ListView tweetsList;
     private TwitterLoginFragment twitterLoginFragment;
+    private TwitterTweetFragment twitterTweetFragment;
+    private SlidingFragment currentActiveFragment;
     private Button twitterButton;
     private Button cancelButton;
     private AsyncTweeterTasks asyncTweeterTasks;
+    private TwitterService twitterService;
     private TweetsAdapter tweetsAdapter;
     private MultiSwipeRefreshLayout swipeRefreshLayout;
     private boolean isRefreshInProgress;
     private TextView placeholderText;
     private View placeHolderView;
     private View progressBar;
+    private View loginButton;
+    private Handler handler;
+    private boolean isCancleButtonAnimating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweets);
-        setupTweeterTask();
         setupButtons();
+        setupTweeterTask();
         setupPlaceHolderViews();
         showFetchingViews();
         setupListView();
         setupHeader();
         setupFragments();
         setupSwipeRefresh();
+        attemptFetch();
+
+        handler = new Handler();
     }
 
-    private void setupPlaceHolderViews(){
+    @Override
+    public void onBackPressed() {
+        if (currentActiveFragment.isOpen()) {
+            slideOutCurrentActiveFragment();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case INTENT_TWITTER_AUTH:
+                if (resultCode == RESULT_CANCELED) {
+                    showToast("Twitter login failed. Please try again.");
+                } else if (resultCode == RESULT_OK) {
+                    String oauthVerifier = (String) data.getExtras().get("oauth_verifier");
+                    if (oauthVerifier == null) {
+                        showToast("Please grant access to the app for twitting.");
+                    } else {
+                        asyncTweeterTasks.retrieveAndSaveAccessToken(oauthVerifier);
+                    }
+                }
+                break;
+        }
+
+    }
+
+    private void setupPlaceHolderViews() {
         placeHolderView = findViewById(R.id.placeholderView);
         placeholderText = (TextView) findViewById(R.id.placeholderText);
-        placeholderText.setTypeface(Fonts.openSansRegular(this));
+        placeholderText.setTypeface(Fonts.openSansLight(this));
         progressBar = findViewById(R.id.progressBar);
+    }
+
+
+    private void attemptFetch() {
+        if (OsUtils.haveNetworkConnection(this)) {
+            asyncTweeterTasks.search();
+        } else {
+            showNoConnectionView();
+        }
     }
 
     private void showFetchingViews() {
@@ -78,9 +136,16 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
         twitterButton.setVisibility(View.VISIBLE);
     }
 
-    private void showNoDataView() {
+    private void showNoConnectionView() {
         placeHolderView.setVisibility(View.VISIBLE);
-        placeholderText.setText("No tweets found!");
+        placeholderText.setText("No Network Connection");
+        progressBar.setVisibility(View.INVISIBLE);
+        twitterButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void showNoDataView(String msg) {
+        placeHolderView.setVisibility(View.VISIBLE);
+        placeholderText.setText(msg);
         progressBar.setVisibility(View.INVISIBLE);
         twitterButton.setVisibility(View.VISIBLE);
     }
@@ -105,11 +170,16 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
 
             swipeRefreshLayout.setCanChildScrollUpCallback(TweetsActivity.this);
         }
+
     }
 
     private void setupTweeterTask() {
         asyncTweeterTasks = new AsyncTweeterTasks(this, ((AwayDayApplication) getApplication()).getTwitterService(), this);
-        asyncTweeterTasks.search();
+        twitterService = ((AwayDayApplication) getApplication()).getTwitterService();
+    }
+
+    public AsyncTweeterTasks getAsyncTweeterTasks() {
+        return asyncTweeterTasks;
     }
 
     private void setupButtons() {
@@ -117,8 +187,7 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                twitterLoginFragment.slideIn();
-                startTwitterButtonMoveUpAnimation();
+                slideInCurrentActiveFragment();
             }
         });
 
@@ -127,10 +196,59 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                twitterLoginFragment.slideOut();
-                startTwitterButtonMoveDownAnimation();
+                slideOutCurrentActiveFragment();
             }
         });
+
+        loginButton = findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    loginToTwitter();
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                    showToast("Something went wrong while trying to login.");
+                }
+            }
+        });
+    }
+
+    private void slideOutCurrentActiveFragment() {
+        currentActiveFragment.slideOut();
+        startTwitterButtonMoveDownAnimation();
+    }
+
+    private void slideInCurrentActiveFragment() {
+        currentActiveFragment.slideIn();
+        startTwitterButtonMoveUpAnimation();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(TweetsActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void loginToTwitter() throws TwitterException {
+        if (!OsUtils.haveNetworkConnection(this)) {
+            showToast("No network connectivity. Please check your connection.");
+            return;
+        }
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    RequestToken requestToken = twitterService.getRequestToken();
+                    Intent i = new Intent(TweetsActivity.this, TwitterWebviewActivity.class);
+                    i.putExtra("URL", requestToken.getAuthenticationURL());
+                    startActivityForResult(i, INTENT_TWITTER_AUTH);
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
     private void startTwitterButtonMoveUpAnimation() {
@@ -138,7 +256,7 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
         twitterButton.animate()
                 .alpha(0f)
                 .rotation(360)
-                .translationY(-twitterLoginFragment.getRootLayoutHeight())
+                .translationY(-twitterLoginFragment.getRootLayoutOriginalHeight())
                 .setDuration(OPEN_ANIMATION_DURATION)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
@@ -151,17 +269,18 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
         cancelButton.setVisibility(View.VISIBLE);
         cancelButton.setClickable(false);
         cancelButton.setAlpha(0);
+        isCancleButtonAnimating = true;
         cancelButton.animate()
                 .alpha(1f)
                 .rotation(360)
-                .translationY(-twitterLoginFragment.getRootLayoutHeight())
+                .translationY(-twitterLoginFragment.getRootLayoutOriginalHeight())
                 .setDuration(OPEN_ANIMATION_DURATION)
                 .setInterpolator(new SmoothInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         cancelButton.setClickable(true);
-                        //just a placeholder to override the other listener
+                        isCancleButtonAnimating = false;
                     }
                 })
                 .start();
@@ -178,13 +297,13 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         twitterButton.setClickable(true);
-                        //just a placeholder to override the other listener
                     }
                 })
                 .setDuration(CLOSE_ANIMATION_DURATION)
                 .start();
 
         cancelButton.setClickable(false);
+        isCancleButtonAnimating = true;
         cancelButton.animate()
                 .alpha(0f)
                 .rotation(-360)
@@ -194,6 +313,7 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         cancelButton.setVisibility(View.GONE);
+                        isCancleButtonAnimating = false;
                     }
                 })
                 .start();
@@ -201,6 +321,12 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
 
     private void setupFragments() {
         twitterLoginFragment = (TwitterLoginFragment) getSupportFragmentManager().findFragmentById(R.id.twitterLoginFragment);
+        twitterTweetFragment = (TwitterTweetFragment) getSupportFragmentManager().findFragmentById(R.id.tweetFragment);
+        if (asyncTweeterTasks.isLoggedIn()) {
+            currentActiveFragment = twitterTweetFragment;
+        } else {
+            currentActiveFragment = twitterLoginFragment;
+        }
     }
 
     private void setupHeader() {
@@ -223,7 +349,9 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
             @Override
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
                 if (!asyncTweeterTasks.isSearchInProgress() && firstVisible + visibleCount >= (totalCount - 5) && asyncTweeterTasks.hasMoreTweets()) {
-                    asyncTweeterTasks.searchNext();
+                    if (OsUtils.haveNetworkConnection(TweetsActivity.this)) {
+                        asyncTweeterTasks.searchNext();
+                    }
                 }
             }
         });
@@ -231,9 +359,9 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
 
     @Override
     public void onSearchResults(List<Status> tweets) {
-        if(tweets.size() == 0 && tweetsAdapter.getCount() == 0){
-            showNoDataView();
-        }else{
+        if (tweets.size() == 0 && tweetsAdapter.getCount() == 0) {
+            showNoDataView("No tweets found!");
+        } else {
             hideFetchingViews();
             tweetsAdapter.append(tweets);
         }
@@ -241,18 +369,60 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
 
     @Override
     public void onRefresh(List<Status> tweets) {
+        Log.d(TAG, tweets.size() +  " new tweets found");
+        if(tweets.size() > 0){
+            hideFetchingViews();
+        }
         tweetsAdapter.insertAtTheTop(tweets);
         swipeRefreshLayout.setRefreshing(false);
         isRefreshInProgress = false;
     }
 
     @Override
-    public boolean canSwipeRefreshChildScrollUp() {
-        if (isLastTweetVisible()) {
-            return true;
-        } else {
-            return !(isFirstTweet() && isFirstTweetVisible());
+    public void onUserLoggedIn() {
+        if (currentActiveFragment instanceof TwitterLoginFragment && currentActiveFragment.isOpen()) {
+            currentActiveFragment.slideOut();
+            startTwitterButtonMoveDownAnimation();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    currentActiveFragment = twitterTweetFragment;
+                    slideInCurrentActiveFragment();
+                }
+            }, SlidingFragment.CLOSE_ANIMATION_DURATION);
         }
+    }
+
+    @Override
+    public void onUserLoggedInFail() {
+        showToast("Something went wrong while login. Please try again.");
+    }
+
+    @Override
+    public void onTweetSuccess() {
+        showToast("Tweeted successfully");
+    }
+
+    @Override
+    public void onTweetFailure() {
+        Toast.makeText(this,
+                "Something went wrong, tweet unsuccessful. We don't have any retry mechanism for now. Please try again.",
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGenericError() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                showNoDataView("Something went wrong. Please try again later.");
+            }
+        });
+    }
+
+    @Override
+    public boolean canSwipeRefreshChildScrollUp() {
+        return !(isFirstTweet() && isFirstTweetVisible());
     }
 
     private boolean isFirstTweetVisible() {
@@ -266,4 +436,17 @@ public class TweetsActivity extends FragmentActivity implements TwitterCallbacks
     private boolean isLastTweetVisible() {
         return tweetsList.getLastVisiblePosition() >= tweetsAdapter.getCount() - 1;
     }
+
+    public void onTweetButtonClick() {
+        showToast("Sending your tweet in the background.");
+        slideOutCurrentActiveFragment();
+    }
+
+    public void onTweetFragmentHeightChange(int height) {
+        if (!isCancleButtonAnimating) {
+            cancelButton.setTranslationY(-height);
+        }
+    }
+
+
 }

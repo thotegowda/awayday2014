@@ -24,13 +24,15 @@
         android:textSize="@dimen/tweets_login_info_text_size" />
 
     <LinearLayout
+        android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tweeter_login_button_height"
         android:layout_marginBottom="@dimen/padding_small"
         android:layout_marginLeft="@dimen/tweeter_login_button_margin"
         android:layout_marginRight="@dimen/tweeter_login_button_margin"
         android:layout_marginTop="@dimen/padding_small"
-        android:background="#00b0ed"
+        android:background="@color/twitterColor"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <ImageView
@@ -48,12 +50,14 @@
             android:background="@color/transparent_white"/>
 
         <TextView
+            android:id="@+id/loginButtonText"
             android:layout_width="0dp"
             android:layout_weight="2.5"
             android:layout_height="match_parent"
             android:textColor="@android:color/white"
             android:text="@string/login"
             android:gravity="center"
+            android:paddingBottom="2dp"
             android:textSize="@dimen/tweets_login_button_text_size"/>
     </LinearLayout>
 </LinearLayout>

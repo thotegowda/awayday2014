@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent_very_dark_black"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding">
+
+    <View
+        style="@style/HorizontalDivider"
+        android:background="@android:color/white" />
+
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        android:id="@+id/tweet_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        float:fletFloatingHint="Tweet"
+        float:fletHintTextColor="@color/white"
+        float:fletTextColor="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/imageHolder"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="@dimen/padding"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/awayday_2014_placeholder"/>
+
+        <ImageView
+            android:id="@+id/removeImageButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/padding_extra_small"
+            android:layout_marginRight="@dimen/padding_small"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:background="@color/transparent_medium_black"
+            android:src="@drawable/ic_action_discard"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tweeter_login_button_height"
+        android:layout_marginBottom="@dimen/padding_small"
+        android:layout_marginLeft="@dimen/padding"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_marginTop="@dimen/padding_small">
+
+        <ImageView
+            android:id="@+id/gallery"
+            android:layout_width="@dimen/tweeter_login_button_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/padding_extra_small"
+            android:background="@color/twitterColor"
+            android:padding="@dimen/padding_small"
+            android:src="@drawable/ic_action_picture" />
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="@dimen/tweeter_login_button_height"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/gallery"
+            android:background="@color/twitterColor"
+            android:padding="@dimen/padding_small"
+            android:src="@drawable/ic_action_camera" />
+
+        <TextView
+            android:id="@+id/tweetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/twitterColor"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/padding_extra_large"
+            android:paddingRight="@dimen/padding_extra_large"
+            android:text="@string/tweet"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tweets_login_button_text_size" />
+    </RelativeLayout>
+</LinearLayout>

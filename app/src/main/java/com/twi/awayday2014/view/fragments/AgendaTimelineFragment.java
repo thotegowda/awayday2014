@@ -26,7 +26,7 @@ import java.util.List;
 import static android.view.View.VISIBLE;
 
 
-public class AgendaTimeLineFragment extends BaseListFragment {
+public class AgendaTimelineFragment extends BaseListFragment {
     private static final String TAG = "AgendaTimelineFragment";
     private static final String DAY = "day";
     private static final String POSITION = "position";
@@ -34,8 +34,8 @@ public class AgendaTimeLineFragment extends BaseListFragment {
     private AgendaDataListener agendaDataListener;
     private SpeakersDataListener speakersDataListener;
 
-    public static AgendaTimeLineFragment newInstance(DateTime day, int position) {
-        AgendaTimeLineFragment fragment = new AgendaTimeLineFragment();
+    public static AgendaTimelineFragment newInstance(DateTime day, int position) {
+        AgendaTimelineFragment fragment = new AgendaTimelineFragment();
         Bundle args = new Bundle();
         args.putString(DAY, ISODateTimeFormat.dateTime().print(day));
         args.putInt(POSITION, position);

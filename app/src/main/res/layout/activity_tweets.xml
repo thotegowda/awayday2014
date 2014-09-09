@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:background="@drawable/blur_background"/>
+        android:src="@drawable/blur_background"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,6 +45,7 @@
                 android:id="@+id/placeholderText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="24sp" />
@@ -102,7 +103,7 @@
 
         <fragment
             android:id="@+id/tweetFragment"
-            android:name="com.twi.awayday2014.view.fragments.TwitterLoginFragment"
+            android:name="com.twi.awayday2014.view.fragments.TwitterTweetFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" />

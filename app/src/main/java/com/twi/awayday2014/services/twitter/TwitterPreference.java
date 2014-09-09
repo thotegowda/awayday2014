@@ -18,7 +18,7 @@ public class TwitterPreference {
     public static final String TWITTER_CALLBACK_URL = "oauth://thoughtworks.Twitter_oAuth";
     public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
 
-    public static final String HASH_TAG = "india";
+    public static final String HASH_TAG = "awaydayTest";
 
     private static final GeoLocation BANGALORE_LOCATION = new GeoLocation(12.9316556, 77.6226959);
     private static final int RADIUS_AROUND_DISTANCE = 100;

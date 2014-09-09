@@ -115,7 +115,7 @@ public class TweetsAdapter extends BaseAdapter {
     }
 
     public void insertAtTheTop(List<Status> moreTweets) {
-        if (moreTweets.size() > 1) {
+        if (moreTweets.size() > 0) {
             Log.d(TAG, "new tweets added count : " + moreTweets.size());
 
             List<Status> newTweets = new ArrayList<Status>(moreTweets);

@@ -35,7 +35,6 @@ public class TwitterService {
 
     public TwitterService(TwitterPreference preference) {
         this.preference = preference;
-
         setup();
     }
 
@@ -46,7 +45,6 @@ public class TwitterService {
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(DeveloperKeys.TWITTER_CONSUMER_KEY, DeveloperKeys.TWITTER_CONSUMER_SECRET);
             twitter.setOAuthAccessToken(preference.loadAccessToken());
-            searchTwitter = twitter;
         } else {
             ConfigurationBuilder cb = new ConfigurationBuilder();
             cb.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
@@ -55,14 +53,15 @@ public class TwitterService {
             twitterFactory = new TwitterFactory(configuration);
             twitter = twitterFactory.getInstance();
 
-            // TODO: This is to show search results even when user is not logged in
-            cb = new ConfigurationBuilder();
-            cb.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
-            cb.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
-            cb.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
-            cb.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
-            searchTwitter = new TwitterFactory(cb.build()).getInstance();
         }
+
+        // This is to show search results even when user is not logged in
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setOAuthConsumerKey(DeveloperKeys.TWITTER_CONSUMER_KEY);
+        cb.setOAuthConsumerSecret(DeveloperKeys.TWITTER_CONSUMER_SECRET);
+        cb.setOAuthAccessToken(DeveloperKeys.TWITTER_ACCESS_KEY);
+        cb.setOAuthAccessTokenSecret(DeveloperKeys.TWITTER_ACCESS_SECRET);
+        searchTwitter = new TwitterFactory(cb.build()).getInstance();
     }
 
     public void login(final Context context) throws TwitterException {
@@ -72,21 +71,24 @@ public class TwitterService {
         }
     }
 
-    private RequestToken getRequestToken() throws TwitterException {
-        return twitter.getOAuthRequestToken(preference.getCallbackUrl());
-    }
-
-    public void retrieveAccessToken(Uri uri) throws TwitterException {
-        if (uri != null && uri.toString().startsWith(preference.getCallbackUrl())) {
-            AccessToken accessToken = twitter.getOAuthAccessToken(
-                    requestToken, uri.getQueryParameter(preference.getAuthVerifier()));
-            isLoggedIn = true;
-            saveAccessToken(accessToken);
+    public RequestToken getRequestToken() throws TwitterException {
+        if(requestToken == null){
+            requestToken = twitter.getOAuthRequestToken(preference.getCallbackUrl());
         }
+        return requestToken;
     }
 
-    private void saveAccessToken(AccessToken accessToken) {
+    public AccessToken retrieveAccessToken(String oauthVerifier) throws TwitterException {
+        if (oauthVerifier != null) {
+            return twitter.getOAuthAccessToken(
+                    requestToken, oauthVerifier);
+        };
+        return null;
+    }
+
+    public void saveAccessToken(AccessToken accessToken) {
         preference.saveAccessToken(accessToken);
+        isLoggedIn = true;
     }
 
     public boolean isLoggedIn() {
@@ -122,11 +124,11 @@ public class TwitterService {
     }
 
     public void tweet(String tweetText) throws TwitterException {
-        tweet(new StatusUpdate(appendHashTags(tweetText)));
+        tweet(new StatusUpdate(tweetText));
     }
 
     public void tweet(String tweetText, File image) throws TwitterException {
-        StatusUpdate status = new StatusUpdate(appendHashTags(tweetText));
+        StatusUpdate status = new StatusUpdate(tweetText);
         status.setMedia(image);
         tweet(status);
     }

@@ -2,21 +2,30 @@ package com.twi.awayday2014.tasks;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.util.Log;
 
+import com.twi.awayday2014.models.ImageSize;
 import com.twi.awayday2014.services.twitter.TwitterService;
+import com.twi.awayday2014.utils.BitmapUtils;
 
 import twitter4j.Status;
 import twitter4j.TwitterException;
+import twitter4j.auth.AccessToken;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AsyncTweeterTasks {
     private static final String TAG = "awayDayAsyncTweeter";
+    private static final int SUCCESS = 0;
+    private static final int ERROR = 1;
 
     private static final List<Status> EMPTY_STATUS = new ArrayList<Status>();
 
@@ -24,6 +33,16 @@ public class AsyncTweeterTasks {
         public void onSearchResults(List<twitter4j.Status> tweets);
 
         public void onRefresh(List<Status> tweets);
+
+        public void onUserLoggedIn();
+
+        public void onUserLoggedInFail();
+
+        public void onTweetSuccess();
+
+        public void onTweetFailure();
+
+        public void onGenericError();
     }
 
     private final Activity activity;
@@ -46,36 +65,34 @@ public class AsyncTweeterTasks {
         return searchInProgress;
     }
 
-    public void logIn() {
-        new AsyncTask<Void, Void, Void>() {
+
+    public void retrieveAndSaveAccessToken(final String oauthVerifier) {
+        new AsyncTask<Void, Void, AccessToken>() {
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected AccessToken doInBackground(Void... voids) {
                 try {
-                    twitterService.login(activity);
+                    AccessToken accessToken = twitterService.retrieveAccessToken(oauthVerifier);
+                    if(accessToken != null){
+                        twitterService.saveAccessToken(accessToken);
+                        return accessToken;
+                    }
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
                 return null;
             }
-        }.execute();
-
-    }
-
-    public void onCallbackUrlInvoked(final Uri uri) {
-        new AsyncTask<Void, Void, Void>() {
 
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    twitterService.retrieveAccessToken(uri);
-                } catch (TwitterException e) {
-                    e.printStackTrace();
+            protected void onPostExecute(AccessToken accessToken) {
+                if(accessToken != null){
+                    Log.d(TAG, "User login successful");
+                    callback.onUserLoggedIn();
+                }else {
+                    callback.onUserLoggedInFail();
                 }
-                return null;
             }
         }.execute();
-
     }
 
     public void search() {
@@ -83,11 +100,13 @@ public class AsyncTweeterTasks {
             @Override
             protected List<twitter4j.Status> doInBackground(Void... voids) {
                 try {
+                    Log.d(TAG, "Searching for tweets");
                     searchInProgress = true;
                     return twitterService.search();
                 } catch (TwitterException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Failed to search tweets ex: " + e.getMessage());
+                    callback.onGenericError();
                 }
                 return EMPTY_STATUS;
             }
@@ -114,12 +133,13 @@ public class AsyncTweeterTasks {
             @Override
             protected List<twitter4j.Status> doInBackground(Void... voids) {
                 try {
+                    Log.d(TAG, "Fetching old tweets");
                     searchInProgress = true;
                     return twitterService.searchNext();
                 } catch (TwitterException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Failed to search next tweets ex: " + e.getMessage());
-                    Log.d("ScrollDebug", "Failed to search next tweets ex: " + e.getMessage());
+                    callback.onGenericError();
                 }
                 return EMPTY_STATUS;
             }
@@ -138,11 +158,13 @@ public class AsyncTweeterTasks {
             @Override
             protected List<twitter4j.Status> doInBackground(Void... voids) {
                 try {
+                    Log.d(TAG, "Fetching recent tweets");
                     searchInProgress = true;
                     return twitterService.getRecentTweets();
                 } catch (TwitterException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Failed to load recent tweets ex: " + e.getMessage());
+                    callback.onGenericError();
                 }
                 return EMPTY_STATUS;
             }
@@ -156,34 +178,85 @@ public class AsyncTweeterTasks {
     }
 
     public void tweet(final String tweetMessage) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Integer doInBackground(Void... voids) {
                 try {
                     twitterService.tweet(tweetMessage);
+                    return SUCCESS;
                 } catch (TwitterException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Failed to tweet ex: " + e.getMessage());
                 }
-                return null;
+                return ERROR;
+            }
+
+            @Override
+            protected void onPostExecute(Integer status) {
+                if(status == SUCCESS){
+                    callback.onTweetSuccess();
+                }else {
+                    callback.onTweetFailure();
+                }
             }
         }.execute();
 
     }
 
-    public void tweet(final String tweetMessage, final File image) {
-        new AsyncTask<Void, Void, Void>() {
+    public void tweet(final String tweetMessage, final Uri imageUri) {
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Integer doInBackground(Void... voids) {
                 try {
-                    twitterService.tweet(tweetMessage, image);
+                    String sampledImage = BitmapUtils.sampleImage(getPath(imageUri), 4);
+                    Log.d(TAG, "Uploading image with size "
+                            + BitmapUtils.decodeBitmapSizeFromUristring(sampledImage).getPredictedImageSizeInMb()
+                            + " mb");
+                    twitterService.tweet(tweetMessage, new File(sampledImage));
+                    return SUCCESS;
                 } catch (TwitterException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Failed to tweet ex: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d(TAG, "Failed to sample image to smaller size: " + e.getMessage());
                 }
-                return null;
+                return ERROR;
+            }
+
+            public String getPath(Uri uri) {
+                if (uri == null) {
+                    return null;
+                }
+
+                String path = uri.getPath();
+                Cursor cursor = null;
+                try {
+                    String[] projection = {MediaStore.Images.Media.DATA};
+                    cursor = activity.getContentResolver().query(uri, projection, null, null, null);
+                    if (cursor != null) {
+                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        path = cursor.getString(column_index);
+                        cursor.close();
+                    }
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }
+                return path;
+            }
+
+            @Override
+            protected void onPostExecute(Integer status) {
+                if(status == SUCCESS){
+                    callback.onTweetSuccess();
+                }else {
+                    callback.onTweetFailure();
+                }
+
             }
         }.execute();
     }

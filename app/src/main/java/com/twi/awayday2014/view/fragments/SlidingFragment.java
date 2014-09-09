@@ -16,10 +16,11 @@ public abstract class SlidingFragment extends Fragment{
     public static final long OPEN_ANIMATION_DURATION = 600;
     public static final long CLOSE_ANIMATION_DURATION = 400;
 
-    private View mRootLayout;
-    private ObjectAnimator mSlidingPaneOpenAnimator;
-    private ObjectAnimator mSlidingPaneCloseAnimator;
-    private int rootLayoutHeight;
+    protected View mRootLayout;
+    protected ObjectAnimator mSlidingPaneOpenAnimator;
+    protected ObjectAnimator mSlidingPaneCloseAnimator;
+    private int rootLayoutOriginalHeight;
+    private boolean isOpen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public abstract class SlidingFragment extends Fragment{
             @Override
             public void onGlobalLayout() {
                 mRootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                rootLayoutHeight = mRootLayout.getHeight();
+                rootLayoutOriginalHeight = mRootLayout.getHeight();
                 mRootLayout.setVisibility(View.GONE);
             }
         });
@@ -41,6 +42,7 @@ public abstract class SlidingFragment extends Fragment{
     public void slideIn(){
         mRootLayout.setVisibility(View.VISIBLE);
         mSlidingPaneCloseAnimator.cancel();
+        isOpen = true;
         mRootLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -56,13 +58,14 @@ public abstract class SlidingFragment extends Fragment{
 
     public void slideOut(){
         mSlidingPaneOpenAnimator.cancel();
+        isOpen = false;
         mSlidingPaneCloseAnimator.setFloatValues(0, mRootLayout.getHeight());
         mRootLayout.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         mSlidingPaneCloseAnimator.start();
     }
 
-    public int getRootLayoutHeight() {
-        return rootLayoutHeight;
+    public int getRootLayoutOriginalHeight() {
+        return rootLayoutOriginalHeight;
     }
 
     private void initAnimators() {
@@ -97,5 +100,9 @@ public abstract class SlidingFragment extends Fragment{
                 mRootLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    public boolean isOpen() {
+        return isOpen;
     }
 }

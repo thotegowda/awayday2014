@@ -42,4 +42,5 @@ public class Constants {
         public static final int ERROR_NO_DATA_FOUND = 101;
         public static final int ERROR_EXCEPTION_THROWN = 102;
     }
+
 }
