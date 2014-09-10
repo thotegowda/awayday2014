@@ -3,6 +3,7 @@ package com.twi.awayday2014.view.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.AgendaAdapter;
+import com.twi.awayday2014.adapters.BreakoutAdapter;
+import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
+import com.twi.awayday2014.services.parse.BreakoutSessionsParseDataFetcher;
 import com.twi.awayday2014.services.parse.ParseDataListener;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 import com.twi.awayday2014.utils.Fonts;
@@ -33,69 +37,58 @@ import java.util.List;
 
 import static android.view.View.VISIBLE;
 
-public class AgendaTimelineFragment extends BaseTimelineFragment {
-    private static final String TAG = "AgendaTimelineFragment";
-    private static final String DAY = "day";
-    private static final String POSITION = "position";
-    private AgendaAdapter agendaAdapter;
-    private AgendaDataListener agendaDataListener;
-    private static float viewpagerIndicatorheight;
 
-    public static AgendaTimelineFragment newInstance(DateTime day, int position) {
-        AgendaTimelineFragment fragment = new AgendaTimelineFragment();
+public class BreakoutTimelineFragment extends BaseTimelineFragment {
+    private static final String TAG = "BreakoutTimelineFragment";
+    private static final String STREAM = "stream";
+    private BreakoutAdapter breakoutAdapter;
+    private BreakoutDataListener breakoutDataListener;
+
+    public BreakoutTimelineFragment() {
+    }
+
+    public static BreakoutTimelineFragment newInstance(String stream, int position) {
+        BreakoutTimelineFragment fragment = new BreakoutTimelineFragment();
         Bundle args = new Bundle();
-        args.putString(DAY, ISODateTimeFormat.dateTime().print(day));
+        args.putString(STREAM, stream);
         args.putInt(POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    protected AgendaAdapter getAdapter() {
-        if (agendaAdapter == null) {
-            agendaAdapter = new AgendaAdapter(getActivity(), new ArrayList<Session>());
+    protected BreakoutAdapter getAdapter() {
+        if (breakoutAdapter == null) {
+            breakoutAdapter = new BreakoutAdapter(getActivity(), new ArrayList<BreakoutSession>());
         }
-        return agendaAdapter;
+        return breakoutAdapter;
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
         AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
-        AgendaParseDataFetcher agendaParseDataFetcher = application.getAgendaParseDataFetcher();
-        agendaDataListener = new AgendaDataListener();
-        agendaParseDataFetcher.addListener(agendaDataListener);
-        agendaParseDataFetcher.fetchData();
+        BreakoutSessionsParseDataFetcher breakoutSessionsParseDataFetcher = application.getBreakoutSessionsParseDataFetcher();
+        breakoutDataListener = new BreakoutDataListener();
+        breakoutSessionsParseDataFetcher.addListener(breakoutDataListener);
+        breakoutSessionsParseDataFetcher.fetchData();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
-        AgendaParseDataFetcher agendaParseDataFetcher = application.getAgendaParseDataFetcher();
-        agendaParseDataFetcher.removeListener(agendaDataListener);
+        BreakoutSessionsParseDataFetcher breakoutSessionsParseDataFetcher = application.getBreakoutSessionsParseDataFetcher();
+        breakoutSessionsParseDataFetcher.removeListener(breakoutDataListener);
     }
 
     @Override
     protected void onPresentersFetched(List<Presenter> presenters) {
-        agendaAdapter.presentersInfoFetched(presenters);
+        breakoutAdapter.presentersInfoFetched(presenters);
     }
 
-    private List<Session> getSortedSessionsForDay(List<Session> sessions, String day) {
-        List<Session> result = new ArrayList<Session>();
-        DateTimeFormatter dateTimeParser = ISODateTimeFormat.dateTimeParser();
-        DateTime agendaDay = dateTimeParser.parseDateTime(day);
-        for (Session session : sessions) {
-            DateTime dateTime = dateTimeParser.parseDateTime(session.getDate());
-            if (dateTime.dayOfMonth().equals(agendaDay.dayOfMonth())) {
-                result.add(session);
-            }
-        }
-        Collections.sort(result, new Session.SessionsComparator());
-        return result;
-    }
-
-    private class AgendaDataListener implements ParseDataListener<Session> {
+    private class BreakoutDataListener implements ParseDataListener<BreakoutSession> {
 
         @Override
         public void onDataValidation(boolean status) {
@@ -103,10 +96,10 @@ public class AgendaTimelineFragment extends BaseTimelineFragment {
         }
 
         @Override
-        public void onDataFetched(List<Session> data) {
+        public void onDataFetched(List<BreakoutSession> data) {
             placeHolderView.setVisibility(View.INVISIBLE);
             listView.setVisibility(VISIBLE);
-            agendaAdapter.onDataChange(getSortedSessionsForDay(data, getArguments().getString(DAY)));
+            breakoutAdapter.onDataChange(getSortedSessionsForStream(data, getArguments().getString(STREAM)));
         }
 
         @Override
@@ -135,6 +128,17 @@ public class AgendaTimelineFragment extends BaseTimelineFragment {
         public void dataIsOutdated() {
 
         }
+    }
+
+    private List<BreakoutSession> getSortedSessionsForStream(List<BreakoutSession> sessions, String stream) {
+        List<BreakoutSession> result = new ArrayList<BreakoutSession>();
+        for (BreakoutSession session : sessions) {
+            if (session.getStream().equals(stream)) {
+                result.add(session);
+            }
+        }
+        Collections.sort(result, new Session.SessionsComparator());
+        return result;
     }
 
 }

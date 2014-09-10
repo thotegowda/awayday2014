@@ -148,6 +148,14 @@
         <item name="android:background">@color/theme_color</item>
     </style>
 
+    <style name="SlidingTabStrip">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/viewpager_indicator_height</item>
+        <item name="android:overScrollMode">ifContentScrolls</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@color/theme_color</item>
+    </style>
+
     <!--Twitter Activity-->
     <style name="TwitterCircleButton">
         <item name="android:layout_width">@dimen/tweets_activity_twitter_button_size</item>

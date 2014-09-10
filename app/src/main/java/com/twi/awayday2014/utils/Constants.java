@@ -17,6 +17,7 @@ public class Constants {
         public static final String TABLE_IMAGES = "images";
         public static final String TABLE_AGENDA = "Agenda";
         public static final String TABLE_SPEAKERS = "Speakers";
+        public static final String TABLE_BREAKOUTS = "Breakouts";
         public static final String TABLE_DATA_TIMESTAMPS = "DataTimeStamps";
         public static final String COL_OBJECT_ID = "objectId";
         public static final String COL_ACTIVE = "active";
@@ -31,7 +32,9 @@ public class Constants {
         public static final String COL_AWAYDAY_WRITEUP = "awaydayWriteup";
         public static final String COL_LINKS = "Links";
         public static final String COL_DATE = "Date";
-        public static final String COL_SESSION_TITLE = "Item";
+        public static final String COL_STREAM = "Stream";
+        public static final String COL_SESSION_ITEM = "Item";
+        public static final String COL_SESSION_TITLE = "Title";
         public static final String COL_START = "Start";
         public static final String COL_END = "End";
         public static final String COL_LOCATION = "Location";

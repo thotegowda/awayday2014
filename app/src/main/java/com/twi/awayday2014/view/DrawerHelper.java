@@ -205,6 +205,10 @@ public class DrawerHelper {
         drawerlayout.closeDrawer(Gravity.LEFT);
     }
 
+    public void openDrawer() {
+        drawerlayout.openDrawer(Gravity.LEFT);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item);
     }

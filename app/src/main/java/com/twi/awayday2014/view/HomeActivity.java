@@ -1,6 +1,7 @@
 package com.twi.awayday2014.view;
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -111,7 +112,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     }
 
     private void setupHeader() {
-        drawerIcon = findViewById(R.id.drawerIcon);
         customActionbar = findViewById(R.id.customActionbar);
         customActionbarBackground = findViewById(R.id.customActionbarBackgroundView);
 
@@ -148,6 +148,18 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         });
 
         selectedSectionIcon = (ImageView) findViewById(R.id.selectedSectionIcon);
+        drawerIcon = findViewById(R.id.drawerIcon);
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawerHelper.isDrawerOpen()){
+                    drawerHelper.closeDrawer();
+                }else {
+                    drawerHelper.openDrawer();
+                }
+            }
+        };
+        selectedSectionIcon.setOnClickListener(onClickListener);
     }
 
     @Override

@@ -1,14 +1,12 @@
 package com.twi.awayday2014.view.fragments;
 
-import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.adapters.ViewPagerAdapter;
-import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
+import com.twi.awayday2014.R;
+import com.twi.awayday2014.adapters.AgendaPagerAdapter;
 
 public class AgendaFragment extends ViewPagerFragment{
     private static final String TAG = "AgendaFragment";
@@ -18,9 +16,12 @@ public class AgendaFragment extends ViewPagerFragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootLayout = super.onCreateView(inflater, container, savedInstanceState);
-        pager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
-        return rootLayout;
+    protected FragmentPagerAdapter getAdapter() {
+        return new AgendaPagerAdapter(getChildFragmentManager());
+    }
+
+    @Override
+    protected View getRootLayout(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_agenda_viewpager, container, false);
     }
 }
