@@ -7,7 +7,7 @@
         android:id="@+id/placeholderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/home_activity_header_bar_height"
+        android:layout_marginTop="@dimen/home_activity_header_and_viewpager_header_height"
         android:paddingTop="@dimen/home_activity_header_bar_height"
         android:orientation="vertical">
 

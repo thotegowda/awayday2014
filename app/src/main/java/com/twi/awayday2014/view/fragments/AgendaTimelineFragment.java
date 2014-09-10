@@ -1,6 +1,7 @@
 package com.twi.awayday2014.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.twi.awayday2014.AwayDayApplication;

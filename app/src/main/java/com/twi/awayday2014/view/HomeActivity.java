@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -111,12 +112,28 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         currentVisibleHeaderHeight = scrollableHeaderHeight + headerActionbarHeight;
 
         headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
-        Bitmap[] bitmaps = new Bitmap[4];
-        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
-        bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
-        bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
-        bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
+        final Bitmap[] bitmaps = new Bitmap[1];
+        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel1);
         headerPicture.setBitmaps(bitmaps);
+
+        //load other bitmaps in background
+        new AsyncTask<Void, Void, Bitmap[]>() {
+            @Override
+            protected Bitmap[] doInBackground(Void... params) {
+                Bitmap[] result = new Bitmap[4];
+                result[0] = bitmaps[0];
+                result[1] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel2);
+                result[2] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel3);
+                result[3] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel4);
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap[] result) {
+                headerPicture.setBitmaps(result);
+            }
+        }.execute();
+
         setupHeaderText();
         Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
         notificationsButton.setOnClickListener(new View.OnClickListener() {

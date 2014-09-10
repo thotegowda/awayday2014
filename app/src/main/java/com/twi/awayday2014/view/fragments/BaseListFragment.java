@@ -37,14 +37,14 @@ public abstract class BaseListFragment extends Fragment implements ScrollableVie
     @Override
     public void onResume() {
         super.onResume();
-//        float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
-//        listView.setSelectionFromTop(1, (int) currentScrollPos);
+        float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
+        listView.setSelectionFromTop(1, (int) currentScrollPos);
 
         listView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 if (listView.getChildAt(1) == null) {
-                    return false;
+                    return true;
                 }
 
                 listView.getViewTreeObserver().removeOnPreDrawListener(this);
