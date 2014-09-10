@@ -55,10 +55,12 @@ public class DrawerHelper {
                 R.string.drawer_open,
                 R.string.drawer_close) {
             public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
                 homeActivity.onDrawerClosed();
             }
 
             public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
                 homeActivity.onDrawerOpen();
             }
 

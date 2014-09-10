@@ -3,9 +3,11 @@ package com.twi.awayday2014.view;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +42,7 @@ import java.util.Map;
 public class HomeActivity extends FragmentActivity implements ScrollListener {
     private static final String TAG = "HomeActivity";
 
+    private static final float ACTIONBAR_INVISIBLITY_THRESHOLD = .9f;
     public static final int AGENDA_FRAGMENT = 1;
     public static final int SPEAKERS_FRAGMENT = 2;
     public static final int BREAKOUT_FRAGMENT = 3;
@@ -64,6 +68,8 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     private float currentVisibleHeaderHeight;
     private int headerActionbarHeight;
+    private View actionbarRootLayout;
+    private View drawerIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +86,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         setupActionbar();
         setupHeader();
         setupDebugMode();
-        setupParallelScrollChilds();
         fetchData();
-    }
-
-    private void setupParallelScrollChilds() {
-
     }
 
     private void setupDebugMode() {
@@ -110,6 +111,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     }
 
     private void setupHeader() {
+        drawerIcon = findViewById(R.id.drawerIcon);
         customActionbar = findViewById(R.id.customActionbar);
         customActionbarBackground = findViewById(R.id.customActionbarBackgroundView);
 
@@ -151,7 +153,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     @Override
     public void addParallelScrollableChild(ScrollableView scrollableView, int position) {
         parallelScrollableChilds.put(position, scrollableView);
-        if(position == 0){
+        if (position == 0) {
             scrollableView.setActive(true);
         }
         scrollableView.setScrollListener(this);
@@ -182,8 +184,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         if (drawerHelper.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -204,6 +204,16 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     }
 
     public void onDrawerSlide(float slideOffset) {
+        if(slideOffset == 0 && ratioTravelled >= ACTIONBAR_INVISIBLITY_THRESHOLD){
+            actionbarRootLayout.setVisibility(View.INVISIBLE);
+        }else{
+            actionbarRootLayout.setVisibility(View.VISIBLE);
+        }
+
+        int currentIconAlpha = (int) (255 * (1 - ratioTravelled));
+        int newIconAlpha = (int) (255 * slideOffset);
+        appIcon.setAlpha(Math.max(newIconAlpha, currentIconAlpha));
+
         actionbarDrawable.setAlpha((int) (255 * slideOffset));
         if (slideOffset < 1) {
             getActionBar().setTitle("");
@@ -238,6 +248,19 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         actionbarDrawable = getResources().getDrawable(R.drawable.ab_solid_awayday);
         actionbarDrawable.setAlpha(0);
         actionBar.setBackgroundDrawable(actionbarDrawable);
+
+        View decorView = getWindow().getDecorView();
+        int resId;
+        if (!OsUtils.hasHoneycomb()) {
+            resId = getResources().getIdentifier(
+                    "action_bar_container", "id", getPackageName());
+        } else {
+            resId = Resources.getSystem().getIdentifier(
+                    "action_bar_container", "id", "android");
+        }
+        if (resId != 0) {
+            actionbarRootLayout = decorView.findViewById(resId);
+        }
     }
 
     public void onNavigationItemSelected(int position, int resourceId) {
@@ -317,19 +340,17 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void onScroll(ScrollableView scrollableView, float y) {
-        Log.e(TAG, "onScroll " + y);
         adjustHeader(y);
-        Log.e(TAG, "currentVisibleHeaderHeight " + currentVisibleHeaderHeight);
         changeActionbarAlpha();
 
         if (delegateListener != null) {
             delegateListener.onScroll(scrollableView, y);
         }
 
-        if(parallelScrollableChilds.size() > 1){
+        if (parallelScrollableChilds.size() > 1) {
             for (Integer integer : parallelScrollableChilds.keySet()) {
                 ScrollableView scrollableChild = parallelScrollableChilds.get(integer);
-                if(!scrollableChild.getActive()){
+                if (!scrollableChild.getActive()) {
                     scrollableChild.scrollTo(currentVisibleHeaderHeight);
                 }
             }
@@ -348,15 +369,24 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     private void changeActionbarAlpha() {
         ratioTravelled = -header.getTranslationY() / scrollableHeaderHeight;
+        Log.e(TAG, "ratio " + ratioTravelled);
         customActionbarBackground.setAlpha(ratioTravelled);
         appIcon.setAlpha((int) (255 * (1 - ratioTravelled)));
+
+        if(ratioTravelled >= ACTIONBAR_INVISIBLITY_THRESHOLD){
+            drawerIcon.setVisibility(View.VISIBLE);
+            actionbarRootLayout.setVisibility(View.GONE);
+        }else {
+            drawerIcon.setVisibility(View.INVISIBLE);
+            actionbarRootLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setCurrentParallelScrollableChild(int position) {
         for (Integer integer : parallelScrollableChilds.keySet()) {
-            if(position == integer){
+            if (position == integer) {
                 parallelScrollableChilds.get(integer).setActive(true);
-            }else{
+            } else {
                 parallelScrollableChilds.get(integer).setActive(false);
             }
         }

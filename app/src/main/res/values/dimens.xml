@@ -40,6 +40,7 @@
     <dimen name="drawer_list_item_height">56dp</dimen>
 
     <dimen name="padding_extra_small">4dp</dimen>
+    <dimen name="padding_negligible">2dp</dimen>
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding">16dp</dimen>
     <dimen name="padding_large">24dp</dimen>
