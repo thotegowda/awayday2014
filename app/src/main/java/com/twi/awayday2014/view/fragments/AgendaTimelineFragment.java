@@ -1,27 +1,14 @@
 package com.twi.awayday2014.view.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.R;
 import com.twi.awayday2014.adapters.AgendaAdapter;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.ParseDataListener;
-import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
-import com.twi.awayday2014.utils.Fonts;
-import com.twi.awayday2014.view.HomeActivity;
-import com.twi.awayday2014.view.SessionDetailsActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -65,7 +52,12 @@ public class AgendaTimelineFragment extends BaseTimelineFragment {
         AgendaParseDataFetcher agendaParseDataFetcher = application.getAgendaParseDataFetcher();
         agendaDataListener = new AgendaDataListener();
         agendaParseDataFetcher.addListener(agendaDataListener);
-        agendaParseDataFetcher.fetchData();
+        if(agendaParseDataFetcher.isDataFetched()){
+            List<Session> fetchedData = agendaParseDataFetcher.getFetchedData();
+            agendaDataListener.onDataFetched(fetchedData);
+        }else {
+            agendaParseDataFetcher.fetchData();
+        }
     }
 
     @Override

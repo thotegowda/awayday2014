@@ -1,7 +1,6 @@
 package com.twi.awayday2014.view;
 
 import android.app.ActionBar;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -14,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +22,6 @@ import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.BuildConfig;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.services.ParseDataService;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.utils.OsUtils;
 import com.twi.awayday2014.view.custom.KenBurnsView;
@@ -64,7 +61,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     private float ratioTravelled;
     private Map<Integer, ScrollableView> parallelScrollableChilds;
     private ScrollListener delegateListener;
-    private boolean firstOnScrollCallAfterResumeRecived;
 
     private float currentVisibleHeaderHeight;
     private int headerActionbarHeight;
@@ -86,7 +82,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         setupActionbar();
         setupHeader();
         setupDebugMode();
-        fetchData();
     }
 
     private void setupDebugMode() {
@@ -101,14 +96,8 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         AwayDayApplication application = (AwayDayApplication) getApplication();
         application.getPresenterParseDataFetcher().checkDataOutdated();
         application.getAgendaParseDataFetcher().checkDataOutdated();
+        application.getBreakoutSessionsParseDataFetcher().checkDataOutdated();
         appIcon.setAlpha((int) (255 * ratioTravelled));
-        firstOnScrollCallAfterResumeRecived = false;
-    }
-
-    private void fetchData() {
-        AwayDayApplication application = (AwayDayApplication) getApplication();
-        ParseDataService parseDataService = application.getParseDataService();
-        parseDataService.fetchThemeInBackground();
     }
 
     private void setupHeader() {
@@ -352,15 +341,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void onScroll(ScrollableView scrollableView, float y) {
-        Log.e(TAG, "onScroll " + y);
-        // This is a dirty workaround to ignore the redundant call
-        // to onscroll with y=0 right after the activity resume
-        if(!firstOnScrollCallAfterResumeRecived && y == 0){
-            Log.e(TAG, "firstOnScrollCallAfterResumeRecived " + firstOnScrollCallAfterResumeRecived);
-            firstOnScrollCallAfterResumeRecived = true;
-            return;
-        }
-
         adjustHeader(y);
         changeActionbarAlpha();
 

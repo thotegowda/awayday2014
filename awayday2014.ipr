@@ -245,6 +245,14 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="android.joda-2.4.0">
+      <CLASSES>
+        <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/net.danlew/android.joda/2.4.0/res" />
+        <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/net.danlew/android.joda/2.4.0/classes.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="androidsvg-1.2.0">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/app/libs/androidsvg-1.2.0.jar!/" />
@@ -263,13 +271,6 @@
     <library name="google-play-services">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/app/libs/google-play-services.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="joda-time-2.3">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/app/libs/joda-time-2.3.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

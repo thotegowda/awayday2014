@@ -16,5 +16,6 @@
         android:layout_marginTop="@dimen/home_activity_header_height_without_countdown"
         app:indicatorColor="@color/theme_dark_color"
         app:indicatorHeight="3dp"
-        app:dividerColor1="@color/white"/>
+        app:dividerColor1="@color/white"
+        app:dividerColor2="@android:color/transparent"/>
 </FrameLayout>

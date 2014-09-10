@@ -9,6 +9,8 @@ import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.services.twitter.TwitterPreference;
 import com.twi.awayday2014.services.twitter.TwitterService;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 public class AwayDayApplication extends SugarApp {
 
     private TwitterService twitterService;
@@ -22,6 +24,7 @@ public class AwayDayApplication extends SugarApp {
     public void onCreate() {
         super.onCreate();
         parseDataService = new ParseDataService(this);
+        JodaTimeAndroid.init(this);
     }
 
     public TwitterService getTwitterService() {

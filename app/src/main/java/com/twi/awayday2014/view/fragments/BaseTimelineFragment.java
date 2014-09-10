@@ -45,7 +45,12 @@ public abstract class BaseTimelineFragment extends BaseListFragment{
         PresenterParseDataFetcher presenterParseDataFetcher = application.getPresenterParseDataFetcher();
         speakersDataListener = new SpeakersDataListener();
         presenterParseDataFetcher.addListener(speakersDataListener);
-        presenterParseDataFetcher.fetchData();
+        if(presenterParseDataFetcher.isDataFetched()){
+            List<Presenter> fetchedData = presenterParseDataFetcher.getFetchedData();
+            speakersDataListener.onDataFetched(fetchedData);
+        }else {
+            presenterParseDataFetcher.fetchData();
+        }
     }
 
     @Override

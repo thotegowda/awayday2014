@@ -72,7 +72,12 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         BreakoutSessionsParseDataFetcher breakoutSessionsParseDataFetcher = application.getBreakoutSessionsParseDataFetcher();
         breakoutDataListener = new BreakoutDataListener();
         breakoutSessionsParseDataFetcher.addListener(breakoutDataListener);
-        breakoutSessionsParseDataFetcher.fetchData();
+        if(breakoutSessionsParseDataFetcher.isDataFetched()){
+            List<BreakoutSession> fetchedData = breakoutSessionsParseDataFetcher.getFetchedData();
+            breakoutDataListener.onDataFetched(fetchedData);
+        }else {
+            breakoutSessionsParseDataFetcher.fetchData();
+        }
     }
 
     @Override
