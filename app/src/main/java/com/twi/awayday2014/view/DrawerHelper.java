@@ -72,7 +72,7 @@ public class DrawerHelper {
         setupTextViews();
 
         if (isAuthorizedToSendPushNotifications(homeActivity)) {
-            showSendNotificationView();
+            showSendNotificationView(true);
         }
     }
 
@@ -92,8 +92,8 @@ public class DrawerHelper {
                 handler.sendEmptyMessageDelayed(0, 400);
                 if (clickCounter == 9) {
                     clickCounter = 0;
-                    rememberAdmin(homeActivity);
-                    showSendNotificationView();
+                    rememberAdmin(homeActivity, true);
+                    showSendNotificationView(true);
                 }
             }
         });
@@ -161,6 +161,16 @@ public class DrawerHelper {
             }
         });
 
+        sendNotificationView.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View view) {
+                rememberAdmin(homeActivity, false);
+                showSendNotificationView(false);
+                return true;
+            }
+        });
+
         TextView countryText = (TextView) drawerlayout.findViewById(R.id.countryYearText);
         countryText.setTypeface(Fonts.openSansRegular(homeActivity));
     }
@@ -197,10 +207,10 @@ public class DrawerHelper {
         return drawerToggle.onOptionsItemSelected(item);
     }
 
-    public void rememberAdmin(Activity activity) {
+    public void rememberAdmin(Activity activity, boolean remember) {
         SharedPreferences prefs = activity.getSharedPreferences(ADMIN_SETTINGS, 0);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(CAN_SEND_NOTIFICATION, true);
+        editor.putBoolean(CAN_SEND_NOTIFICATION, remember);
         editor.commit();
     }
 
@@ -213,7 +223,7 @@ public class DrawerHelper {
         homeActivity.startActivity(intent);
     }
 
-    private void showSendNotificationView() {
-        sendNotificationView.setVisibility(View.VISIBLE);
+    private void showSendNotificationView(boolean show) {
+        sendNotificationView.setVisibility(show == true ? View.VISIBLE : View.GONE);
     }
 }
