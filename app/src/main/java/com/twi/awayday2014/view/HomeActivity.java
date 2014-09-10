@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,7 +15,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -65,6 +63,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     private float ratioTravelled;
     private Map<Integer, ScrollableView> parallelScrollableChilds;
     private ScrollListener delegateListener;
+    private boolean firstOnScrollCallAfterResumeRecived;
 
     private float currentVisibleHeaderHeight;
     private int headerActionbarHeight;
@@ -102,6 +101,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         application.getPresenterParseDataFetcher().checkDataOutdated();
         application.getAgendaParseDataFetcher().checkDataOutdated();
         appIcon.setAlpha((int) (255 * ratioTravelled));
+        firstOnScrollCallAfterResumeRecived = false;
     }
 
     private void fetchData() {
@@ -340,6 +340,15 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void onScroll(ScrollableView scrollableView, float y) {
+        Log.e(TAG, "onScroll " + y);
+        // This is a dirty workaround to ignore the redundant call
+        // to onscroll with y=0 right after the activity resume
+        if(!firstOnScrollCallAfterResumeRecived && y == 0){
+            Log.e(TAG, "firstOnScrollCallAfterResumeRecived " + firstOnScrollCallAfterResumeRecived);
+            firstOnScrollCallAfterResumeRecived = true;
+            return;
+        }
+
         adjustHeader(y);
         changeActionbarAlpha();
 
@@ -369,7 +378,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     private void changeActionbarAlpha() {
         ratioTravelled = -header.getTranslationY() / scrollableHeaderHeight;
-        Log.e(TAG, "ratio " + ratioTravelled);
         customActionbarBackground.setAlpha(ratioTravelled);
         appIcon.setAlpha((int) (255 * (1 - ratioTravelled)));
 
