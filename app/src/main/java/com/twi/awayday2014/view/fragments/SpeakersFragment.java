@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,10 +45,20 @@ public class SpeakersFragment extends BaseListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listView = (ListView) inflater.inflate(R.layout.fragment_speakers, container, false);
-        header = inflater.inflate(R.layout.view_fake_header, listView, false);
-        return listView;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((HomeActivity)getActivity()).addParallelScrollableChild(this, 0);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((HomeActivity)getActivity()).removeParallelScrollableChild(this);
+    }
+
+    @Override
+    protected View getRootLayout(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_speakers, container, false);
     }
 
     @Override
@@ -74,8 +86,8 @@ public class SpeakersFragment extends BaseListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    protected float getExtraScrollPos() {
+        return 0;
     }
 
     @Override
@@ -92,6 +104,11 @@ public class SpeakersFragment extends BaseListFragment {
         Intent intent = new Intent(getActivity(), SpeakerDetailsActivity.class);
         intent.putExtra(PRESENTER_ID, presenter.getId());
         startActivity(intent);
+    }
+
+    @Override
+    protected View getHeaderView(LayoutInflater inflater, ListView listView) {
+        return inflater.inflate(R.layout.view_fake_header_standard_child, listView, false);
     }
 
     private class SpeakersDataListener implements ParseDataListener<Presenter> {

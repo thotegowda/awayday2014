@@ -3,138 +3,125 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.twi.awayday2014.view.custom.ObservableScrollView
-        android:id="@+id/scrollView"
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_activity_header_height_without_countdown">
+
+        <com.twi.awayday2014.view.custom.KenBurnsView
+            android:id="@+id/header_picture"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_activity_header_height_without_countdown" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/header"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/home_activity_header_height_without_countdown">
+                android:layout_height="@dimen/home_activity_header_details_height"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/transparent_light_black"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
 
-                <com.twi.awayday2014.view.custom.KenBurnsView
-                    android:id="@+id/header_picture"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/headerDetailsHeaderText"
+                    style="@style/HeaderDetailsTextView"
+                    android:text="@string/headerDetailsHeader"
+                    android:textSize="@dimen/home_activity_headerDetails_headerText_size" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <View
+                    style="@style/HorizontalDivider"
+                    android:layout_width="@dimen/home_activity_headerDetails_big_divider_width"
+                    android:layout_margin="@dimen/padding_small" />
 
+                <TextView
+                    android:id="@+id/headerDetailsMainText"
+                    style="@style/HeaderDetailsTextView"
+                    android:padding="@dimen/padding_small"
+                    android:text="@string/headerDetailsMainText"
+                    android:textSize="@dimen/home_activity_headerDetails_mainText_size" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_activity_header_details_height"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@color/transparent_light_black"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="@dimen/padding">
+                <View
+                    style="@style/HorizontalDivider"
+                    android:layout_width="@dimen/home_activity_headerDetails_big_divider_width"
+                    android:layout_margin="@dimen/padding_small" />
 
-                        <TextView
-                            android:id="@+id/headerDetailsHeaderText"
-                            style="@style/HeaderDetailsTextView"
-                            android:text="@string/headerDetailsHeader"
-                            android:textSize="@dimen/home_activity_headerDetails_headerText_size" />
+                <TextView
+                    android:id="@+id/headerDetailsFooterDate"
+                    style="@style/HeaderDetailsTextView"
+                    android:text="@string/headerDetailsFooterDateText"
+                    android:textSize="@dimen/home_activity_headerDetails_headerText_size" />
 
-                        <View
-                            style="@style/HorizontalDivider"
-                            android:layout_width="@dimen/home_activity_headerDetails_big_divider_width"
-                            android:layout_margin="@dimen/padding_small" />
+                <View
+                    style="@style/HorizontalDivider"
+                    android:layout_width="@dimen/home_activity_headerDetails_small_divider_width"
+                    android:layout_margin="@dimen/padding_small" />
 
-                        <TextView
-                            android:id="@+id/headerDetailsMainText"
-                            style="@style/HeaderDetailsTextView"
-                            android:padding="@dimen/padding_small"
-                            android:text="@string/headerDetailsMainText"
-                            android:textSize="@dimen/home_activity_headerDetails_mainText_size" />
+            </LinearLayout>
 
-                        <View
-                            style="@style/HorizontalDivider"
-                            android:layout_width="@dimen/home_activity_headerDetails_big_divider_width"
-                            android:layout_margin="@dimen/padding_small" />
-
-                        <TextView
-                            android:id="@+id/headerDetailsFooterDate"
-                            style="@style/HeaderDetailsTextView"
-                            android:text="@string/headerDetailsFooterDateText"
-                            android:textSize="@dimen/home_activity_headerDetails_headerText_size" />
-
-                        <View
-                            style="@style/HorizontalDivider"
-                            android:layout_width="@dimen/home_activity_headerDetails_small_divider_width"
-                            android:layout_margin="@dimen/padding_small" />
-
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/customActionbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?android:actionBarSize"
-                        android:background="@color/transparent_black"
-                        android:gravity="center_vertical">
-
-                        <View
-                            android:id="@+id/customActionbarBackgroundView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:alpha="0"
-                            android:background="@color/theme_dark_color"/>
-
-                        <ImageView
-                            android:id="@+id/selectedSectionIcon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="@dimen/padding"
-                            android:src="@drawable/ic_agenda"
-                            android:layout_alignParentLeft="true"/>
-
-                        <TextView
-                            android:id="@+id/selectedSectionText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/selectedSectionIcon"
-                            android:layout_marginLeft="@dimen/padding_small"
-                            android:gravity="center"
-                            android:text="Agenda"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp" />
-
-                        <Button
-                            android:id="@+id/notificationsButton"
-                            style="@style/HeaderButton"
-                            android:layout_marginRight="@dimen/padding"
-                            android:layout_toLeftOf="@+id/twitterButton"
-                            android:background="@drawable/ic_notifications" />
-
-                        <Button
-                            android:id="@id/twitterButton"
-                            style="@style/HeaderButton"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginLeft="@dimen/padding"
-                            android:layout_marginRight="@dimen/padding_extra_large"
-                            android:background="@drawable/ic_twitter_actionbar" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/content_frame"
+            <RelativeLayout
+                android:id="@+id/customActionbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="?android:actionBarSize"
+                android:background="@color/transparent_black"
+                android:gravity="center_vertical">
+
+                <View
+                    android:id="@+id/customActionbarBackgroundView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0"
+                    android:background="@color/theme_dark_color" />
+
+                <ImageView
+                    android:id="@+id/selectedSectionIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:src="@drawable/ic_agenda" />
+
+                <TextView
+                    android:id="@+id/selectedSectionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_toRightOf="@id/selectedSectionIcon"
+                    android:gravity="center"
+                    android:text="Agenda"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/notificationsButton"
+                    style="@style/HeaderButton"
+                    android:layout_marginRight="@dimen/padding"
+                    android:layout_toLeftOf="@+id/twitterButton"
+                    android:background="@drawable/ic_notifications" />
+
+                <Button
+                    android:id="@id/twitterButton"
+                    style="@style/HeaderButton"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:layout_marginRight="@dimen/padding_extra_large"
+                    android:background="@drawable/ic_twitter_actionbar" />
+            </RelativeLayout>
+
         </LinearLayout>
 
-    </com.twi.awayday2014.view.custom.ObservableScrollView>
+    </FrameLayout>
+
 
     <include
         android:id="@+id/left_drawer"

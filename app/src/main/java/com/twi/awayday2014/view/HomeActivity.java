@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,32 +15,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AwayDayApplication;
+import com.twi.awayday2014.BuildConfig;
 import com.twi.awayday2014.R;
-import com.twi.awayday2014.models.Theme;
 import com.twi.awayday2014.services.ParseDataService;
-import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
-import com.twi.awayday2014.utils.Blur;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.utils.OsUtils;
 import com.twi.awayday2014.view.custom.KenBurnsView;
-import com.twi.awayday2014.view.custom.ObservableScrollView;
+import com.twi.awayday2014.view.custom.ScrollListener;
+import com.twi.awayday2014.view.custom.ScrollableView;
 import com.twi.awayday2014.view.fragments.AgendaFragment;
 import com.twi.awayday2014.view.fragments.BreakoutFragment;
 import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity implements ScrollListener {
     private static final String TAG = "HomeActivity";
 
     public static final int AGENDA_FRAGMENT = 1;
@@ -54,11 +49,9 @@ public class HomeActivity extends FragmentActivity {
     private Drawable actionbarDrawable;
     private DrawerLayout drawerLayout;
     private View customActionbar;
-    private int defaultHeaderTopPos;
-    private int defaultActionbarTopPos;
-    private CustomActionbarState currentCustomActionbarState = CustomActionbarState.FLOATING;
-    private List<CustomActionbarStateListener> customActionbarStateListener;
     private View customActionbarBackground;
+    private View header;
+    private int scrollableHeaderHeight;
     private Drawable appIcon;
     private KenBurnsView headerPicture;
     private double mCurrentPosition;
@@ -66,6 +59,11 @@ public class HomeActivity extends FragmentActivity {
     private TextView selectedSectionText;
     private ImageView selectedSectionIcon;
     private float ratioTravelled;
+    private Map<Integer, ScrollableView> parallelScrollableChilds;
+    private ScrollListener delegateListener;
+
+    private float currentVisibleHeaderHeight;
+    private int headerActionbarHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +74,24 @@ public class HomeActivity extends FragmentActivity {
         drawerHelper = new DrawerHelper(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerHelper.onCreate(drawerLayout);
-        customActionbarStateListener = new ArrayList<CustomActionbarStateListener>();
+
+        parallelScrollableChilds = new HashMap<Integer, ScrollableView>();
 
         setupActionbar();
         setupHeader();
-        setupScroller();
+        setupDebugMode();
+        setupParallelScrollChilds();
         fetchData();
+    }
+
+    private void setupParallelScrollChilds() {
+
+    }
+
+    private void setupDebugMode() {
+        if (BuildConfig.DEBUG) {
+            OsUtils.enableStrictMode();
+        }
     }
 
     @Override
@@ -99,52 +109,58 @@ public class HomeActivity extends FragmentActivity {
         parseDataService.fetchThemeInBackground();
     }
 
-    private void setupScroller() {
-        final ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
+    private void setupHeader() {
         customActionbar = findViewById(R.id.customActionbar);
-        final View header = findViewById(R.id.header);
         customActionbarBackground = findViewById(R.id.customActionbarBackgroundView);
 
-        final FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        drawerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        header = findViewById(R.id.header);
+        headerActionbarHeight = (int) getResources().getDimension(R.dimen.home_activity_header_bar_height);
+        scrollableHeaderHeight = (int) getResources().getDimension(R.dimen.home_activity_header_height_without_countdown)
+                - headerActionbarHeight;
+        currentVisibleHeaderHeight = scrollableHeaderHeight + headerActionbarHeight;
+
+        headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
+        Bitmap[] bitmaps = new Bitmap[4];
+        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
+        bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
+        bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
+        bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
+        headerPicture.setBitmaps(bitmaps);
+        setupHeaderText();
+        Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
+        notificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGlobalLayout() {
-                drawerLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int height = drawerLayout.getHeight();
-                contentFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        height - getActionBar().getHeight()));
-                defaultHeaderTopPos = getAbsTop(header);
-                defaultActionbarTopPos = getAbsTop(customActionbar);
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
+                HomeActivity.this.startActivity(intent);
             }
         });
 
-        scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
-
+        Button twitterButton = (Button) findViewById(R.id.twitterButton);
+        twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onScrollChanged() {
-                int distanceToTravel = defaultActionbarTopPos - defaultHeaderTopPos;
-                int currentDistanceTravelled = getAbsTop(customActionbar) - defaultHeaderTopPos;
-                ratioTravelled = (float) currentDistanceTravelled / distanceToTravel;
-                Log.e(TAG, "ratio: " + ratioTravelled);
-                if (ratioTravelled <= 0 && currentCustomActionbarState == CustomActionbarState.FLOATING) {
-                    currentCustomActionbarState = CustomActionbarState.STICKY;
-                    Log.d(TAG, "actionbar is now sticky");
-                    notifyCustomActionbarStateChange(CustomActionbarState.STICKY);
-                } else if (ratioTravelled > 0 && currentCustomActionbarState == CustomActionbarState.STICKY) {
-                    currentCustomActionbarState = CustomActionbarState.FLOATING;
-                    Log.d(TAG, "actionbar is now floating");
-                    notifyCustomActionbarStateChange(CustomActionbarState.FLOATING);
-                }
-                customActionbarBackground.setAlpha(1 - ratioTravelled);
-                appIcon.setAlpha((int) (255 * ratioTravelled));
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, TweetsActivity.class);
+                HomeActivity.this.startActivity(intent);
             }
         });
+
+        selectedSectionIcon = (ImageView) findViewById(R.id.selectedSectionIcon);
     }
 
-    private void notifyCustomActionbarStateChange(CustomActionbarState state) {
-        for (CustomActionbarStateListener actionbarStateListener : customActionbarStateListener) {
-            actionbarStateListener.onActionbarStateChange(state);
+    @Override
+    public void addParallelScrollableChild(ScrollableView scrollableView, int position) {
+        parallelScrollableChilds.put(position, scrollableView);
+        if(position == 0){
+            scrollableView.setActive(true);
         }
+        scrollableView.setScrollListener(this);
+    }
+
+    @Override
+    public void removeParallelScrollableChild(ScrollableView scrollableView) {
+        scrollableView.setScrollListener(null);
+        parallelScrollableChilds.remove(scrollableView);
     }
 
     @Override
@@ -181,11 +197,11 @@ public class HomeActivity extends FragmentActivity {
         invalidateOptionsMenu();
     }
 
+
     public void onDrawerClosed() {
         getActionBar().setTitle("");
         invalidateOptionsMenu();
     }
-
 
     public void onDrawerSlide(float slideOffset) {
         actionbarDrawable.setAlpha((int) (255 * slideOffset));
@@ -198,44 +214,6 @@ public class HomeActivity extends FragmentActivity {
         int[] coords = {0, 0};
         view.getLocationOnScreen(coords);
         return coords[1];
-    }
-
-    public void addCustomActionbarStateListener(CustomActionbarStateListener listener) {
-        customActionbarStateListener.add(listener);
-    }
-
-    public void removeCustomActionbarStateListener(CustomActionbarStateListener listener) {
-        customActionbarStateListener.remove(listener);
-    }
-
-    private void setupHeader() {
-        headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
-        Bitmap[] bitmaps = new Bitmap[4];
-        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
-        bitmaps[1] = BitmapFactory.decodeResource(getResources(), R.drawable.picture1);
-        bitmaps[2] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_travel);
-        bitmaps[3] = BitmapFactory.decodeResource(getResources(), R.drawable.notifications_image_sessions);
-        headerPicture.setBitmaps(bitmaps);
-        setupHeaderText();
-        Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
-        notificationsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
-                HomeActivity.this.startActivity(intent);
-            }
-        });
-
-        Button twitterButton = (Button) findViewById(R.id.twitterButton);
-        twitterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, TweetsActivity.class);
-                HomeActivity.this.startActivity(intent);
-            }
-        });
-
-        selectedSectionIcon = (ImageView) findViewById(R.id.selectedSectionIcon);
     }
 
     private void setupHeaderText() {
@@ -329,25 +307,58 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
-    public enum CustomActionbarState {
-        STICKY,
-        FLOATING;
+    public float getCurrentVisibleHeaderHeight() {
+        return currentVisibleHeaderHeight;
     }
 
-    public interface CustomActionbarStateListener {
-        void onActionbarStateChange(CustomActionbarState customActionbarState);
+    public void setDelegateListener(ScrollListener delegateListener) {
+        this.delegateListener = delegateListener;
     }
 
-    private class ParseCallbackListener implements ParseDataService.ParseDataListener {
+    @Override
+    public void onScroll(ScrollableView scrollableView, float y) {
+        Log.e(TAG, "onScroll " + y);
+        adjustHeader(y);
+        Log.e(TAG, "currentVisibleHeaderHeight " + currentVisibleHeaderHeight);
+        changeActionbarAlpha();
 
-        @Override
-        public void onThemeFetched(Theme theme) {
-
+        if (delegateListener != null) {
+            delegateListener.onScroll(scrollableView, y);
         }
 
-        @Override
-        public void onThemeFetchedError(int status) {
+        if(parallelScrollableChilds.size() > 1){
+            for (Integer integer : parallelScrollableChilds.keySet()) {
+                ScrollableView scrollableChild = parallelScrollableChilds.get(integer);
+                if(!scrollableChild.getActive()){
+                    scrollableChild.scrollTo(currentVisibleHeaderHeight);
+                }
+            }
+        }
+    }
 
+    private void adjustHeader(float y) {
+        if (-y <= scrollableHeaderHeight) {
+            currentVisibleHeaderHeight = scrollableHeaderHeight + y + headerActionbarHeight;
+            header.setTranslationY(y);
+        } else {
+            currentVisibleHeaderHeight = headerActionbarHeight;
+            header.setTranslationY(-scrollableHeaderHeight);
+        }
+    }
+
+    private void changeActionbarAlpha() {
+        ratioTravelled = -header.getTranslationY() / scrollableHeaderHeight;
+        customActionbarBackground.setAlpha(ratioTravelled);
+        appIcon.setAlpha((int) (255 * (1 - ratioTravelled)));
+    }
+
+    public void setCurrentParallelScrollableChild(int position) {
+        for (Integer integer : parallelScrollableChilds.keySet()) {
+            if(position == integer){
+                parallelScrollableChilds.get(integer).setActive(true);
+            }else{
+                parallelScrollableChilds.get(integer).setActive(false);
+            }
         }
     }
 }

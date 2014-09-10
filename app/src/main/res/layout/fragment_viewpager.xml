@@ -4,10 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/viewpagerIndicator"
         android:layout_width="match_parent"
+        android:layout_gravity="top"
         android:layout_height="@dimen/viewpager_indicator_height"
+        android:layout_marginTop="@dimen/home_activity_header_height_without_countdown"
         android:background="@color/theme_color"
         android:orientation="horizontal">
 
@@ -38,12 +45,5 @@
                 style="@style/ViewpagerSelectionIndicator"/>
         </LinearLayout>
     </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_marginTop="@dimen/viewpager_indicator_height"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 
 </FrameLayout>

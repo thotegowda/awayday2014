@@ -5,34 +5,57 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import com.twi.awayday2014.R;
-import com.twi.awayday2014.utils.Fonts;
-import com.twi.awayday2014.view.HomeActivity;
 
-public abstract class BaseListFragment extends Fragment implements HomeActivity.CustomActionbarStateListener {
+import com.twi.awayday2014.R;
+import com.twi.awayday2014.view.HomeActivity;
+import com.twi.awayday2014.view.custom.ScrollListener;
+import com.twi.awayday2014.view.custom.ScrollableView;
+
+public abstract class BaseListFragment extends Fragment implements ScrollableView {
     private static final String TAG = "BaseFragment";
 
     protected ListView listView;
     protected View header;
-    private boolean interceptingTouchEvents;
     protected View placeHolderView;
     protected TextView placeHolderText;
+    protected View rootlayout;
+    protected boolean isListViewAdjustedAsPerParent;
+    protected boolean isActive;
+    private ScrollListener scrollListener;
 
     @Override
     public void onAttach(android.app.Activity activity) {
+        isListViewAdjustedAsPerParent = false;
         super.onAttach(activity);
-
-        HomeActivity newHomeNewHomeActivity = (HomeActivity) getActivity();
-        newHomeNewHomeActivity.addCustomActionbarStateListener(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
-        HomeActivity newHomeActivity = (HomeActivity) getActivity();
-        newHomeActivity.removeCustomActionbarStateListener(this);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                if (listView.getChildAt(1) == null) {
+                    return false;
+                }
+
+                listView.getViewTreeObserver().removeOnPreDrawListener(this);
+                float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
+                isListViewAdjustedAsPerParent = true;
+                listView.setSelectionFromTop(1, (int) currentScrollPos);
+                Log.d(TAG, "listView is adjusted as per header height");
+                return false;
+            }
+        });
+        listView.setSelectionAfterHeaderView();
+    }
+
+    protected abstract float getExtraScrollPos();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -42,63 +65,16 @@ public abstract class BaseListFragment extends Fragment implements HomeActivity.
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (listIsAtTop()) {
-                    Log.d("List", "list is at top ");
-                    interceptingTouchEvents = false;
+                if (isListViewAdjustedAsPerParent && scrollListener != null && isActive) {
+                    scrollListener.onScroll(BaseListFragment.this, header.getY());
                 }
             }
         });
 
-        listView.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!interceptingTouchEvents) {
-                    Log.d("List", "list is at top, so not intercepting ");
-                    Log.e(TAG, "Not intercepting");
-                    return false;
-                } else {
-                    Log.e(TAG, "intercepting");
-                    int action = event.getAction();
-                    ViewParent scrollviewParent = findScrollviewParent(v);
-                    if (scrollviewParent == null) {
-                        throw new IllegalStateException("A scrollview parent is exptected in the view hierarchy");
-                    }
-                    switch (action) {
-                        case MotionEvent.ACTION_DOWN:
-                            // Disallow ScrollView to intercept touch events.
-                            scrollviewParent.requestDisallowInterceptTouchEvent(true);
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-                            // Allow ScrollView to intercept touch events.
-                            scrollviewParent.requestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-
-                    // Handle ListView touch events.
-                    v.onTouchEvent(event);
-                    return true;
-                }
-            }
-
-            private ViewParent findScrollviewParent(View v) {
-                ViewParent result;
-                while (v != null) {
-                    result = v.getParent();
-                    if (result instanceof ScrollView) {
-                        return result;
-                    } else {
-                        v = (View) result;
-                    }
-                }
-                return null;
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,37 +85,42 @@ public abstract class BaseListFragment extends Fragment implements HomeActivity.
     }
 
     protected abstract ListAdapter getAdapter();
+
     protected abstract void onListItemClick(AdapterView<?> parent, View view, int position, long id);
 
     protected ListView getListView() {
         return listView;
     }
 
-    private boolean listIsAtTop() {
-        if (listView.getChildCount() == 0) {
-            return true;
-        }
-
-        return listView.getChildAt(0).getTop() == 0;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootlayout = inflater.inflate(R.layout.fragment_timeline, container, false);
+        rootlayout = getRootLayout(inflater, container);
         listView = (ListView) rootlayout.findViewById(R.id.list);
-        header = inflater.inflate(R.layout.view_fake_header, listView, false);
-        placeHolderView = rootlayout.findViewById(R.id.placeholderView);
-        placeHolderText = (TextView) rootlayout.findViewById(R.id.placeholderText);
-        placeHolderText.setTypeface(Fonts.openSansLight(getActivity()));
+        header = getHeaderView(inflater, listView);
+        listView.addHeaderView(header);
         return rootlayout;
     }
 
     @Override
-    public void onActionbarStateChange(HomeActivity.CustomActionbarState customActionbarState) {
-        if (customActionbarState == HomeActivity.CustomActionbarState.STICKY) {
-            interceptingTouchEvents = true;
-        } else {
-            interceptingTouchEvents = false;
-        }
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    @Override
+    public boolean getActive() {
+        return isActive;
+    }
+
+    @Override
+    public void scrollTo(float y) {
+        listView.setSelectionFromTop(1, (int) (y + getExtraScrollPos()));
+    }
+
+    protected abstract View getHeaderView(LayoutInflater inflater, ListView listView);
+
+    protected abstract View getRootLayout(LayoutInflater inflater, ViewGroup container);
+
+    public void setScrollListener(ScrollListener scrollListener) {
+        this.scrollListener = scrollListener;
     }
 }

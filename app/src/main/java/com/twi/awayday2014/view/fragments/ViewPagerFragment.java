@@ -8,13 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.view.HomeActivity;
+import com.twi.awayday2014.view.custom.ScrollListener;
+import com.twi.awayday2014.view.custom.ScrollableView;
 
-public class ViewPagerFragment extends Fragment {
+public class ViewPagerFragment extends Fragment implements ScrollListener {
 
     private View rootLayout;
     private View leftIndicator;
     private View rightIndicator;
+    private View pagerIndicator;
     protected ViewPager pager;
+    private int scrollablePagerIndicatorDistance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,6 +31,7 @@ public class ViewPagerFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 selectIndicator(position);
+                ((HomeActivity)getActivity()).setCurrentParallelScrollableChild(position);
             }
         });
         setupIndicators();
@@ -39,6 +45,9 @@ public class ViewPagerFragment extends Fragment {
 
         // This is a dirty workaround but fragment references in viewpager become invalid on config change (eg device rotation), so they have to directly
         // register themselves to activity
+        scrollablePagerIndicatorDistance = (int) getResources().getDimension(R.dimen.home_activity_header_height_without_countdown)
+                        - (int) getResources().getDimension(R.dimen.home_activity_header_bar_height);
+        ((HomeActivity)getActivity()).setDelegateListener(this);
     }
 
     private void setupIndiacatorButtons() {
@@ -59,6 +68,7 @@ public class ViewPagerFragment extends Fragment {
     }
 
     private void setupIndicators() {
+        pagerIndicator = rootLayout.findViewById(R.id.viewpagerIndicator);
         leftIndicator = rootLayout.findViewById(R.id.selectionIndicatorLeft);
         rightIndicator = rootLayout.findViewById(R.id.selectionIndicatorRight);
         selectIndicator(pager.getCurrentItem());
@@ -77,5 +87,24 @@ public class ViewPagerFragment extends Fragment {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onScroll(ScrollableView scrollableView, float y) {
+        if(-y <= scrollablePagerIndicatorDistance){
+            pagerIndicator.setTranslationY(y);
+        }else {
+            pagerIndicator.setTranslationY(-scrollablePagerIndicatorDistance);
+        }
+    }
+
+    @Override
+    public void addParallelScrollableChild(ScrollableView scrollableView, int position) {
+
+    }
+
+    @Override
+    public void removeParallelScrollableChild(ScrollableView scrollableView) {
+
     }
 }
