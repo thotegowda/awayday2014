@@ -3,6 +3,9 @@ package com.twi.awayday2014.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -16,11 +19,14 @@ import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SessionDetailsActivity extends Activity {
+
+    public static final String TAG = "Questions";
 
     private Session session;
     private List<Presenter> presenters;
@@ -31,6 +37,24 @@ public class SessionDetailsActivity extends Activity {
     private ImageView toggleQuestionFrameBtn;
     private TextView questionsTitleView;
     private QuestionService questionService;
+
+    private static final int REFRESH_TIME = 30000;
+
+    private static final int PULL_LATEST_QUESTIONS = 1;
+
+    private Handler H = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case PULL_LATEST_QUESTIONS:
+                    refreshIfThereAreNewQuestions();
+                    sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +75,13 @@ public class SessionDetailsActivity extends Activity {
         setupDetailText();
         setupFeedbackButton();
         setupQuestionsView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        H.removeMessages(PULL_LATEST_QUESTIONS);
     }
 
     private void setupDetailText() {
@@ -91,21 +122,36 @@ public class SessionDetailsActivity extends Activity {
         TextView speakerName = (TextView) findViewById(R.id.speakerName);
         View speakerInfoLayout = findViewById(R.id.speakerInfoLayout);
         ImageView userImage1 = (ImageView) findViewById(R.id.profile_image1);
+        userImage1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                launchSpeakerDetailActivity(presenters.get(0));
+            }
+        });
+
         ImageView userImage2 = (ImageView) findViewById(R.id.profile_image2);
+        userImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSpeakerDetailActivity(presenters.get(1));
+            }
+        });
+
         speakerName.setTypeface(Fonts.openSansLight(this));
 
-        if(presenters.size() == 0){
+        if (presenters.size() == 0) {
             speakerName.setVisibility(View.GONE);
             speakerInfoLayout.setVisibility(View.GONE);
             return;
-        }else if(presenters.size() == 1){
+        } else if (presenters.size() == 1) {
             Picasso.with(this)
                     .load(presenters.get(0).getImageUrl())
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .into(userImage1);
             speakerName.setText(presenters.get(0).getName());
-        }else {
+        } else {
             userImage2.setVisibility(View.VISIBLE);
             Picasso.with(this)
                     .load(presenters.get(0).getImageUrl())
@@ -119,6 +165,11 @@ public class SessionDetailsActivity extends Activity {
                     .into(userImage2);
             speakerName.setText(presenters.get(0).getName() + ", " + presenters.get(1).getName());
         }
+    }
+
+    private void launchSpeakerDetailActivity(Presenter presenter) {
+        startActivity(new Intent(this, SpeakerDetailsActivity.class)
+                .putExtra(SpeakersFragment.PRESENTER_ID, presenter.getId()));
     }
 
     private void setupQuestionsView() {
@@ -151,13 +202,40 @@ public class SessionDetailsActivity extends Activity {
         loadQuestions();
     }
 
+    private void refreshIfThereAreNewQuestions() {
+        questionService.loadOnlyIfThereAreAnyNewQuestions(
+                session.getId(),
+                questionsHolderView.getChildCount(),
+                new QuestionService.OnQuestionLoadListener() {
+                    @Override
+                    public void onQuestionLoaded(List<Question> questions) {
+                        Log.d(TAG, "Recent question count : " + questions.size());
+                        displayQuestions(questions);
+                    }
+                });
+    }
+
     private void loadQuestions() {
+
         questionService.loadQuestions(session.getId(), new QuestionService.OnQuestionLoadListener() {
             @Override
             public void onQuestionLoaded(List<Question> questions) {
                 displayQuestions(questions);
+                H.sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
             }
         });
+    }
+
+    private void displayQuestions(List<Question> questions) {
+        questionsHolderView.removeAllViewsInLayout();
+
+        if (questions.size() == 0) {
+            bindQuestion(newQuestionView(), noQuestion());
+        }
+
+        for (Question question : questions) {
+            bindQuestion(newQuestionView(), question);
+        }
     }
 
     private void onPostQuestionClick() {
@@ -180,7 +258,7 @@ public class SessionDetailsActivity extends Activity {
             public void run() {
                 refreshQuestions();
             }
-        },  2000);
+        }, 2000);
 
         questionerNameView.setText("");
         questionView.setText("");
@@ -196,18 +274,6 @@ public class SessionDetailsActivity extends Activity {
         boolean show = questionFrameView.getVisibility() == View.GONE;
         questionFrameView.setVisibility(show == true ? View.VISIBLE : View.GONE);
         toggleQuestionFrameBtn.setImageResource(show == true ? R.drawable.ic_action_collapse_black : R.drawable.ic_action_new);
-    }
-
-    private void displayQuestions(List<Question> questions) {
-        questionsHolderView.removeAllViewsInLayout();
-
-        if (questions.size() == 0) {
-            bindQuestion(newQuestionView(), noQuestion());
-        }
-
-        for (Question question : questions) {
-            bindQuestion(newQuestionView(), question);
-        }
     }
 
     private Question noQuestion() {
@@ -232,6 +298,7 @@ public class SessionDetailsActivity extends Activity {
         questionText.setTypeface(Fonts.openSansRegular(this));
         questionText.setText(question.getQuestion());
 
+        view.setTag(question);
         questionsHolderView.addView(view);
     }
 

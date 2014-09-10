@@ -2,9 +2,7 @@ package com.twi.awayday2014.services.parse;
 
 
 import android.util.Log;
-import com.parse.FindCallback;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.*;
 import com.twi.awayday2014.models.Question;
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
@@ -39,9 +37,37 @@ public class QuestionService {
     }
 
     public void loadQuestions(String sessionId, final OnQuestionLoadListener listener) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_SESSION)
-                .whereMatches(SESSION_ID, sessionId)
-                .orderByDescending(CREATED_AT);
+        ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
+        loadQuestions(query, listener);
+    }
+
+//    public void loadRecentQuestions(String sessionId, Date date, final OnQuestionLoadListener listener) {
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_SESSION)
+//                .whereMatches(SESSION_ID, sessionId)
+//                .whereGreaterThan(CREATED_AT, date)
+//                .orderByDescending(CREATED_AT);
+//        loadQuestions(query, listener);
+//    }
+
+    public void loadOnlyIfThereAreAnyNewQuestions(String sessionId, final int currentCount, final OnQuestionLoadListener listener) {
+        final ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, ParseException e) {
+                if (count > currentCount) {
+                    loadQuestions(query, listener);
+                }
+            }
+        });
+    }
+
+    private ParseQuery<ParseObject> newQuestionQuery(String sessionId) {
+        return ParseQuery.getQuery(TABLE_SESSION)
+                        .whereMatches(SESSION_ID, sessionId)
+                        .orderByDescending(CREATED_AT);
+    }
+
+    private void loadQuestions(ParseQuery<ParseObject> query, final OnQuestionLoadListener listener) {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
