@@ -189,9 +189,18 @@
     <style name="SpeakerImageView">
         <item name="android:layout_width">@dimen/speaker_image_diameter</item>
         <item name="android:layout_height">@dimen/speaker_image_diameter</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
         <item name="com.twi.awayday2014:border_color">#ffffff</item>
         <item name="com.twi.awayday2014:border_width">2</item>
+    </style>
+
+    <style name="AddRemoveSessionButton">
+        <item name="android:layout_width">@dimen/speaker_image_diameter</item>
+        <item name="android:layout_height">@dimen/speaker_image_diameter</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:padding">9dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/padding</item>
     </style>
 
     <style name="Widget.Button" parent="@android:style/Widget.Button">

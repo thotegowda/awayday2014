@@ -9,7 +9,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Session;
-import com.twi.awayday2014.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,19 +18,17 @@ import java.util.List;
 import java.util.Map;
 
 import static com.twi.awayday2014.utils.Constants.Parse.COL_DATE;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION2;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_END;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_LOCATION;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_SESSION_ITEM;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_SESSION_TITLE;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_SPEAKERS;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_START;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_STREAM;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_TRACK_COLOR;
 import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
 import static com.twi.awayday2014.utils.Constants.Parse.ERROR_NO_DATA_FOUND;
-import static com.twi.awayday2014.utils.Constants.Parse.TABLE_AGENDA;
 import static com.twi.awayday2014.utils.Constants.Parse.TABLE_BREAKOUTS;
 
 public class BreakoutSessionsParseDataFetcher extends BaseParseDataFetcher<BreakoutSession> {
@@ -82,6 +79,7 @@ public class BreakoutSessionsParseDataFetcher extends BaseParseDataFetcher<Break
                         String description = d.getString(COL_DESCRIPTION2);
                         String image = d.getString(COL_IMAGE);
                         String stream = d.getString(COL_STREAM);
+                        String trackColor = d.getString(COL_TRACK_COLOR);
                         JSONArray speakers = d.getJSONArray(COL_SPEAKERS);
                         List<String> presenters = new ArrayList<String>();
                         if (speakers != null) {
@@ -95,7 +93,7 @@ public class BreakoutSessionsParseDataFetcher extends BaseParseDataFetcher<Break
                         }
                         sessions.add(new BreakoutSession(id, presenters, title, startTime,
                                 endTime, date, description, location,
-                                image,stream));
+                                image,stream, trackColor));
                         if (image != null) {
                             imageObjectIds.add(image);
                         }

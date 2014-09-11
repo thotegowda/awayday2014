@@ -21,10 +21,10 @@ import java.util.Map;
 
 
 public class AgendaAdapter extends BaseAdapter {
-    private List<Session> agenda;
+    protected List<Session> agenda;
     private Map<String, Presenter> presenters = new HashMap<String, Presenter>();
     private final LayoutInflater inflater;
-    private Context context;
+    protected Context context;
 
     public AgendaAdapter(Context context, List<Session> agenda) {
         this.context = context;
@@ -69,6 +69,8 @@ public class AgendaAdapter extends BaseAdapter {
             viewSource.sessionImage = (ImageView) convertView.findViewById(R.id.sessionImage);
             viewSource.userImage1 = (ImageView) convertView.findViewById(R.id.userImage1);
             viewSource.userImage2 = (ImageView) convertView.findViewById(R.id.userImage2);
+            viewSource.addSession = (ImageView) convertView.findViewById(R.id.addSession);
+            viewSource.removeSession = (ImageView) convertView.findViewById(R.id.removeSession);
             convertView.setTag(viewSource);
         }
 
@@ -161,7 +163,11 @@ public class AgendaAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private class ViewSource{
+    public void onStop(){
+
+    }
+
+    protected class ViewSource{
         TextView timeTextView;
         TextView titleTextView;
         TextView speakerTextView;
@@ -169,5 +175,7 @@ public class AgendaAdapter extends BaseAdapter {
         ImageView sessionImage;
         ImageView userImage1;
         ImageView userImage2;
+        ImageView addSession;
+        ImageView removeSession;
     }
 }

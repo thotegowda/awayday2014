@@ -7,7 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.twi.awayday2014.AwayDayApplication;
@@ -15,8 +20,6 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Question;
 import com.twi.awayday2014.models.Session;
-import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
-import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.view.fragments.SpeakersFragment;
@@ -25,11 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SessionDetailsActivity extends Activity {
+    private static final String TAG = "SessionDetailsActivity";
 
-    public static final String TAG = "Questions";
-
+    public static final String SESSION_ID = "id";
+    public static final String SESSION_TYPE = "type";
     private Session session;
-    private List<Presenter> presenters;
+    private List<Presenter> presenters = new ArrayList<Presenter>();
     private LinearLayout questionsHolderView;
     private EditText questionView;
     private EditText questionerNameView;
@@ -61,15 +65,6 @@ public class SessionDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_session_details);
-
-        String sessionId = getIntent().getStringExtra("session_id");
-        AgendaParseDataFetcher agendaParseDataFetcher = ((AwayDayApplication) getApplication()).getAgendaParseDataFetcher();
-        PresenterParseDataFetcher presenterParseDataFetcher = ((AwayDayApplication) getApplication()).getPresenterParseDataFetcher();
-        session = agendaParseDataFetcher.getDataById(sessionId);
-        presenters = new ArrayList<Presenter>();
-        for (String presenterId : session.getPresenters()) {
-            presenters.add(presenterParseDataFetcher.getDataById(presenterId));
-        }
 
         setupHeader();
         setupDetailText();

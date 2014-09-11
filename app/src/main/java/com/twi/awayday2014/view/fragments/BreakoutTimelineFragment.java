@@ -1,35 +1,15 @@
 package com.twi.awayday2014.view.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
-import com.twi.awayday2014.R;
-import com.twi.awayday2014.adapters.AgendaAdapter;
 import com.twi.awayday2014.adapters.BreakoutAdapter;
 import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
-import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.BreakoutSessionsParseDataFetcher;
 import com.twi.awayday2014.services.parse.ParseDataListener;
-import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
-import com.twi.awayday2014.utils.Fonts;
-import com.twi.awayday2014.view.HomeActivity;
-import com.twi.awayday2014.view.SessionDetailsActivity;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +39,7 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
     @Override
     protected BreakoutAdapter getAdapter() {
         if (breakoutAdapter == null) {
-            breakoutAdapter = new BreakoutAdapter(getActivity(), new ArrayList<BreakoutSession>());
+            breakoutAdapter = new BreakoutAdapter(getActivity(), new ArrayList<Session>(), listView);
         }
         return breakoutAdapter;
     }
@@ -78,6 +58,8 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         }else {
             breakoutSessionsParseDataFetcher.fetchData();
         }
+
+        getAdapter().onStart();
     }
 
     @Override
@@ -86,6 +68,8 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
         BreakoutSessionsParseDataFetcher breakoutSessionsParseDataFetcher = application.getBreakoutSessionsParseDataFetcher();
         breakoutSessionsParseDataFetcher.removeListener(breakoutDataListener);
+        
+        getAdapter().onStop();
     }
 
     @Override
@@ -135,8 +119,8 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         }
     }
 
-    private List<BreakoutSession> getSortedSessionsForStream(List<BreakoutSession> sessions, String stream) {
-        List<BreakoutSession> result = new ArrayList<BreakoutSession>();
+    private List<Session> getSortedSessionsForStream(List<BreakoutSession> sessions, String stream) {
+        List<Session> result = new ArrayList<Session>();
         for (BreakoutSession session : sessions) {
             if (session.getStream().equals(stream)) {
                 result.add(session);

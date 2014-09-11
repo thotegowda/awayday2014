@@ -39,26 +39,39 @@
 
         </FrameLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/userImageHolder"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/speaker_image_diameter"
             android:layout_marginLeft="@dimen/padding"
-            android:layout_marginTop="@dimen/speaker_image_top_margin"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/speaker_image_top_margin">
 
             <com.twi.awayday2014.view.custom.CircularImageView
                 android:id="@+id/userImage1"
                 style="@style/SpeakerImageView"
+                android:layout_alignParentLeft="true"
                 android:src="@drawable/placeholder" />
 
             <com.twi.awayday2014.view.custom.CircularImageView
                 android:id="@+id/userImage2"
                 android:layout_marginLeft="@dimen/padding"
                 style="@style/SpeakerImageView"
+                android:layout_toRightOf="@id/userImage1"
                 android:src="@drawable/placeholder" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/addSession"
+                style="@style/AddRemoveSessionButton"
+                android:src="@drawable/ic_add_circle"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/removeSession"
+                style="@style/AddRemoveSessionButton"
+                android:src="@drawable/ic_done_circle_white"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/speakersText"

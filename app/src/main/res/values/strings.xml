@@ -40,6 +40,7 @@
     <string name="login">Login</string>
     <string name="tweet">Tweet</string>
     <string name="cancel">Cancel</string>
+    <string name="replace">Replace</string>
     <string name="preview">Preview</string>
     <string name="verifyPush">Are you sure you want to push the notification? This action can not be undone.</string>
     <string name="no_notifications_test">You have not received any notifications.</string>
@@ -69,5 +70,6 @@
     <string name="questions">Questions</string>
     <string name="post">Post</string>
     <string name="send_notification">Send Notification</string>
+    <string name="agenda_overlap_dialog_title">Schedule Overlap</string>
 
 </resources>

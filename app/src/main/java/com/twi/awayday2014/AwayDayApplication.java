@@ -1,6 +1,7 @@
 package com.twi.awayday2014;
 
 import com.orm.SugarApp;
+import com.twi.awayday2014.services.MyAgendaService;
 import com.twi.awayday2014.services.ParseDataService;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
 import com.twi.awayday2014.services.parse.BreakoutSessionsParseDataFetcher;
@@ -19,6 +20,7 @@ public class AwayDayApplication extends SugarApp {
     private BreakoutSessionsParseDataFetcher breakoutSessionsParseDataFetcher;
     private PresenterParseDataFetcher presenterParseDataFetcher;
     private QuestionService questionService;
+    private MyAgendaService myAgendaService;
 
     @Override
     public void onCreate() {
@@ -39,6 +41,13 @@ public class AwayDayApplication extends SugarApp {
             agendaParseDataFetcher = new AgendaParseDataFetcher(this);
         }
         return agendaParseDataFetcher;
+    }
+
+    public MyAgendaService getMyAgendaService() {
+        if(myAgendaService == null){
+            myAgendaService = new MyAgendaService(getBreakoutSessionsParseDataFetcher());
+        }
+        return myAgendaService;
     }
 
     public BreakoutSessionsParseDataFetcher getBreakoutSessionsParseDataFetcher() {

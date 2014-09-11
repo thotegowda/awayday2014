@@ -1,6 +1,8 @@
 package com.twi.awayday2014.models;
 
 
+import com.twi.awayday2014.utils.CompareTime;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -77,7 +79,9 @@ public class Session {
     public String getDisplayTime(){
         DateTime startTime = dateTimeParser.parseDateTime(this.startTime);
         DateTime endTime = dateTimeParser.parseDateTime(this.endTime);
-        return startTime.toString("HH:mm") + " - " + endTime.toString("HH:mm");
+        String duration = CompareTime.duration(startTime, endTime);
+        return startTime.toString("HH:mm") + " - " + endTime.toString("HH:mm")
+                + " (" + duration + " min)";
     }
 
     public void setImageUrl(String imageUrl) {

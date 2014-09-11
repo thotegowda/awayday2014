@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.ParseDataListener;
@@ -22,6 +23,9 @@ import com.twi.awayday2014.view.HomeActivity;
 import com.twi.awayday2014.view.SessionDetailsActivity;
 
 import java.util.List;
+
+import static com.twi.awayday2014.view.SessionDetailsActivity.SESSION_ID;
+import static com.twi.awayday2014.view.SessionDetailsActivity.SESSION_TYPE;
 
 public abstract class BaseTimelineFragment extends BaseListFragment{
     protected static final String POSITION = "position";
@@ -97,15 +101,21 @@ public abstract class BaseTimelineFragment extends BaseListFragment{
         if (session.getDescription() == null) {
             Toast.makeText(getActivity(), "No detailed description is available for this section", Toast.LENGTH_SHORT).show();
         } else {
-            launchSessionDetails(session.getId());
+            if(session instanceof BreakoutSession){
+                launchSessionDetails(session.getId(), "breakoutSession");
+            }else{
+                launchSessionDetails(session.getId(), "regularSession");
+            }
         }
     }
 
     protected abstract void onPresentersFetched(List<Presenter> presenters);
 
-    private void launchSessionDetails(String id) {
+    private void launchSessionDetails(String id, String type) {
+        Intent intent = new Intent(getActivity(), SessionDetailsActivity.class);
         getActivity().startActivity(
-                new Intent(getActivity(), SessionDetailsActivity.class).putExtra("session_id", id));
+                intent.putExtra(SESSION_ID, id)
+                .putExtra(SESSION_TYPE, type));
     }
 
     private class SpeakersDataListener implements ParseDataListener<Presenter> {

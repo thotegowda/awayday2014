@@ -34,6 +34,7 @@ public class Constants {
         public static final String COL_LINKS = "Links";
         public static final String COL_DATE = "Date";
         public static final String COL_STREAM = "Stream";
+        public static final String COL_TRACK_COLOR = "trackColor";
         public static final String COL_SESSION_ITEM = "Item";
         public static final String COL_SESSION_TITLE = "Title";
         public static final String COL_START = "Start";
