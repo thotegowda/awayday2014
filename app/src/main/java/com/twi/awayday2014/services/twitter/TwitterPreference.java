@@ -18,10 +18,13 @@ public class TwitterPreference {
     public static final String TWITTER_CALLBACK_URL = "oauth://thoughtworks.Twitter_oAuth";
     public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
 
-    public static final String HASH_TAG = "awaydayTest";
+    public static final String HASH_TAG_TEST = "awaydayTest";
+    public static final String HASH_TAG = "#indiaawayday";
 
     private static final GeoLocation BANGALORE_LOCATION = new GeoLocation(12.9316556, 77.6226959);
-    private static final int RADIUS_AROUND_DISTANCE = 100;
+    private static final GeoLocation MARRIOTT_HOTEL = new GeoLocation(17.4243185, 78.4870042);
+
+    private static final int RADIUS_AROUND_DISTANCE = 50;
 
     private Context context;
 
@@ -60,7 +63,7 @@ public class TwitterPreference {
     }
 
     public GeoLocation getGeoLocation() {
-       return BANGALORE_LOCATION;
+       return MARRIOTT_HOTEL;
     }
 
     public int getRadius() {

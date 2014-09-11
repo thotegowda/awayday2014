@@ -31,7 +31,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
     private TextView questionsTitleView;
     private QuestionService questionService;
 
-    private static final int REFRESH_TIME = 30000;
+    private static final int REFRESH_TIME = 10000;
 
     private static final int PULL_LATEST_QUESTIONS = 1;
 
@@ -40,6 +40,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PULL_LATEST_QUESTIONS:
+                    Log.d(TAG, "Checking for latest questions");
                     refreshIfThereAreNewQuestions();
                     sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
                     break;
