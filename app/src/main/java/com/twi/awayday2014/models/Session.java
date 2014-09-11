@@ -21,8 +21,10 @@ public class Session {
     private String imageId;
     private String imageUrl;
     private DateTimeFormatter dateTimeParser;
+    private Boolean canAskQuestions;
 
-    public Session(String id, List<String> presenters, String title, String startTime, String endTime, String date, String description, String location, String imageId) {
+    public Session(String id, List<String> presenters, String title, String startTime, String endTime, String date,
+                   String description, String location, String image, Boolean canAskQuestions) {
         this.id = id;
         this.presenters = presenters;
         this.title = title;
@@ -33,6 +35,7 @@ public class Session {
         this.location = location;
         this.imageId = imageId;
         dateTimeParser = ISODateTimeFormat.dateTimeParser();
+        this.canAskQuestions = canAskQuestions;
     }
 
     public List<String> getPresenters() {
@@ -65,6 +68,10 @@ public class Session {
 
     public String getImageId() {
         return imageId;
+    }
+
+    public boolean canAskQuestions() {
+        return canAskQuestions;
     }
 
     public String getDisplayTime(){

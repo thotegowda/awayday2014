@@ -9,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.twi.awayday2014.models.Session;
 
+import com.twi.awayday2014.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,17 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.twi.awayday2014.utils.Constants.Parse.COL_DATE;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_END;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_LOCATION;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_SESSION_ITEM;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_SPEAKERS;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_START;
-import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
-import static com.twi.awayday2014.utils.Constants.Parse.ERROR_NO_DATA_FOUND;
-import static com.twi.awayday2014.utils.Constants.Parse.TABLE_AGENDA;
+import static com.twi.awayday2014.utils.Constants.Parse.*;
 
 public class AgendaParseDataFetcher extends BaseParseDataFetcher<Session> {
     private static final String TAG = "AgendaParseDataFetcher";
@@ -76,6 +67,7 @@ public class AgendaParseDataFetcher extends BaseParseDataFetcher<Session> {
                         String description = d.getString(COL_DESCRIPTION);
                         String image = d.getString(COL_IMAGE);
                         JSONArray speakers = d.getJSONArray(COL_SPEAKERS);
+                        Boolean canAskQuestions = d.getBoolean(COL_CAN_ASK_QUESTIONS);
                         List<String> presenters = new ArrayList<String>();
                         if (speakers != null) {
                             try {
@@ -88,7 +80,7 @@ public class AgendaParseDataFetcher extends BaseParseDataFetcher<Session> {
                         }
                         sessions.add(new Session(id, presenters, title, startTime,
                                 endTime, date, description, location,
-                                image));
+                                image, canAskQuestions));
                         if (image != null) {
                             imageObjectIds.add(image);
                         }

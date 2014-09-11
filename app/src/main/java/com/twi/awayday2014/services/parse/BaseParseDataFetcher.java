@@ -53,7 +53,7 @@ public abstract class BaseParseDataFetcher<T> implements ParseDataFetcher<T>{
                     SharedPreferences sharedPreferences = context.getSharedPreferences(PARSED_SHARED_PREF, Context.MODE_PRIVATE);
                     String key = getTable() + "Counter";
                     int currentCounter = sharedPreferences.getInt(key, 1);
-                    if(currentCounter != changeCounter){
+                    if(currentCounter != changeCounter.intValue()){
                         Log.d(TAG, getTable() + " data is outdated, refetching it");
                         sharedPreferences.edit().putInt(key, changeCounter.intValue()).commit();
                         for (ParseDataListener listener : listeners) {

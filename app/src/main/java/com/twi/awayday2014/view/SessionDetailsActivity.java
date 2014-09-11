@@ -34,7 +34,7 @@ public class SessionDetailsActivity extends Activity {
     private EditText questionView;
     private EditText questionerNameView;
     private View questionFrameView;
-    private ImageView toggleQuestionFrameBtn;
+    private Button toggleQuestionFrameBtn;
     private TextView questionsTitleView;
     private QuestionService questionService;
 
@@ -173,12 +173,23 @@ public class SessionDetailsActivity extends Activity {
     }
 
     private void setupQuestionsView() {
+        View questionsLayout = findViewById(R.id.questions_layout);
+        if (session.canAskQuestions()) {
+            questionsLayout.setVisibility(View.VISIBLE);
+            bindViews();
+            loadQuestions();
+        } else {
+            questionsLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindViews() {
         questionFrameView = findViewById(R.id.question_frame);
         questionFrameView.setVisibility(View.GONE);
 
         questionsTitleView = (TextView) findViewById(R.id.questions_title);
         questionsTitleView.setTypeface(Fonts.openSansBold(this));
-        toggleQuestionFrameBtn = (ImageView) findViewById(R.id.btn_toggle_question_frame);
+        toggleQuestionFrameBtn = (Button) findViewById(R.id.btn_toggle_question_frame);
 
         questionView = (EditText) findViewById(R.id.edt_question);
         questionerNameView = (EditText) findViewById(R.id.edt_name);
@@ -199,7 +210,6 @@ public class SessionDetailsActivity extends Activity {
         questionsHolderView = (LinearLayout) findViewById(R.id.questions_holder);
 
         questionService = ((AwayDayApplication) getApplication()).getQuestionService();
-        loadQuestions();
     }
 
     private void refreshIfThereAreNewQuestions() {
@@ -273,7 +283,7 @@ public class SessionDetailsActivity extends Activity {
     private void toggleQuestionFrameView() {
         boolean show = questionFrameView.getVisibility() == View.GONE;
         questionFrameView.setVisibility(show == true ? View.VISIBLE : View.GONE);
-        toggleQuestionFrameBtn.setImageResource(show == true ? R.drawable.ic_action_collapse_black : R.drawable.ic_action_new);
+        toggleQuestionFrameBtn.setText(show == true ? R.string.cancel : R.string.ask);
     }
 
     private Question noQuestion() {

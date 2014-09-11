@@ -26,6 +26,7 @@ public class Constants {
         public static final String COL_FOOTER_TEXT = "footerText";
         public static final String COL_IMAGES = "images";
         public static final String COL_SPEAKERS = "speakers";
+        public static final String COL_CAN_ASK_QUESTIONS = "canAskQuestions";
         public static final String COL_IMAGE = "image";
         public static final String COL_DESCRIPTION = "description";
         public static final String COL_DESCRIPTION2 = "Description";

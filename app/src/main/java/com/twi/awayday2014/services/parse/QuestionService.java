@@ -41,20 +41,12 @@ public class QuestionService {
         loadQuestions(query, listener);
     }
 
-//    public void loadRecentQuestions(String sessionId, Date date, final OnQuestionLoadListener listener) {
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_SESSION)
-//                .whereMatches(SESSION_ID, sessionId)
-//                .whereGreaterThan(CREATED_AT, date)
-//                .orderByDescending(CREATED_AT);
-//        loadQuestions(query, listener);
-//    }
-
     public void loadOnlyIfThereAreAnyNewQuestions(String sessionId, final int currentCount, final OnQuestionLoadListener listener) {
         final ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
-                if (count > currentCount) {
+                if (count != currentCount) {
                     loadQuestions(query, listener);
                 }
             }
