@@ -89,6 +89,7 @@
             android:layout_marginTop="@dimen/padding_extra_large"
             android:gravity="center"
             android:paddingLeft="@dimen/padding"
+            android:textSize="16sp"
             android:paddingRight="@dimen/padding"/>
 
         <TextView

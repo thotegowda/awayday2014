@@ -35,7 +35,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
 
     private static final int PULL_LATEST_QUESTIONS = 1;
 
-    private Handler H = new Handler() {
+    private Handler h = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -62,7 +62,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
     protected void onPause() {
         super.onPause();
 
-        H.removeMessages(PULL_LATEST_QUESTIONS);
+        h.removeMessages(PULL_LATEST_QUESTIONS);
     }
 
     protected int getContentView() {
@@ -143,7 +143,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
             @Override
             public void onQuestionLoaded(List<Question> questions) {
                 displayQuestions(questions);
-                H.sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
+                h.sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
             }
         });
     }
