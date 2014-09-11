@@ -1,6 +1,5 @@
 package com.twi.awayday2014.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,48 +11,45 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Feedback;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.AgendaParseDataFetcher;
-import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 
-public class FeedbackActivity extends Activity {
-
+public class FeedbackActivity extends SessionDetailsBaseActivity {
+    private static final String TAG = "SessionDetailsActivity";
     private RatingBar[] ratingsView = new RatingBar[3];
-    private Session session;
-    private TextView sessionTitleView;
     private EditText tellUsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_feedback);
-
-        setupViews();
-
-        String sessionId = getIntent().getStringExtra("session_id");
-        AgendaParseDataFetcher agendaParseDataFetcher = ((AwayDayApplication) getApplication()).getAgendaParseDataFetcher();
-        session = agendaParseDataFetcher.getDataById(sessionId);
-        bind(session);
+        setupRatingsView();
+        setupFeedbackButton();
+        setupTextFonts();
     }
 
-    private void bind(Session presentation) {
-        sessionTitleView.setText(presentation.getTitle());
+    private void setupTextFonts() {
+
     }
 
-    private void setupViews() {
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_feedback;
+    }
+
+    private void setupRatingsView() {
         ratingsView[0] = (RatingBar) findViewById(R.id.overall_rating);
         ratingsView[0].setNumStars(5);
 
         ratingsView[1] = (RatingBar) findViewById(R.id.content_rating);
         ratingsView[1].setNumStars(5);
 
-        ratingsView[2] = (RatingBar) findViewById(R.id.content_rating);
+        ratingsView[2] = (RatingBar) findViewById(R.id.speaker_quality_rating);
         ratingsView[2].setNumStars(5);
 
-        sessionTitleView = (TextView) findViewById(R.id.session_title);
-
         tellUsView = (EditText) findViewById(R.id.edt_tell_us);
+    }
 
-        findViewById(R.id.submit_feedback).setOnClickListener(new View.OnClickListener() {
+    private void setupFeedbackButton() {
+        findViewById(R.id.feedbackButton).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {

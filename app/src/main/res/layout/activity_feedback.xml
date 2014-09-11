@@ -1,86 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<com.twi.awayday2014.view.custom.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    app:parallax_factor="1.9">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/session_title"
+        <ImageView
+            android:id="@+id/sessionImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/agenda_details_header_image_height"
+            android:scaleType="centerCrop"
+            android:src="@drawable/awayday_2014_placeholder" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/rate_this_session_overall"/>
+            android:background="@color/theme_color"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
 
-        <RatingBar
-                android:id="@+id/overall_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/ratingBarStyle"
-                android:numStars="5"
-                android:stepSize="1.0"
-                android:layout_margin="5dp"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/how_relevant_is_content"/>
-
-        <RatingBar
-                android:id="@+id/content_rating"
-                style="?android:attr/ratingBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:numStars="5"
-                android:stepSize="1.0"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/speaker_quality"/>
-
-        <RatingBar
-                android:id="@+id/speaker_quality_rating"
-                style="?android:attr/ratingBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:numStars="5"
-                android:stepSize="1.0"/>
-
-        <TextView
+            <TextView
+                android:id="@+id/sessionHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/anything_else_to_say"/>
+                android:layout_marginBottom="@dimen/padding_extra_small"
+                android:gravity="center"
+                android:text="This Is The Session Title"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/agenda_details_header_title_text" />
 
-        <EditText
-                android:id="@+id/edt_tell_us"
+            <TextView
+                android:id="@+id/sessionTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/tell_us"
-                android:minLines="2"/>
+                android:layout_marginBottom="@dimen/padding_extra_small"
+                android:layout_marginTop="@dimen/padding_extra_small"
+                android:gravity="center"
+                android:text="30 min, Sat, 19 Sep 2014"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/agenda_details_header_time_text" />
+
+            <LinearLayout
+                android:id="@+id/speakerInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_extra_small"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding"
+                android:paddingTop="@dimen/padding_extra_small">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_margin="@dimen/padding"
+                    android:layout_weight="1"
+                    android:background="@color/white" />
+
+                <com.twi.awayday2014.view.custom.CircularImageView
+                    android:id="@+id/profile_image1"
+                    android:layout_width="@dimen/speaker_image_diameter"
+                    android:layout_height="@dimen/speaker_image_diameter"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder" />
+
+                <com.twi.awayday2014.view.custom.CircularImageView
+                    android:id="@+id/profile_image2"
+                    android:layout_width="@dimen/speaker_image_diameter"
+                    android:layout_height="@dimen/speaker_image_diameter"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_margin="@dimen/padding"
+                    android:layout_weight="1"
+                    android:background="@color/white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/speakerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_extra_small"
+                android:gravity="center"
+                android:text="Speaker Name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/agenda_details_header_time_text" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            style="@style/FeedbackSectionLayout"
+            android:layout_marginTop="@dimen/padding">
+
+            <TextView
+                android:id="@+id/rateThisSessionText"
+                style="@style/FeedbackRatingHeaderText"
+                android:text="@string/rate_this_session_overall" />
+
+            <View
+                style="@style/HorizontalDivider"
+                android:background="@color/light_gray" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/padding_small">
+
+                <RatingBar
+                    android:id="@+id/overall_rating"
+                    style="?android:attr/ratingBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1.0" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/FeedbackSectionLayout">
+
+            <TextView
+                android:id="@+id/relevantText"
+                style="@style/FeedbackRatingHeaderText"
+                android:text="@string/how_relevant_is_content" />
+
+            <View
+                style="@style/HorizontalDivider"
+                android:background="@color/light_gray" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/padding_small">
+
+                <RatingBar
+                    android:id="@+id/content_rating"
+                    style="?android:attr/ratingBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1.0" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/FeedbackSectionLayout">
+
+            <TextView
+                android:id="@+id/speakerQualityText"
+                style="@style/FeedbackRatingHeaderText"
+                android:text="@string/speaker_quality" />
+
+            <View
+                style="@style/HorizontalDivider"
+                android:background="@color/light_gray" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/padding_small">
+
+                <RatingBar
+                    android:id="@+id/speaker_quality_rating"
+                    style="?android:attr/ratingBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1.0" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/FeedbackSectionLayout">
+
+            <TextView
+                android:id="@+id/anythingElseText"
+                style="@style/FeedbackRatingHeaderText"
+                android:text="@string/anything_else_to_say" />
+
+            <View
+                style="@style/HorizontalDivider"
+                android:background="@color/light_gray" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/edt_tell_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tell_us"
+                    android:minLines="2"
+                    android:padding="@dimen/padding" />
+            </FrameLayout>
+
+        </LinearLayout>
 
         <Button
-                android:id="@+id/submit_feedback"
-                style="@style/Widget.Button.Blue"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/submit_feedback"/>
+            android:id="@+id/feedbackButton"
+            android:layout_margin="@dimen/padding"
+            style="@style/BigButton"
+            android:background="@drawable/btn_background_rectangle_blue"
+            android:text="Post"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
-</ScrollView>
+
+</com.twi.awayday2014.view.custom.ParallaxScrollView>

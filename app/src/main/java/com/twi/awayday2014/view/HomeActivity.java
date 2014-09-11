@@ -60,7 +60,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     private TextView selectedSectionText;
     private ImageView selectedSectionIcon;
     private float ratioTravelled;
-    private Map<Integer, ScrollableView> parallelScrollableChilds;
+    private Map<Integer, ScrollableView> parallelScrollableChilds = new HashMap<Integer, ScrollableView>();
     private ScrollListener delegateListener;
 
     private float currentVisibleHeaderHeight;
@@ -77,8 +77,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         drawerHelper = new DrawerHelper(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerHelper.onCreate(drawerLayout);
-
-        parallelScrollableChilds = new HashMap<Integer, ScrollableView>();
 
         setupActionbar();
         setupHeader();
@@ -170,6 +168,9 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void addParallelScrollableChild(ScrollableView scrollableView, int position) {
+        if(scrollableView == null){
+            return;
+        }
         parallelScrollableChilds.put(position, scrollableView);
         if (position == 0) {
             scrollableView.setActive(true);
@@ -179,6 +180,9 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void removeParallelScrollableChild(ScrollableView scrollableView) {
+        if(scrollableView == null){
+            return;
+        }
         scrollableView.setScrollListener(null);
         parallelScrollableChilds.remove(scrollableView);
     }

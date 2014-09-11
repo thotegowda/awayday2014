@@ -66,6 +66,7 @@
             android:name=".view.NotificationsActivity"
             android:label="@string/title_activity_notifications"
             android:parentActivityName=".view.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.NoActionbar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -76,6 +77,7 @@
             android:name=".view.TweetsActivity"
             android:label="@string/title_activity_notifications"
             android:parentActivityName=".view.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.NoActionbar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -84,11 +86,13 @@
 
         <activity
             android:name=".view.PushActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_push"></activity>
 
         <activity
             android:name=".view.TwitterWebviewActivity"
             android:label="@string/title_twitter_webview"
+            android:screenOrientation="portrait"
             android:parentActivityName=".view.TweetsActivity"
             android:theme="@style/Theme.ActionBar.Blue">
             <meta-data
@@ -107,11 +111,11 @@
 
         <activity
             android:name=".view.FeedbackActivity"
-            android:label="@string/session_details"
+            android:label="@string/submit_feedback"
             android:launchMode="singleTop"
-            android:parentActivityName=".view.HomeActivity"
+            android:parentActivityName=".view.SessionDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.ActionBar.Blue" />
+            android:theme="@style/Theme.TranslucentActionBar.Overlay" />
 
         <activity
             android:name=".view.SpeakerDetailsActivity"
