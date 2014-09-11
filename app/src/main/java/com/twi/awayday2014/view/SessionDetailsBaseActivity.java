@@ -100,6 +100,7 @@ public abstract class SessionDetailsBaseActivity extends Activity {
     private void setupSpeakerData() {
         TextView speakerName = (TextView) findViewById(R.id.speakerName);
         View speakerInfoLayout = findViewById(R.id.speakerInfoLayout);
+
         ImageView userImage1 = (ImageView) findViewById(R.id.profile_image1);
         userImage1.setOnClickListener(new View.OnClickListener() {
 
@@ -108,11 +109,21 @@ public abstract class SessionDetailsBaseActivity extends Activity {
                 launchSpeakerDetailActivity(presenters.get(0));
             }
         });
+
         ImageView userImage2 = (ImageView) findViewById(R.id.profile_image2);
         userImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchSpeakerDetailActivity(presenters.get(1));
+            }
+        });
+        speakerName.setTypeface(Fonts.openSansLight(this));
+
+        ImageView userImage3 = (ImageView) findViewById(R.id.profile_image3);
+        userImage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchSpeakerDetailActivity(presenters.get(2));
             }
         });
         speakerName.setTypeface(Fonts.openSansLight(this));
@@ -128,7 +139,7 @@ public abstract class SessionDetailsBaseActivity extends Activity {
                     .error(R.drawable.placeholder)
                     .into(userImage1);
             speakerName.setText(presenters.get(0).getName());
-        }else {
+        }else if(presenters.size() == 2){
             userImage2.setVisibility(View.VISIBLE);
             Picasso.with(this)
                     .load(presenters.get(0).getImageUrl())
@@ -141,6 +152,27 @@ public abstract class SessionDetailsBaseActivity extends Activity {
                     .error(R.drawable.placeholder)
                     .into(userImage2);
             speakerName.setText(presenters.get(0).getName() + ", " + presenters.get(1).getName());
+        }else {
+            userImage2.setVisibility(View.VISIBLE);
+            userImage3.setVisibility(View.VISIBLE);
+            Picasso.with(this)
+                    .load(presenters.get(0).getImageUrl())
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(userImage1);
+            Picasso.with(this)
+                    .load(presenters.get(1).getImageUrl())
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(userImage2);
+            Picasso.with(this)
+                    .load(presenters.get(2).getImageUrl())
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(userImage3);
+            speakerName.setText(presenters.get(0).getName()
+                    + ", " + presenters.get(1).getName()
+                    + ", " + presenters.get(2).getName());
         }
     }
 

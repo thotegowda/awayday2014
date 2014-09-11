@@ -59,6 +59,13 @@
                 android:layout_toRightOf="@id/userImage1"
                 android:src="@drawable/placeholder" />
 
+            <com.twi.awayday2014.view.custom.CircularImageView
+                android:id="@+id/userImage3"
+                android:layout_marginLeft="@dimen/padding"
+                style="@style/SpeakerImageView"
+                android:layout_toRightOf="@id/userImage2"
+                android:src="@drawable/placeholder" />
+
             <ImageView
                 android:id="@+id/addSession"
                 style="@style/AddRemoveSessionButton"

@@ -69,6 +69,7 @@ public class AgendaAdapter extends BaseAdapter {
             viewSource.sessionImage = (ImageView) convertView.findViewById(R.id.sessionImage);
             viewSource.userImage1 = (ImageView) convertView.findViewById(R.id.userImage1);
             viewSource.userImage2 = (ImageView) convertView.findViewById(R.id.userImage2);
+            viewSource.userImage3 = (ImageView) convertView.findViewById(R.id.userImage3);
             viewSource.addSession = (ImageView) convertView.findViewById(R.id.addSession);
             viewSource.removeSession = (ImageView) convertView.findViewById(R.id.removeSession);
             convertView.setTag(viewSource);
@@ -115,10 +116,13 @@ public class AgendaAdapter extends BaseAdapter {
         if(sessionPresenters == null || sessionPresenters.size() == 0){
             viewSource.userImage1.setVisibility(View.GONE);
             viewSource.userImage2.setVisibility(View.GONE);
+            viewSource.userImage3.setVisibility(View.GONE);
             viewSource.speakerTextView.setVisibility(View.GONE);
         }else if(sessionPresenters.size() == 1){
             viewSource.userImage1.setVisibility(View.VISIBLE);
             viewSource.speakerTextView.setVisibility(View.VISIBLE);
+            viewSource.userImage2.setVisibility(View.GONE);
+            viewSource.userImage3.setVisibility(View.GONE);
             if(presentersLoaded(sessionPresenters)){
                 Presenter presenter = presenters.get(sessionPresenters.get(0));
                 Picasso.with(context)
@@ -128,11 +132,11 @@ public class AgendaAdapter extends BaseAdapter {
                         .into(viewSource.userImage1);
                 viewSource.speakerTextView.setText(presenter.getName());
             }
-            viewSource.userImage2.setVisibility(View.GONE);
-        }else{
+        }else if(sessionPresenters.size() == 2){
             viewSource.userImage1.setVisibility(View.VISIBLE);
             viewSource.speakerTextView.setVisibility(View.VISIBLE);
             viewSource.userImage2.setVisibility(View.VISIBLE);
+            viewSource.userImage3.setVisibility(View.GONE);
             if(presentersLoaded(sessionPresenters)){
                 Presenter presenter1 = presenters.get(sessionPresenters.get(0));
                 Presenter presenter2 = presenters.get(sessionPresenters.get(1));
@@ -148,6 +152,33 @@ public class AgendaAdapter extends BaseAdapter {
                         .into(viewSource.userImage2);
                 viewSource.speakerTextView.setText(presenter1.getName() + ", " +
                         presenter2.getName());
+            }
+        }else{
+            viewSource.userImage1.setVisibility(View.VISIBLE);
+            viewSource.speakerTextView.setVisibility(View.VISIBLE);
+            viewSource.userImage2.setVisibility(View.VISIBLE);
+            viewSource.userImage3.setVisibility(View.VISIBLE);
+            if(presentersLoaded(sessionPresenters)){
+                Presenter presenter1 = presenters.get(sessionPresenters.get(0));
+                Presenter presenter2 = presenters.get(sessionPresenters.get(1));
+                Presenter presenter3 = presenters.get(sessionPresenters.get(2));
+                Picasso.with(context)
+                        .load(presenter1.getImageUrl())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(viewSource.userImage1);
+                Picasso.with(context)
+                        .load(presenter2.getImageUrl())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(viewSource.userImage2);
+                Picasso.with(context)
+                        .load(presenter3.getImageUrl())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(viewSource.userImage3);
+                viewSource.speakerTextView.setText(presenter1.getName() + ", " +
+                        presenter2.getName() + ", " + presenter3.getName());
             }
         }
     }
@@ -175,6 +206,7 @@ public class AgendaAdapter extends BaseAdapter {
         ImageView sessionImage;
         ImageView userImage1;
         ImageView userImage2;
+        ImageView userImage3;
         ImageView addSession;
         ImageView removeSession;
     }
