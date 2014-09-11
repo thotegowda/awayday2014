@@ -24,7 +24,7 @@ public class Session {
     private Boolean canAskQuestions;
 
     public Session(String id, List<String> presenters, String title, String startTime, String endTime, String date,
-                   String description, String location, String image, Boolean canAskQuestions) {
+                   String description, String location, String imageId, Boolean canAskQuestions) {
         this.id = id;
         this.presenters = presenters;
         this.title = title;
