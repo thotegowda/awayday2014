@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
@@ -101,6 +102,10 @@ public class SpeakersFragment extends BaseListFragment {
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
+        if(presenter.getWriteUp() == null || presenter.getWriteUp().isEmpty()){
+            Toast.makeText(getActivity(), "No details are available for the speaker", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(getActivity(), SpeakerDetailsActivity.class);
         intent.putExtra(PRESENTER_ID, presenter.getId());
         startActivity(intent);
