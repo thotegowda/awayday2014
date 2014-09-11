@@ -40,18 +40,27 @@ public abstract class BaseListFragment extends Fragment implements ScrollableVie
         float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
         listView.setSelectionFromTop(1, (int) currentScrollPos);
 
+        listView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+//                Log.e(TAG, "GlobalLayoutCalled " +  header.getY());
+//                listView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
         listView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                if (listView.getChildAt(1) == null) {
-                    return true;
-                }
-
+//                if (listView.getChildAt(1) == null) {
+//                    return true;
+//                }
+//
+//                Log.e(TAG, "OnPreDrawListener " + header.getY());
                 listView.getViewTreeObserver().removeOnPreDrawListener(this);
-                float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
                 isListViewAdjustedAsPerParent = true;
-                listView.setSelectionFromTop(1, (int) currentScrollPos);
-                Log.d(TAG, "listView is adjusted as per header height");
+//                float currentScrollPos = ((HomeActivity) getActivity()).getCurrentVisibleHeaderHeight() + getExtraScrollPos();
+//                listView.setSelectionFromTop(1, (int) currentScrollPos);
+//                Log.d(TAG, "listView is adjusted as per header height");
                 return false;
             }
         });

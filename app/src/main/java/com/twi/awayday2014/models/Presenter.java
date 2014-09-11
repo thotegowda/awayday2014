@@ -95,7 +95,6 @@ public class Presenter{
         NAME_SORT {
             @Override
             public int compare(Presenter lhs, Presenter rhs) {
-                Log.e("DEBUG", "lhs:" + lhs.name + ", rhs:" + rhs.name);
                 return lhs.name.compareTo(rhs.name);
             }
         };

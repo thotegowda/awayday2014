@@ -3,6 +3,7 @@ package com.twi.awayday2014.view.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public abstract class BaseTimelineFragment extends BaseListFragment{
     @Override
     public void onDetach() {
         super.onDetach();
-        ((HomeActivity)getActivity()).removeParallelScrollableChild(this);
+        ((HomeActivity)getActivity()).removeParallelScrollableChild(this, getArguments().getInt(POSITION));
     }
 
     @Override

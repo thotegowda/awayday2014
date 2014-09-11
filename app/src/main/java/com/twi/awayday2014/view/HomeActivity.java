@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -169,6 +170,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
     @Override
     public void addParallelScrollableChild(ScrollableView scrollableView, int position) {
+        Log.e(TAG, scrollableView.getClass().getSimpleName());
         if(scrollableView == null){
             return;
         }
@@ -180,12 +182,13 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
     }
 
     @Override
-    public void removeParallelScrollableChild(ScrollableView scrollableView) {
+    public void removeParallelScrollableChild(ScrollableView scrollableView, int position) {
+        Log.e(TAG, scrollableView.getClass().getSimpleName());
         if(scrollableView == null){
             return;
         }
         scrollableView.setScrollListener(null);
-        parallelScrollableChilds.remove(scrollableView);
+        ScrollableView remove = parallelScrollableChilds.remove(position);
     }
 
     @Override
@@ -241,12 +244,6 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         if (slideOffset < 1) {
             getActionBar().setTitle("");
         }
-    }
-
-    private int getAbsTop(View view) {
-        int[] coords = {0, 0};
-        view.getLocationOnScreen(coords);
-        return coords[1];
     }
 
     private void setupHeaderText() {

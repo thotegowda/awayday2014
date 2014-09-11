@@ -21,7 +21,6 @@ public class TwitterPreference {
     public static final String HASH_TAG_TEST = "awaydayTest";
     public static final String HASH_TAG = "#indiaawayday";
 
-    private static final GeoLocation BANGALORE_LOCATION = new GeoLocation(12.9316556, 77.6226959);
     private static final GeoLocation MARRIOTT_HOTEL = new GeoLocation(17.4243185, 78.4870042);
 
     private static final int RADIUS_AROUND_DISTANCE = 50;

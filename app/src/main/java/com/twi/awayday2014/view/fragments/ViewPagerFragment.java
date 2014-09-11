@@ -74,7 +74,7 @@ public abstract class ViewPagerFragment extends Fragment implements ScrollListen
     }
 
     @Override
-    public void removeParallelScrollableChild(ScrollableView scrollableView) {
+    public void removeParallelScrollableChild(ScrollableView scrollableView, int position) {
 
     }
 
