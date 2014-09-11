@@ -32,6 +32,7 @@ public class Constants {
         public static final String COL_DESCRIPTION2 = "Description";
         public static final String COL_AWAYDAY_WRITEUP = "awaydayWriteup";
         public static final String COL_LINKS = "Links";
+        public static final String COL_IS_GUEST = "isGuest";
         public static final String COL_DATE = "Date";
         public static final String COL_STREAM = "Stream";
         public static final String COL_TRACK_COLOR = "trackColor";

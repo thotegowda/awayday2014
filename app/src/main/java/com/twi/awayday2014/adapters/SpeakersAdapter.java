@@ -15,9 +15,16 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.utils.Fonts;
 
+import java.util.Collections;
 import java.util.List;
 
-public class SpeakersAdapter extends BaseAdapter {
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+
+import static com.twi.awayday2014.models.Presenter.PresenterComparator.NAME_SORT;
+import static com.twi.awayday2014.models.Presenter.PresenterComparator.TYPE_SORT;
+import static com.twi.awayday2014.models.Presenter.PresenterComparator.getComparator;
+
+public class SpeakersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
     private Context context;
     private List<Presenter> presenters;
@@ -61,7 +68,7 @@ public class SpeakersAdapter extends BaseAdapter {
         viewSource = (ViewSource) view.getTag();
         viewSource.speakerName.setText(presenter.getName());
         viewSource.speakerImage.setImageBitmap(viewSource.bitmap);
-        if(presenter.getImageUrl() != null){
+        if (presenter.getImageUrl() != null) {
             Picasso.with(context)
                     .load(presenter.getImageUrl())
                     .placeholder(R.drawable.placeholder)
@@ -74,10 +81,34 @@ public class SpeakersAdapter extends BaseAdapter {
 
     public void onDataChange(List<Presenter> presenters) {
         this.presenters = presenters;
+        Collections.sort(presenters, getComparator(TYPE_SORT, NAME_SORT));
         notifyDataSetChanged();
     }
 
-    private class ViewSource{
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup viewGroup) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.view_sticky_header, viewGroup, false);
+            ((TextView) convertView).setTypeface(Fonts.openSansRegular(context));
+        }
+        if(presenters.get(position).isGuest()){
+            ((TextView) convertView).setText("Guests");
+        }else{
+            ((TextView) convertView).setText("ThoughtWorkers");
+        }
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int i) {
+        if (presenters.get(i).isGuest()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    private class ViewSource {
         TextView speakerName;
         ImageView speakerImage;
         Bitmap bitmap;

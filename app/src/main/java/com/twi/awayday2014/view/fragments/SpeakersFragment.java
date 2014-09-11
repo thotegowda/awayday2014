@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,6 +25,8 @@ import com.twi.awayday2014.view.SpeakerDetailsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 public class SpeakersFragment extends BaseListFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -33,6 +34,7 @@ public class SpeakersFragment extends BaseListFragment {
     private SpeakersAdapter speakersAdapter;
     private SpeakersDataListener parseDataListener;
     private PresenterParseDataFetcher presenterParseDataFetcher;
+    private StickyListHeadersListView stickListView;
 
     public static Fragment newInstance(int sectionNumber) {
         SpeakersFragment fragment = new SpeakersFragment();
@@ -43,6 +45,43 @@ public class SpeakersFragment extends BaseListFragment {
     }
 
     public SpeakersFragment() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootlayout = getRootLayout(inflater, container);
+        stickListView = (StickyListHeadersListView) rootlayout.findViewById(R.id.list);
+        listView = stickListView.getWrappedList();
+        header = getHeaderView(inflater, listView);
+        listView.addHeaderView(header);
+        return rootlayout;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        stickListView.setAdapter((se.emilsjolander.stickylistheaders.StickyListHeadersAdapter) getAdapter());
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (isListViewAdjustedAsPerParent && scrollListener != null && isActive) {
+                    scrollListener.onScroll(SpeakersFragment.this, header.getY());
+                }
+            }
+        });
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                onListItemClick(adapterView, view, i, l);
+            }
+        });
     }
 
     @Override

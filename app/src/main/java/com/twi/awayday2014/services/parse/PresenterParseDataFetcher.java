@@ -8,6 +8,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,8 @@ public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
                         String awayDayWriteup = d.getString(COL_AWAYDAY_WRITEUP);
                         String image = d.getString(COL_IMAGE);
                         String link = d.getString(COL_LINKS);
-                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp);
+                        boolean isGuest = d.getBoolean(Constants.Parse.COL_IS_GUEST);
+                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp, isGuest);
 
                         if(image != null){
                             imageObjectIds.add(image);

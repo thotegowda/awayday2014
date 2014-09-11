@@ -164,6 +164,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
             }
         };
         selectedSectionIcon.setOnClickListener(onClickListener);
+        drawerIcon.setOnClickListener(onClickListener);
     }
 
     @Override

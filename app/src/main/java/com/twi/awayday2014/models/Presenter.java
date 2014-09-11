@@ -1,6 +1,10 @@
 package com.twi.awayday2014.models;
 
+import android.util.Log;
+
 import com.twi.awayday2014.R;
+
+import java.util.Comparator;
 
 public class Presenter{
     private String id;
@@ -10,16 +14,18 @@ public class Presenter{
     private String awayDayWriteup;
     private String link;
     private String name;
+    private boolean isGuest;
 
     public Presenter() {
     }
 
-    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp) {
+    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp, boolean isGuest) {
         this.id = id;
-        this.writeUp = name;
+        this.name = name;
         this.awayDayWriteup = awayDayWriteup;
         this.link = link;
-        this.name = writeUp;
+        this.writeUp = writeUp;
+        this.isGuest = isGuest;
     }
 
     public int profileResource() {
@@ -27,11 +33,11 @@ public class Presenter{
     }
 
     public String getName() {
-        return writeUp;
+        return name;
     }
 
     public String getWriteUp() {
-        return name;
+        return writeUp;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -43,11 +49,11 @@ public class Presenter{
     }
 
     public void setName(String name) {
-        this.writeUp = name;
+        this.name = name;
     }
 
     public void setWriteUp(String writeUp) {
-        this.name = writeUp;
+        this.writeUp = writeUp;
     }
 
     public String getId() {
@@ -69,4 +75,45 @@ public class Presenter{
     public String getLink() {
         return link;
     }
+
+    public boolean isGuest() {
+        return isGuest;
+    }
+
+    public enum PresenterComparator implements Comparator<Presenter>{
+        TYPE_SORT {
+            @Override
+            public int compare(Presenter lhs, Presenter rhs) {
+                if(lhs.isGuest && !rhs.isGuest){
+                    return -1;
+                }else if(!lhs.isGuest && rhs.isGuest){
+                    return 1;
+                }
+                return 0;
+            }
+        },
+        NAME_SORT {
+            @Override
+            public int compare(Presenter lhs, Presenter rhs) {
+                Log.e("DEBUG", "lhs:" + lhs.name + ", rhs:" + rhs.name);
+                return lhs.name.compareTo(rhs.name);
+            }
+        };
+
+        public static Comparator<Presenter> getComparator(final PresenterComparator... multipleComparators) {
+            return new Comparator<Presenter>() {
+                public int compare(Presenter o1, Presenter o2) {
+                    for (PresenterComparator comparator : multipleComparators) {
+                        int result = comparator.compare(o1, o2);
+                        if (result != 0) {
+                            return result;
+                        }
+                    }
+                    return 0;
+                }
+            };
+        }
+
+    }
+
 }

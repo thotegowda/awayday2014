@@ -21,7 +21,7 @@ public abstract class BaseListFragment extends Fragment implements ScrollableVie
     protected View rootlayout;
     protected boolean isListViewAdjustedAsPerParent;
     protected boolean isActive;
-    private ScrollListener scrollListener;
+    protected ScrollListener scrollListener;
 
     @Override
     public void onAttach(android.app.Activity activity) {

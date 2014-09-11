@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.twi.awayday2014.models.AwayDayNotification;
 import com.twi.awayday2014.models.NotificationType;
-import com.twi.awayday2014.view.HomeActivity;
 import com.twi.awayday2014.view.NotificationsActivity;
 
 import org.joda.time.DateTime;
