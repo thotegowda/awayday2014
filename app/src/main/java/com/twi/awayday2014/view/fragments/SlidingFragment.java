@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.twi.awayday2014.animations.SmoothInterpolator;
+import com.twi.awayday2014.utils.OsUtils;
 
 public abstract class SlidingFragment extends Fragment{
     public static final long OPEN_ANIMATION_DURATION = 600;
@@ -30,7 +31,11 @@ public abstract class SlidingFragment extends Fragment{
         mRootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mRootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if (OsUtils.hasJellyBean()) {
+                    mRootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    mRootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
                 rootLayoutOriginalHeight = mRootLayout.getHeight();
                 mRootLayout.setVisibility(View.GONE);
             }

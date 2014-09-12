@@ -123,7 +123,7 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
                 result[0] = bitmaps[0];
                 result[1] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel2);
                 result[2] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel3);
-                result[3] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel4);
+                result[3] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
                 return result;
             }
 

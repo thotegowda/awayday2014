@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,7 @@ import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
 import com.twi.awayday2014.utils.Blur;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.utils.OsUtils;
 import com.twi.awayday2014.view.custom.CircularImageView;
 import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
@@ -107,17 +109,25 @@ public class SpeakerDetailsActivity extends Activity {
                     .into(profileImageView);
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.theme_color));
-            Picasso.with(this)
-                    .load(presenter.getImageUrl())
-                    .placeholder(colorDrawable)
-                    .error(colorDrawable)
-                    .transform(new BlurTransformation())
-                    .into(backgroundImage);
+
+            if(OsUtils.hasJellyBeanMR1()){
+                Picasso.with(this)
+                        .load(presenter.getImageUrl())
+                        .placeholder(colorDrawable)
+                        .error(colorDrawable)
+                        .transform(new BlurTransformation())
+                        .into(backgroundImage);
+            }else {
+                backgroundImage.setImageDrawable(colorDrawable);
+            }
+
+
         }
     }
 
     public class BlurTransformation implements Transformation {
         @Override public Bitmap transform(Bitmap source) {
+
             Blur blur = new Blur(SpeakerDetailsActivity.this);
             Bitmap result = blur.blur(source, 14);
             if (result != source) {
