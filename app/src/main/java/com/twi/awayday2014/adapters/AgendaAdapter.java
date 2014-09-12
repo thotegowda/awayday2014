@@ -130,6 +130,7 @@ public class AgendaAdapter extends BaseAdapter {
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
+                viewSource.userImage1.setTag(presenter.getImageUrl());
                 viewSource.speakerTextView.setText(presenter.getName());
             }
         }else if(sessionPresenters.size() == 2){
@@ -145,11 +146,13 @@ public class AgendaAdapter extends BaseAdapter {
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
+                viewSource.userImage1.setTag(presenter1.getImageUrl());
                 Picasso.with(context)
                         .load(presenter2.getImageUrl())
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage2);
+                viewSource.userImage2.setTag(presenter2.getImageUrl());
                 viewSource.speakerTextView.setText(presenter1.getName() + ", " +
                         presenter2.getName());
             }
@@ -167,16 +170,19 @@ public class AgendaAdapter extends BaseAdapter {
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
+                viewSource.userImage1.setTag(presenter1.getImageUrl());
                 Picasso.with(context)
                         .load(presenter2.getImageUrl())
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage2);
+                viewSource.userImage2.setTag(presenter2.getImageUrl());
                 Picasso.with(context)
                         .load(presenter3.getImageUrl())
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage3);
+                viewSource.userImage3.setTag(presenter3.getImageUrl());
                 viewSource.speakerTextView.setText(presenter1.getName() + ", " +
                         presenter2.getName() + ", " + presenter3.getName());
             }

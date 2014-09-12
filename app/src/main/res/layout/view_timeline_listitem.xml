@@ -39,6 +39,41 @@
 
         </FrameLayout>
 
+
+        <TextView
+            android:id="@+id/speakersText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sessionImageHolder"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_extra_large"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding"
+            android:textSize="16sp"
+            android:paddingRight="@dimen/padding"/>
+
+        <TextView
+            android:id="@+id/locationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/speakersText"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@id/timeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/locationText"
+            android:gravity="center"
+            android:padding="@dimen/padding_small"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
         <RelativeLayout
             android:id="@+id/userImageHolder"
             android:layout_width="wrap_content"
@@ -80,39 +115,7 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/speakersText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sessionImageHolder"
-            android:layout_marginBottom="@dimen/padding_small"
-            android:layout_marginTop="@dimen/padding_extra_large"
-            android:gravity="center"
-            android:paddingLeft="@dimen/padding"
-            android:textSize="16sp"
-            android:paddingRight="@dimen/padding"/>
-
-        <TextView
-            android:id="@+id/locationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/speakersText"
-            android:gravity="center"
-            android:paddingLeft="@dimen/padding_small"
-            android:paddingRight="@dimen/padding_small"
-            android:paddingTop="@dimen/padding_small"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@id/timeText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/locationText"
-            android:gravity="center"
-            android:padding="@dimen/padding_small"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
 
     </RelativeLayout>
+
 </FrameLayout>
