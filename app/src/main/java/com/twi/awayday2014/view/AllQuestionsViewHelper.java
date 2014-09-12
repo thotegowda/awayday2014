@@ -84,7 +84,6 @@ public class AllQuestionsViewHelper {
         if(questions == null){
             return;
         }
-        countText.setText("Total: " + questionsListAdapter.getCount());
         questionsListAdapter.onDataChange(questions);
     }
 
@@ -97,6 +96,7 @@ public class AllQuestionsViewHelper {
         public void onDataChange(List<Question> questionList){
             clear();
             addAll(questionList);
+            countText.setText("Total: " + questionsListAdapter.getCount());
             notifyDataSetChanged();
         }
 
