@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import com.twi.awayday2014.view.fragments.SpeakersFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SessionDetailsBaseActivity extends Activity {
+public abstract class SessionDetailsBaseActivity extends FragmentActivity {
     private static final String TAG = "SessionDetailsBaseActivity";
 
     public static final String SESSION_ID = "id";
@@ -179,5 +180,9 @@ public abstract class SessionDetailsBaseActivity extends Activity {
     private void launchSpeakerDetailActivity(Presenter presenter) {
         startActivity(new Intent(this, SpeakerDetailsActivity.class)
                 .putExtra(SpeakersFragment.PRESENTER_ID, presenter.getId()));
+    }
+
+    public Session getSession() {
+        return session;
     }
 }

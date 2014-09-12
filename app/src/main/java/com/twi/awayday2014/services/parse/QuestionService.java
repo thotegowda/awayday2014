@@ -4,31 +4,35 @@ package com.twi.awayday2014.services.parse;
 import android.util.Log;
 import com.parse.*;
 import com.twi.awayday2014.models.Question;
+import com.twi.awayday2014.utils.Constants;
+
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.twi.awayday2014.models.Question.newQuestion;
+import static com.twi.awayday2014.utils.Constants.Parse.*;
 
 public class QuestionService {
+    private static final String TAG = "QuestionService";
+    private Map<String, List<Question>> questionsMap = new HashMap<String, List<Question>>();
 
     public interface OnQuestionLoadListener {
-        public void onQuestionLoaded(List<Question> questions);
+        public void onQuestionLoaded();
     }
 
-    public static String TABLE_SESSION = "Questions";
-    public static String SESSION_ID = "sessionId";
-    public static String SESSION_TITLE = "sessionTitle";
-    public static String QUESTIONER_NAME = "questionerName";
-    public static String QUESTION_TEXT = "questionText";
-    public static String CREATED_AT = "createdAt";
+    public List<Question> getFetchedQuestionsFor(String sessionId){
+        return questionsMap.get(sessionId);
+    }
 
     public void askQuestion(Question question) {
-        ParseObject qn = new ParseObject(TABLE_SESSION);
+        ParseObject qn = new ParseObject(Constants.Parse.TABLE_SESSION);
         qn.put(SESSION_ID, question.getSessionId());
         qn.put(SESSION_TITLE, question.getSessionTitle());
         qn.put(QUESTIONER_NAME, question.getName());
@@ -36,30 +40,19 @@ public class QuestionService {
         qn.saveInBackground();
     }
 
-    public void loadQuestions(String sessionId, final OnQuestionLoadListener listener) {
-        ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
-        loadQuestions(query, listener);
-    }
-
-    public void loadOnlyIfThereAreAnyNewQuestions(String sessionId, final int currentCount, final OnQuestionLoadListener listener) {
+    public void loadOnlyIfThereAreAnyNewQuestions(final String sessionId, final OnQuestionLoadListener listener) {
         final ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
-                if (count != currentCount) {
-                    loadQuestions(query, listener);
+                if (!questionsMap.containsKey(sessionId) || questionsMap.get(sessionId).size() != count) {
+                    loadQuestions(sessionId, query, listener);
                 }
             }
         });
     }
 
-    private ParseQuery<ParseObject> newQuestionQuery(String sessionId) {
-        return ParseQuery.getQuery(TABLE_SESSION)
-                        .whereMatches(SESSION_ID, sessionId)
-                        .orderByDescending(CREATED_AT);
-    }
-
-    private void loadQuestions(ParseQuery<ParseObject> query, final OnQuestionLoadListener listener) {
+    private void loadQuestions(final String sessionId, ParseQuery<ParseObject> query, final OnQuestionLoadListener listener) {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
@@ -70,44 +63,19 @@ public class QuestionService {
                         questions.add(newQuestion(parseObject));
                     }
                 } else {
-                    questions.add(new Question("", "", "Failed", "Server is down or network not reachable"));
+                    e.printStackTrace();
+                    Log.e(TAG, "Something went wrong while fetching questions");
                 }
-                listener.onQuestionLoaded(questions);
+                questionsMap.put(sessionId, questions);
+                listener.onQuestionLoaded();
             }
         });
     }
 
-    public static String getDisplayTime(LocalDateTime then) {
-        LocalDateTime now = LocalDateTime.now();
-
-        int seconds = Math.abs(Seconds.secondsBetween(now, then).getSeconds());
-        if (seconds <= 10) {
-            return "now";
-        }
-        if (seconds < 60) {
-            return String.valueOf(seconds) + "s";
-        }
-
-        int minutes = Math.abs(Minutes.minutesBetween(now, then).getMinutes());
-        if (minutes < 60) {
-            return String.valueOf(minutes) + "m";
-        }
-
-        int hours = Math.abs(Hours.hoursBetween(now, then).getHours());
-        if (hours < 24) {
-            return String.valueOf(hours) + "h";
-        }
-
-        int days = Math.abs(Days.daysBetween(now, then).getDays());
-        if (days < 9) {
-            return String.valueOf(days) + "d";
-        }
-
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-        return then.toString(formatter);
+    private ParseQuery<ParseObject> newQuestionQuery(String sessionId) {
+        return ParseQuery.getQuery(TABLE_SESSION)
+                        .whereMatches(SESSION_ID, sessionId)
+                        .orderByDescending(CREATED_AT);
     }
 
-    public static String formatDate(Date date) {
-        return getDisplayTime(new LocalDateTime(date));
-    }
 }

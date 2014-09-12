@@ -3,6 +3,7 @@
     <color name="theme_color">#25bcce</color>
     <color name="theme_color_pressed">#ff227777</color>
     <color name="theme_dark_color">#1972ba</color>
+    <color name="theme_color_light_pressed">#1125bcce</color>
 
     <color name="holo_red_light">#ffff4444</color>
     <color name="orange">#ffffa500</color>
@@ -23,6 +24,7 @@
     <color name="transparent_white">#aacccccc</color>
     <color name="transparent_blue">#bb1A73BA</color>
     <color name="transparent_purple">#aa6A2569</color>
+    <color name="translucent_button_color">#33ffffff</color>
 
     <color name="viewpager_indicator_color">@color/theme_dark_color</color>
 

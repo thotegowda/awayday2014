@@ -1,10 +1,11 @@
 package com.twi.awayday2014.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,52 +18,108 @@ import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.Question;
 import com.twi.awayday2014.services.parse.QuestionService;
 import com.twi.awayday2014.utils.Fonts;
+import com.twi.awayday2014.view.fragments.AskQuestionFragment;
 
 import java.util.List;
 
 public class SessionDetailsActivity extends SessionDetailsBaseActivity {
     private static final String TAG = "SessionDetailsActivity";
+    private static final int MAX_QUESTIONS_COUNT = 3;
 
-    private LinearLayout questionsHolderView;
-    private EditText questionView;
-    private EditText questionerNameView;
-    private View questionFrameView;
-    private Button toggleQuestionFrameBtn;
-    private TextView questionsTitleView;
     private QuestionService questionService;
+    private AllQuestionsViewHelper allQuestionsViewHelper;
 
     private static final int REFRESH_TIME = 10000;
 
     private static final int PULL_LATEST_QUESTIONS = 1;
 
-    private Handler h = new Handler() {
+    private Handler handler = new Handler();
+    private Runnable fetchQuestionsRunnable = new Runnable() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case PULL_LATEST_QUESTIONS:
-                    Log.d(TAG, "Checking for latest questions");
-                    refreshIfThereAreNewQuestions();
-                    sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
-                    break;
-                default:
-                    super.handleMessage(msg);
-            }
+        public void run() {
+            Log.d(TAG, "Polling for new questions");
+            refreshIfThereAreNewQuestions();
+            handler.postDelayed(this, REFRESH_TIME);
         }
     };
+
+    private AskQuestionFragment askQuestionFragment;
+    private LinearLayout questionsHolderView1;
+    private TextView noQuestionsView;
+    private Button allQuestions;
+    private Button askButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        View allQuestionsLayout = findViewById(R.id.allQuestionsLayout);
+        allQuestionsViewHelper = new AllQuestionsViewHelper(this, allQuestionsLayout);
+        allQuestionsViewHelper.onCreate();
+
         setupDetailText();
-        setupFeedbackButton();
+        setupFragments();
+        setupButtons();
         setupQuestionsView();
+    }
+
+    private void setupFragments() {
+        askQuestionFragment = (AskQuestionFragment) getSupportFragmentManager().findFragmentById(R.id.askQuestionFragment);
+    }
+
+    private void setupButtons() {
+        askButton = (Button) findViewById(R.id.askButton);
+        askButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!askQuestionFragment.isOpen()) {
+                    askQuestionFragment.slideIn();
+                }
+            }
+        });
+
+        final Button feedbackButton = (Button) findViewById(R.id.feedbackButton);
+        feedbackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchFeedback();
+            }
+        });
+
+        final Button allQuestionsButton = (Button) findViewById(R.id.allQuestionsButton);
+        allQuestionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                allQuestionsViewHelper.show();
+                allQuestionsButton.setClickable(false);
+                askButton.setClickable(false);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (askQuestionFragment.isOpen()) {
+            askQuestionFragment.slideOut();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (session.canAskQuestions()){
+            fetchQuestionsRunnable.run();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        h.removeMessages(PULL_LATEST_QUESTIONS);
+        if (session.canAskQuestions()){
+            handler.removeCallbacks(fetchQuestionsRunnable);
+        }
     }
 
     protected int getContentView() {
@@ -74,154 +131,77 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
         detailsText.setText(session.getDescription());
     }
 
-    private void setupFeedbackButton() {
-        final Button feedbackButton = (Button) findViewById(R.id.feedbackButton);
-        feedbackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchFeedback();
-            }
-        });
-    }
 
     private void setupQuestionsView() {
-        View questionsLayout = findViewById(R.id.questions_layout);
+        View questionsLayout = findViewById(R.id.questionsLayout);
         if (session.canAskQuestions()) {
             questionsLayout.setVisibility(View.VISIBLE);
-            bindViews();
-            loadQuestions();
-        } else {
-            questionsLayout.setVisibility(View.GONE);
+            setupQuestionHeader();
+            setupLatestQuestions();
         }
     }
 
-    private void bindViews() {
-        questionFrameView = findViewById(R.id.question_frame);
-        questionFrameView.setVisibility(View.GONE);
+    private void setupQuestionHeader() {
+        TextView questionsHeaderText = (TextView) findViewById(R.id.questionsHeaderText);
+        questionsHeaderText.setTypeface(Fonts.openSansSemiBold(this));
+    }
 
-        questionsTitleView = (TextView) findViewById(R.id.questions_title);
-        questionsTitleView.setTypeface(Fonts.openSansBold(this));
-        toggleQuestionFrameBtn = (Button) findViewById(R.id.btn_toggle_question_frame);
-
-        questionView = (EditText) findViewById(R.id.edt_question);
-        questionerNameView = (EditText) findViewById(R.id.edt_name);
-        toggleQuestionFrameBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                toggleQuestionFrameView();
-            }
-        });
-        findViewById(R.id.btn_ask_question).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onPostQuestionClick();
-            }
-        });
-        questionsHolderView = (LinearLayout) findViewById(R.id.questions_holder);
+    private void setupLatestQuestions() {
+        questionsHolderView1 = (LinearLayout) findViewById(R.id.questionsHolder);
+        noQuestionsView = (TextView) findViewById(R.id.noQuestionView);
+        noQuestionsView.setTypeface(Fonts.openSansRegular(this));
+        allQuestions = (Button) findViewById(R.id.allQuestionsButton);
 
         questionService = ((AwayDayApplication) getApplication()).getQuestionService();
+        List<Question> fetchedQuestions = questionService.getFetchedQuestionsFor(sessionId);
+        setupQuestionsHolder(fetchedQuestions);
+        allQuestionsViewHelper.onDataChange(fetchedQuestions);
+    }
+
+    private void setupQuestionsHolder(List<Question> questions) {
+        questionsHolderView1.removeAllViewsInLayout();
+        if (questions == null || questions.size() == 0) {
+            noQuestionsView.setVisibility(View.VISIBLE);
+            allQuestions.setVisibility(View.GONE);
+        } else {
+            noQuestionsView.setVisibility(View.GONE);
+            LayoutInflater layoutInflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            for (int i = 0; i < questions.size(); i++) {
+                if (i == MAX_QUESTIONS_COUNT) {
+                    allQuestions.setVisibility(View.VISIBLE);
+                    break;
+                }
+                View questionView = layoutInflator.inflate(R.layout.view_question_item, null);
+                TextView questionText = (TextView) questionView.findViewById(R.id.questionText);
+                questionText.setTypeface(Fonts.openSansRegular(this));
+                Question question = questions.get(i);
+                questionText.setText(question.getQuestion());
+
+                TextView name = (TextView) questionView.findViewById(R.id.name);
+                name.setTypeface(Fonts.openSansLight(this));
+                name.setText("- " + question.getName());
+
+                TextView time = (TextView) questionView.findViewById(R.id.time);
+                time.setTypeface(Fonts.openSansLight(this));
+                time.setText(question.getDisplayTime());
+
+                questionsHolderView1.addView(questionView);
+            }
+        }
     }
 
     private void refreshIfThereAreNewQuestions() {
         questionService.loadOnlyIfThereAreAnyNewQuestions(
                 session.getId(),
-                questionsHolderView.getChildCount(),
                 new QuestionService.OnQuestionLoadListener() {
                     @Override
-                    public void onQuestionLoaded(List<Question> questions) {
-                        Log.d(TAG, "Recent question count : " + questions.size());
-                        displayQuestions(questions);
+                    public void onQuestionLoaded() {
+                        List<Question> questions = questionService.getFetchedQuestionsFor(sessionId);
+                        setupQuestionsHolder(questions);
+                        allQuestionsViewHelper.onDataChange(questions);
                     }
-                });
-    }
-
-    private void loadQuestions() {
-
-        questionService.loadQuestions(session.getId(), new QuestionService.OnQuestionLoadListener() {
-            @Override
-            public void onQuestionLoaded(List<Question> questions) {
-                displayQuestions(questions);
-                h.sendEmptyMessageDelayed(PULL_LATEST_QUESTIONS, REFRESH_TIME);
-            }
-        });
-    }
-
-    private void displayQuestions(List<Question> questions) {
-        questionsHolderView.removeAllViewsInLayout();
-
-        if (questions.size() == 0) {
-            bindQuestion(newQuestionView(), noQuestion());
-        }
-
-        for (Question question : questions) {
-            bindQuestion(newQuestionView(), question);
-        }
-    }
-
-    private void onPostQuestionClick() {
-        String questionerName = questionerNameView.getText().toString().trim();
-        String question = questionView.getText().toString().trim();
-
-        if (question.length() <= 0) {
-            Toast.makeText(this, "Please enter the question ", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (questionerName.length() <= 0) {
-            Toast.makeText(this, "Please enter your name ", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        questionService.askQuestion(new Question(session.getId(), session.getTitle(), questionerName, question));
-        questionFrameView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshQuestions();
-            }
-        }, 2000);
-
-        questionerNameView.setText("");
-        questionView.setText("");
-        toggleQuestionFrameView();
-    }
-
-    private void refreshQuestions() {
-        loadQuestions();
-    }
-
-
-    private void toggleQuestionFrameView() {
-        boolean show = questionFrameView.getVisibility() == View.GONE;
-        questionFrameView.setVisibility(show == true ? View.VISIBLE : View.GONE);
-        toggleQuestionFrameBtn.setText(show == true ? R.string.cancel : R.string.ask);
-    }
-
-    private Question noQuestion() {
-        return new Question("", "", "No questions yet.", "You can be the first one!");
-    }
-
-    private View newQuestionView() {
-        return getLayoutInflater().inflate(R.layout.question_item, questionsHolderView, false);
-    }
-
-    private void bindQuestion(View view, Question question) {
-
-        TextView questionerName = (TextView) view.findViewById(R.id.questioner_name);
-        questionerName.setTypeface(Fonts.openSansSemiBold(this));
-        questionerName.setText(question.getName());
-
-        TextView questionTime = (TextView) view.findViewById(R.id.question_time);
-        questionTime.setTypeface(Fonts.openSansLight(this));
-        questionTime.setText(QuestionService.formatDate(question.getCreatedDate()));
-
-        TextView questionText = (TextView) view.findViewById(R.id.question_text);
-        questionText.setTypeface(Fonts.openSansRegular(this));
-        questionText.setText(question.getQuestion());
-
-        view.setTag(question);
-        questionsHolderView.addView(view);
+                }
+        );
     }
 
 
@@ -231,5 +211,10 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
                 .putExtra(SESSION_TYPE, sessionType);
 
         startActivity(intent);
+    }
+
+    public void onQuestionsListHide() {
+        allQuestions.setClickable(true);
+        askButton.setClickable(true);
     }
 }

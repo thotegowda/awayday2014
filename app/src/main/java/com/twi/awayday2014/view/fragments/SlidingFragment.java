@@ -21,6 +21,7 @@ public abstract class SlidingFragment extends Fragment{
     protected ObjectAnimator mSlidingPaneCloseAnimator;
     private int rootLayoutOriginalHeight;
     private boolean isOpen;
+    private SlidingFragmentListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +69,10 @@ public abstract class SlidingFragment extends Fragment{
         return rootLayoutOriginalHeight;
     }
 
+    public void setListener(SlidingFragmentListener listener) {
+        this.listener = listener;
+    }
+
     private void initAnimators() {
         mSlidingPaneOpenAnimator = ObjectAnimator.ofFloat(mRootLayout, "translationY", 0);
         mSlidingPaneOpenAnimator.setInterpolator(new SmoothInterpolator());
@@ -75,13 +80,27 @@ public abstract class SlidingFragment extends Fragment{
         mSlidingPaneOpenAnimator.addListener(new AnimatorListenerAdapter() {
 
             @Override
+            public void onAnimationStart(Animator animation) {
+                if(listener != null){
+                    listener.onSlideInStart();
+                }
+            }
+
+            @Override
             public void onAnimationCancel(Animator animation) {
                 mRootLayout.setLayerType(View.LAYER_TYPE_NONE, null);
+                if(listener != null){
+                    listener.onSlideInEnd();
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mRootLayout.setLayerType(View.LAYER_TYPE_NONE, null);
+                if(listener != null){
+                    listener.onSlideInEnd();
+                }
+
             }
         });
 
@@ -89,20 +108,42 @@ public abstract class SlidingFragment extends Fragment{
         mSlidingPaneCloseAnimator.setDuration(CLOSE_ANIMATION_DURATION);
         mSlidingPaneCloseAnimator.setInterpolator(new SmoothInterpolator());
         mSlidingPaneCloseAnimator.addListener(new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if(listener != null){
+                    listener.onSlideOutStart();
+                }
+
+            }
+
             @Override
             public void onAnimationCancel(Animator animation) {
                 mRootLayout.setLayerType(View.LAYER_TYPE_NONE, null);
+                if(listener != null){
+                    listener.onSlideOutEnd();
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mRootLayout.setLayerType(View.LAYER_TYPE_NONE, null);
                 mRootLayout.setVisibility(View.GONE);
+                if(listener != null){
+                    listener.onSlideOutEnd();
+                }
             }
         });
     }
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public interface SlidingFragmentListener{
+        void onSlideOutStart();
+        void onSlideOutEnd();
+        void onSlideInStart();
+        void onSlideInEnd();
     }
 }

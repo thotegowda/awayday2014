@@ -28,8 +28,16 @@ public class CompareTime {
                 && now().dayOfMonth().equals(dateTime.plusDays(1).dayOfMonth());
     }
 
+    public static boolean hasHappenedWithinAnHour(DateTime dateTime) {
+        return (dateTime.plusMinutes(60).isAfter(now()));
+    }
+
     public static boolean hasHappenedWithinHalfAnHour(DateTime dateTime) {
         return (dateTime.plusMinutes(30).isAfter(now()));
+    }
+
+    public static boolean hasHappenedWithinTwoMinutes(DateTime dateTime) {
+        return (dateTime.plusMinutes(2).isAfter(now()));
     }
 
     public static boolean doesTimeOverlap(DateTime startTime1, DateTime endTime1, DateTime startTime2, DateTime endTime2) {

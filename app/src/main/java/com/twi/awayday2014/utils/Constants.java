@@ -19,6 +19,12 @@ public class Constants {
         public static final String TABLE_SPEAKERS = "Speakers";
         public static final String TABLE_BREAKOUTS = "Breakouts";
         public static final String TABLE_DATA_TIMESTAMPS = "DataTimeStamps";
+        public static final String TABLE_SESSION = "Questions";
+        public static final String SESSION_ID = "sessionId";
+        public static final String SESSION_TITLE = "sessionTitle";
+        public static final String QUESTIONER_NAME = "questionerName";
+        public static final String QUESTION_TEXT = "questionText";
+        public static final String CREATED_AT = "createdAt";
         public static final String COL_OBJECT_ID = "objectId";
         public static final String COL_ACTIVE = "active";
         public static final String COL_HEADER_TEXT = "headerText";

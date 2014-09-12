@@ -1,230 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.twi.awayday2014.view.custom.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    app:parallax_factor="1.9">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.twi.awayday2014.view.custom.ParallaxScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/sessionImage"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/agenda_details_header_image_height"
-            android:scaleType="centerCrop"
-            android:src="@drawable/awayday_2014_placeholder" />
+        android:scrollbars="none"
+        app:parallax_factor="1.9">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/theme_color"
-            android:orientation="vertical"
-            android:padding="@dimen/padding">
-
-            <TextView
-                android:id="@+id/sessionHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_extra_small"
-                android:gravity="center"
-                android:text="This Is The Session Title"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/agenda_details_header_title_text" />
-
-            <TextView
-                android:id="@+id/sessionTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_extra_small"
-                android:layout_marginTop="@dimen/padding_extra_small"
-                android:gravity="center"
-                android:text="30 min, Sat, 19 Sep 2014"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="@dimen/agenda_details_header_time_text" />
-
-            <LinearLayout
-                android:id="@+id/speakerInfoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/padding_extra_small"
-                android:paddingLeft="@dimen/padding"
-                android:paddingRight="@dimen/padding"
-                android:paddingTop="@dimen/padding_extra_small">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_margin="@dimen/padding"
-                    android:layout_weight="1"
-                    android:background="@color/white" />
-
-                <com.twi.awayday2014.view.custom.CircularImageView
-                    android:id="@+id/profile_image1"
-                    android:layout_width="@dimen/speaker_image_diameter"
-                    android:layout_height="@dimen/speaker_image_diameter"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder" />
-
-                <com.twi.awayday2014.view.custom.CircularImageView
-                    android:id="@+id/profile_image2"
-                    android:layout_width="@dimen/speaker_image_diameter"
-                    android:layout_height="@dimen/speaker_image_diameter"
-                    android:layout_marginLeft="@dimen/padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder"
-                    android:visibility="gone" />
-
-                <com.twi.awayday2014.view.custom.CircularImageView
-                    android:id="@+id/profile_image3"
-                    android:layout_width="@dimen/speaker_image_diameter"
-                    android:layout_height="@dimen/speaker_image_diameter"
-                    android:layout_marginLeft="@dimen/padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder"
-                    android:visibility="gone" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_margin="@dimen/padding"
-                    android:layout_weight="1"
-                    android:background="@color/white" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/speakerName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_extra_small"
-                android:gravity="center"
-                android:text="Speaker Name"
-                android:textColor="@color/white"
-                android:textSize="@dimen/agenda_details_header_time_text" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/detailsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_large"
-            android:text="@string/placeHolderTextLarge"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="200dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:background="@color/gray" />
-
-        <Button
-            android:id="@+id/feedbackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/padding"
-            android:layout_marginBottom="@dimen/padding"
-            android:background="@drawable/btn_background_rectangle_blue"
-            android:padding="@dimen/padding"
-            android:text="Feedback"
-            android:textColor="@android:color/white" />
-
-        <LinearLayout
-            android:id="@+id/questions_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_gray"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/sessionImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/agenda_details_header_image_height"
+                android:scaleType="centerCrop"
+                android:src="@drawable/awayday_2014_placeholder" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="7dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:layout_height="wrap_content"
+                android:background="@color/theme_color"
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
 
                 <TextView
-                    android:id="@+id/questions_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/questions"
-                    android:textSize="18sp" />
+                    android:id="@+id/sessionHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_extra_small"
+                    android:gravity="center"
+                    android:text="This Is The Session Title"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/agenda_details_header_title_text" />
 
-                <Button
-                    android:id="@+id/btn_toggle_question_frame"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/btn_background_rectangle_blue"
-                    android:scaleType="center"
-                    android:text="@string/ask"
-                    android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/sessionTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_extra_small"
+                    android:layout_marginTop="@dimen/padding_extra_small"
+                    android:gravity="center"
+                    android:text="30 min, Sat, 19 Sep 2014"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/agenda_details_header_time_text" />
+
+                <LinearLayout
+                    android:id="@+id/speakerInfoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/padding_extra_small"
+                    android:paddingLeft="@dimen/padding"
+                    android:paddingRight="@dimen/padding"
+                    android:paddingTop="@dimen/padding_extra_small">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_margin="@dimen/padding"
+                        android:layout_weight="1"
+                        android:background="@color/white" />
+
+                    <com.twi.awayday2014.view.custom.CircularImageView
+                        android:id="@+id/profile_image1"
+                        android:layout_width="@dimen/speaker_image_diameter"
+                        android:layout_height="@dimen/speaker_image_diameter"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder" />
+
+                    <com.twi.awayday2014.view.custom.CircularImageView
+                        android:id="@+id/profile_image2"
+                        android:layout_width="@dimen/speaker_image_diameter"
+                        android:layout_height="@dimen/speaker_image_diameter"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        android:visibility="gone" />
+
+                    <com.twi.awayday2014.view.custom.CircularImageView
+                        android:id="@+id/profile_image3"
+                        android:layout_width="@dimen/speaker_image_diameter"
+                        android:layout_height="@dimen/speaker_image_diameter"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_margin="@dimen/padding"
+                        android:layout_weight="1"
+                        android:background="@color/white" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/speakerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_extra_small"
+                    android:gravity="center"
+                    android:text="Speaker Name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/agenda_details_header_time_text" />
+
             </LinearLayout>
 
-
             <LinearLayout
-                android:id="@+id/question_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edt_question"
+                <TextView
+                    android:id="@+id/detailsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Question here"
-                    android:minLines="2"
-                    android:padding="@dimen/padding" />
+                    android:background="@color/white"
+                    android:padding="@dimen/padding_large"
+                    android:text="@string/placeHolderTextLarge"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/edt_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter Name here"
-                    android:padding="@dimen/padding" />
+                <View
+                    android:layout_width="200dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="@color/gray" />
 
                 <Button
-                    android:id="@+id/btn_ask_question"
+                    android:id="@+id/feedbackButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/padding"
+                    android:layout_marginBottom="@dimen/padding"
                     android:background="@drawable/btn_background_rectangle_blue"
-                    android:paddingBottom="@dimen/padding_small"
-                    android:paddingLeft="@dimen/padding_large"
-                    android:paddingRight="@dimen/padding_large"
-                    android:paddingTop="@dimen/padding_small"
-                    android:text="@string/post"
-                    android:textColor="@color/white" />
+                    android:padding="@dimen/padding"
+                    android:text="Feedback"
+                    android:textColor="@android:color/white" />
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/questions_holder"
+                android:id="@+id/questionsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gray"
+                android:background="@color/theme_color"
                 android:orientation="vertical"
-                android:paddingBottom="25dp" />
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/padding"
+                    android:paddingLeft="@dimen/padding_large"
+                    android:paddingRight="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding">
+
+                    <TextView
+                        android:id="@+id/questionsHeaderText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Questions"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/agenda_details_header_title_text" />
+
+                    <Button
+                        android:id="@+id/askButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/btn_background_rectangle_white"
+                        android:padding="@dimen/padding_small"
+                        android:text="Ask"
+                        android:textColor="@color/theme_color" />
+                </LinearLayout>
+
+                <View
+                    style="@style/HorizontalDivider"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:layout_marginRight="@dimen/padding" />
+
+                <LinearLayout
+                    android:id="@+id/questionsHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/noQuestionView"
+                    style="@style/QuestionsText"
+                    android:text="No questions yet. Be the first one to ask."
+                    android:visibility="gone"/>
+
+                <View style="@style/QuestionsDivider" />
+
+                <Button
+                    android:id="@+id/allQuestionsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/padding"
+                    android:layout_marginTop="@dimen/padding"
+                    android:background="@drawable/btn_background_rectangle_white"
+                    android:padding="@dimen/padding_small"
+                    android:text="All Questions"
+                    android:textColor="@color/theme_color"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
         </LinearLayout>
+    </com.twi.awayday2014.view.custom.ParallaxScrollView>
+
+    <fragment
+        android:id="@+id/askQuestionFragment"
+        android:name="com.twi.awayday2014.view.fragments.AskQuestionFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <LinearLayout
+        android:id="@+id/allQuestionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/padding_large"
+        android:paddingBottom="@dimen/padding_large"
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding"
+        android:background="@color/transparent_dark_black"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/allQuestionsHeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_marginBottom="@dimen/padding"
+            android:textColor="@color/white"
+            android:text="All Questions"/>
+
+        <TextView
+            android:id="@+id/allQuestionsCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="@dimen/padding"
+            android:textColor="@color/white"/>
+
+        <View
+            android:layout_marginBottom="0dp"
+            style="@style/HorizontalDivider"/>
+
+        <ListView
+            android:id="@+id/questionsList"
+            style="@style/QuestionsListView"/>
+
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/padding"
+            android:text="Back"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_selector"/>
     </LinearLayout>
-</com.twi.awayday2014.view.custom.ParallaxScrollView>
+
+</RelativeLayout>
