@@ -84,7 +84,7 @@ public class Question {
         if (hasHappenedWithinTwoMinutes(t)) {
             return "Now";
         } else if (hasHappenedWithinAnHour(t)) {
-            return duration(t, now());
+            return duration(t, now()) + " min ago";
         } else {
             return t.toString("HH:mm , dd MMM");
         }

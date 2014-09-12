@@ -254,7 +254,7 @@
         <item name="android:paddingLeft">@dimen/padding_large</item>
         <item name="android:paddingRight">@dimen/padding_large</item>
         <item name="android:paddingTop">@dimen/padding</item>
-        <item name="android:paddingBottom">@dimen/padding</item>
+        <item name="android:paddingBottom">@dimen/padding_small</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
