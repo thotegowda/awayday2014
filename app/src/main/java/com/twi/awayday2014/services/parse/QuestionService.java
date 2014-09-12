@@ -27,8 +27,8 @@ public class QuestionService {
         public void onQuestionLoaded();
     }
 
-    public List<Question> getFetchedQuestionsFor(String sessionId){
-        return questionsMap.get(sessionId);
+    public List<Question> getFetchedQuestionsFor(String sessionTitle){
+        return questionsMap.get(sessionTitle);
     }
 
     public void askQuestion(Question question) {
@@ -40,19 +40,19 @@ public class QuestionService {
         qn.saveInBackground();
     }
 
-    public void loadOnlyIfThereAreAnyNewQuestions(final String sessionId, final OnQuestionLoadListener listener) {
-        final ParseQuery<ParseObject> query = newQuestionQuery(sessionId);
+    public void loadOnlyIfThereAreAnyNewQuestions(final String sessionTitle, final OnQuestionLoadListener listener) {
+        final ParseQuery<ParseObject> query = newQuestionQuery(sessionTitle);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
-                if (!questionsMap.containsKey(sessionId) || questionsMap.get(sessionId).size() != count) {
-                    loadQuestions(sessionId, query, listener);
+                if (!questionsMap.containsKey(sessionTitle) || questionsMap.get(sessionTitle).size() != count) {
+                    loadQuestions(sessionTitle, query, listener);
                 }
             }
         });
     }
 
-    private void loadQuestions(final String sessionId, ParseQuery<ParseObject> query, final OnQuestionLoadListener listener) {
+    private void loadQuestions(final String sessionTitle, ParseQuery<ParseObject> query, final OnQuestionLoadListener listener) {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
@@ -66,15 +66,15 @@ public class QuestionService {
                     e.printStackTrace();
                     Log.e(TAG, "Something went wrong while fetching questions");
                 }
-                questionsMap.put(sessionId, questions);
+                questionsMap.put(sessionTitle, questions);
                 listener.onQuestionLoaded();
             }
         });
     }
 
-    private ParseQuery<ParseObject> newQuestionQuery(String sessionId) {
+    private ParseQuery<ParseObject> newQuestionQuery(String sessionTitle) {
         return ParseQuery.getQuery(TABLE_SESSION)
-                        .whereMatches(SESSION_ID, sessionId)
+                        .whereMatches(SESSION_TITLE, sessionTitle)
                         .orderByDescending(CREATED_AT);
     }
 

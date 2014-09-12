@@ -8,10 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
@@ -153,7 +151,7 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
         allQuestions = (Button) findViewById(R.id.allQuestionsButton);
 
         questionService = ((AwayDayApplication) getApplication()).getQuestionService();
-        List<Question> fetchedQuestions = questionService.getFetchedQuestionsFor(sessionId);
+        List<Question> fetchedQuestions = questionService.getFetchedQuestionsFor(session.getTitle());
         setupQuestionsHolder(fetchedQuestions);
         allQuestionsViewHelper.onDataChange(fetchedQuestions);
     }
@@ -192,11 +190,11 @@ public class SessionDetailsActivity extends SessionDetailsBaseActivity {
 
     private void refreshIfThereAreNewQuestions() {
         questionService.loadOnlyIfThereAreAnyNewQuestions(
-                session.getId(),
+                session.getTitle(),
                 new QuestionService.OnQuestionLoadListener() {
                     @Override
                     public void onQuestionLoaded() {
-                        List<Question> questions = questionService.getFetchedQuestionsFor(sessionId);
+                        List<Question> questions = questionService.getFetchedQuestionsFor(session.getTitle());
                         setupQuestionsHolder(questions);
                         allQuestionsViewHelper.onDataChange(questions);
                     }
