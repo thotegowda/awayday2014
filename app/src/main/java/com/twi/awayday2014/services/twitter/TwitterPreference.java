@@ -19,7 +19,7 @@ public class TwitterPreference {
     public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
 
     public static final String HASH_TAG_TEST = "awaydayTest";
-    public static final String HASH_TAG = "#indiaawayday";
+    public static final String HASH_TAG = "indiaawayday";
 
     private static final GeoLocation MARRIOTT_HOTEL = new GeoLocation(17.4243185, 78.4870042);
 
