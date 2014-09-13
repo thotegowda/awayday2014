@@ -64,6 +64,7 @@
     <dimen name="tweeter_user_image_diameter">48dp</dimen>
 
     <dimen name="agenda_card_image_height">144dp</dimen>
+    <dimen name="agenda_card_approx_width">300dp</dimen>
     <dimen name="speaker_image_diameter">60dp</dimen>
     <dimen name="speaker_image_big_diameter">104dp</dimen>
     <dimen name="speaker_image_top_margin">114dp</dimen>

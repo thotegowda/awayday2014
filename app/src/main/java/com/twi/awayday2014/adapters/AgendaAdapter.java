@@ -91,12 +91,16 @@ public class AgendaAdapter extends BaseAdapter {
             Picasso.with(context)
                     .load(session.getImageUrl())
                     .placeholder(new ColorDrawable(context.getResources().getColor(R.color.theme_color)))
+                    .resizeDimen(R.dimen.agenda_card_approx_width,R.dimen.agenda_card_image_height)
+                    .centerCrop()
                     .error(R.drawable.awayday_2014_placeholder)
                     .into(viewSource.sessionImage);
             viewSource.sessionImage.setTag(session.getImageUrl());
         }else{
             Picasso.with(context)
                     .load(R.drawable.awayday_2014_placeholder)
+                    .resizeDimen(R.dimen.agenda_card_approx_width,R.dimen.agenda_card_image_height)
+                    .centerCrop()
                     .into(viewSource.sessionImage);
             viewSource.sessionImage.setTag(R.drawable.awayday_2014_placeholder);
         }
@@ -128,6 +132,8 @@ public class AgendaAdapter extends BaseAdapter {
                 Picasso.with(context)
                         .load(presenter.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
+                        .centerCrop()
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
                 viewSource.userImage1.setTag(presenter.getImageUrl());
@@ -144,12 +150,16 @@ public class AgendaAdapter extends BaseAdapter {
                 Picasso.with(context)
                         .load(presenter1.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
                 viewSource.userImage1.setTag(presenter1.getImageUrl());
                 Picasso.with(context)
                         .load(presenter2.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage2);
                 viewSource.userImage2.setTag(presenter2.getImageUrl());
@@ -168,18 +178,24 @@ public class AgendaAdapter extends BaseAdapter {
                 Picasso.with(context)
                         .load(presenter1.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage1);
                 viewSource.userImage1.setTag(presenter1.getImageUrl());
                 Picasso.with(context)
                         .load(presenter2.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage2);
                 viewSource.userImage2.setTag(presenter2.getImageUrl());
                 Picasso.with(context)
                         .load(presenter3.getImageUrl())
                         .placeholder(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .resizeDimen(R.dimen.speaker_image_diameter,R.dimen.speaker_image_diameter)
                         .error(R.drawable.placeholder)
                         .into(viewSource.userImage3);
                 viewSource.userImage3.setTag(presenter3.getImageUrl());

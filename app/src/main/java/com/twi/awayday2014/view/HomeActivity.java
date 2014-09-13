@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.BuildConfig;
 import com.twi.awayday2014.R;
+import com.twi.awayday2014.models.ImageSize;
+import com.twi.awayday2014.utils.BitmapUtils;
 import com.twi.awayday2014.utils.Fonts;
 import com.twi.awayday2014.utils.OsUtils;
 import com.twi.awayday2014.view.custom.KenBurnsView;
@@ -35,6 +37,8 @@ import com.twi.awayday2014.view.fragments.SpeakersFragment;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.twi.awayday2014.utils.BitmapUtils.ImageScaleType.EXACT;
 
 
 public class HomeActivity extends FragmentActivity implements ScrollListener {
@@ -112,7 +116,10 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
 
         headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
         final Bitmap[] bitmaps = new Bitmap[1];
-        bitmaps[0] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel1);
+        bitmaps[0] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                R.drawable.awayday_2014_carousel1,
+                new ImageSize(800,600),
+                EXACT);
         headerPicture.setBitmaps(bitmaps);
 
         //load other bitmaps in background
@@ -121,9 +128,18 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
             protected Bitmap[] doInBackground(Void... params) {
                 Bitmap[] result = new Bitmap[4];
                 result[0] = bitmaps[0];
-                result[1] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel2);
-                result[2] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_carousel3);
-                result[3] = BitmapFactory.decodeResource(getResources(), R.drawable.awayday_2014_background);
+                result[1] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                        R.drawable.awayday_2014_carousel2,
+                        new ImageSize(800,600),
+                        EXACT);
+                result[2] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                        R.drawable.awayday_2014_carousel3,
+                        new ImageSize(800,600),
+                        EXACT);
+                result[3] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                        R.drawable.awayday_2014_background,
+                        new ImageSize(800,600),
+                        EXACT);
                 return result;
             }
 

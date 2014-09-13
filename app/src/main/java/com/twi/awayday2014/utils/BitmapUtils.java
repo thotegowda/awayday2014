@@ -1,5 +1,6 @@
 package com.twi.awayday2014.utils;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -16,6 +17,11 @@ import java.io.InputStream;
 public class BitmapUtils {
     private static final String TAG = "BitmapUtils";
 
+    public enum ImageScaleType {
+        POWER_OF_2,
+        EXACT
+    }
+
     public static ImageSize decodeBitmapSizeFromUristring(String targetUri) {
         FileInputStream is = null;
         try {
@@ -25,6 +31,22 @@ public class BitmapUtils {
         }
 
         return decodeBitmapSizeFromStream(is);
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         ImageSize targetImageSize, ImageScaleType scaleType) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, scaleType, targetImageSize);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 
     public static ImageSize decodeBitmapSizeFromStream(InputStream stream) {
@@ -104,5 +126,44 @@ public class BitmapUtils {
         fileOutputStream.flush();
         fileOutputStream.close();
         return file.getAbsolutePath();
+    }
+
+    /**
+     * Calculate an inSampleSize for use in a {@link BitmapFactory.Options} object when decoding
+     * bitmaps using the decode* methods from {@link BitmapFactory}. This implementation calculates
+     * the closest inSampleSize that will result in the final decoded bitmap having a width and
+     * height equal to or larger than the requested width and height. This implementation
+     * ensures a power of 2 or exact inSampleSize is returned as passes in the parameters.
+     */
+    public static int calculateInSampleSize(BitmapFactory.Options options, ImageScaleType scaleType,
+                                            ImageSize targetImageSize) {
+
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        final int targetWidth = targetImageSize.getWidth();
+        final int targetHeight = targetImageSize.getHeight();
+
+        int inSampleSize = 1;
+
+        switch (scaleType) {
+            case POWER_OF_2:
+                while (width / inSampleSize > targetWidth || height / inSampleSize > targetHeight) {
+                    inSampleSize *= 2;
+                }
+                break;
+
+            case EXACT:
+                int widthScale = width / targetWidth;
+                int heightScale = height / targetHeight;
+                //returns the bigger scale, say, if heightScale is bigger than image will try to accommodate
+                //height and as width is smaller so will accommodate itself
+                inSampleSize = Math.max(widthScale, heightScale);
+
+            default:
+                break;
+        }
+
+        return inSampleSize > 1 ? inSampleSize : 1;
     }
 }
