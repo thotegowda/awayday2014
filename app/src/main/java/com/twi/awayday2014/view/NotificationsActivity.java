@@ -5,8 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.twi.awayday2014.adapters.NotificationsAdapter;
 import com.twi.awayday2014.models.AwayDayNotification;
 import com.twi.awayday2014.utils.Fonts;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,18 +79,46 @@ public class NotificationsActivity extends Activity{
         noNotificationsText.setTypeface(Fonts.openSansLight(this));
         Intent intent = getIntent();
         boolean previewMode = intent.getBooleanExtra(PREVIEW_MODE, false);
-        List<AwayDayNotification> awayDayNotifications = AwayDayNotification.listAll(AwayDayNotification.class);
-        Collections.sort(awayDayNotifications, Collections.reverseOrder(new AwayDayNotification.NotificatonsComparator()));
         if(previewMode){
             List<AwayDayNotification> previewNotification = asList((AwayDayNotification)intent.getExtras().getParcelable(PREVIEW_NOTIFICATION));
             notificationsList.setAdapter(new NotificationsAdapter(this, previewNotification));
         }else{
-            notificationsAdapter = new NotificationsAdapter(this, awayDayNotifications);
+            notificationsAdapter = new NotificationsAdapter(this, new ArrayList<AwayDayNotification>());
             notificationsList.setAdapter(notificationsAdapter);
-            if(awayDayNotifications.size() == 0) {
-                notificationsList.setVisibility(View.GONE);
-                noNotificationsText.setVisibility(View.VISIBLE);
-            }
+
+            showErrorMsg("Loading Notifications ...");
+
+            loadDataInBackground();
         }
+    }
+
+    private void loadDataInBackground() {
+        new AsyncTask<Void, Void, List<AwayDayNotification>>(){
+
+            @Override
+            protected List<AwayDayNotification> doInBackground(Void... params) {
+                List<AwayDayNotification> awayDayNotifications = AwayDayNotification.listAll(AwayDayNotification.class);
+                Collections.sort(awayDayNotifications, Collections.reverseOrder(new AwayDayNotification.NotificatonsComparator()));
+                return awayDayNotifications;
+            }
+
+            @Override
+            protected void onPostExecute(List<AwayDayNotification> awayDayNotifications) {
+                if(awayDayNotifications.size() == 0) {
+                    showErrorMsg("You have not received any notifications yet.");
+                }else{
+                    Log.d(TAG, awayDayNotifications.size() + " notifications found");
+                    notificationsList.setVisibility(View.VISIBLE);
+                    noNotificationsText.setVisibility(View.GONE);
+                    notificationsAdapter.dataSetChanged(awayDayNotifications);
+                }
+            }
+        }.execute();
+    }
+
+    private void showErrorMsg(String msg) {
+        notificationsList.setVisibility(View.GONE);
+        noNotificationsText.setVisibility(View.VISIBLE);
+        noNotificationsText.setText(msg);
     }
 }
