@@ -26,7 +26,6 @@ import com.twi.awayday2014.view.SpeakerDetailsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class SpeakersFragment extends BaseListFragment {
 
@@ -35,7 +34,6 @@ public class SpeakersFragment extends BaseListFragment {
     private SpeakersAdapter speakersAdapter;
     private SpeakersDataListener parseDataListener;
     private PresenterParseDataFetcher presenterParseDataFetcher;
-    private StickyListHeadersListView stickListView;
 
     public static Fragment newInstance(int sectionNumber) {
         SpeakersFragment fragment = new SpeakersFragment();
@@ -46,43 +44,6 @@ public class SpeakersFragment extends BaseListFragment {
     }
 
     public SpeakersFragment() {
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootlayout = getRootLayout(inflater, container);
-        stickListView = (StickyListHeadersListView) rootlayout.findViewById(R.id.list);
-        listView = stickListView.getWrappedList();
-        header = getHeaderView(inflater, listView);
-        listView.addHeaderView(header);
-        return rootlayout;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        stickListView.setAdapter((se.emilsjolander.stickylistheaders.StickyListHeadersAdapter) getAdapter());
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (isListViewAdjustedAsPerParent && scrollListener != null && isActive) {
-                    scrollListener.onScroll(SpeakersFragment.this, header.getY());
-                }
-            }
-        });
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                onListItemClick(adapterView, view, i, l);
-            }
-        });
     }
 
     @Override
@@ -108,12 +69,22 @@ public class SpeakersFragment extends BaseListFragment {
         AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
         presenterParseDataFetcher = application.getPresenterParseDataFetcher();
         if (presenterParseDataFetcher.isDataFetched()) {
-            speakersAdapter.onDataChange(presenterParseDataFetcher.getFetchedData());
+            speakersAdapter.onDataChange(getListableSpeakers(presenterParseDataFetcher.getFetchedData()));
         }else {
             parseDataListener = new SpeakersDataListener();
             presenterParseDataFetcher.addListener(parseDataListener);
             presenterParseDataFetcher.fetchData();
         }
+    }
+
+    private List<Presenter> getListableSpeakers(List<Presenter> allSpeakers) {
+        List<Presenter> listableSpeakers = new ArrayList<Presenter>();
+        for (Presenter speaker : allSpeakers) {
+            if(speaker.isListable()){
+                listableSpeakers.add(speaker);
+            }
+        }
+        return listableSpeakers;
     }
 
     @Override
@@ -142,7 +113,7 @@ public class SpeakersFragment extends BaseListFragment {
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
-        if(presenter.getWriteUp() == null || presenter.getWriteUp().isEmpty()){
+        if(presenter.getWriteUp() == null || presenter.getWriteUp().isEmpty() || !presenter.isListable()){
             Toast.makeText(getActivity(), "No details are available for the speaker", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -165,7 +136,7 @@ public class SpeakersFragment extends BaseListFragment {
 
         @Override
         public void onDataFetched(List<Presenter> presenters) {
-            speakersAdapter.onDataChange(presenters);
+            speakersAdapter.onDataChange(getListableSpeakers(presenters));
         }
 
         @Override

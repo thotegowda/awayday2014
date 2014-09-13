@@ -15,17 +15,19 @@ public class Presenter{
     private String link;
     private String name;
     private boolean isGuest;
+    private boolean isListable;
 
     public Presenter() {
     }
 
-    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp, boolean isGuest) {
+    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp, boolean isGuest, boolean isListable) {
         this.id = id;
         this.name = name;
         this.awayDayWriteup = awayDayWriteup;
         this.link = link;
         this.writeUp = writeUp;
         this.isGuest = isGuest;
+        this.isListable = isListable;
     }
 
     public int profileResource() {
@@ -78,6 +80,10 @@ public class Presenter{
 
     public boolean isGuest() {
         return isGuest;
+    }
+
+    public boolean isListable() {
+        return isListable;
     }
 
     public enum PresenterComparator implements Comparator<Presenter>{

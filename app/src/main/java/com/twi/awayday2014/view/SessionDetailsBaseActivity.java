@@ -178,6 +178,10 @@ public abstract class SessionDetailsBaseActivity extends FragmentActivity {
     }
 
     private void launchSpeakerDetailActivity(Presenter presenter) {
+        if(presenter.getWriteUp() == null || presenter.getWriteUp().isEmpty() || !presenter.isListable()){
+            Toast.makeText(this, "No details are available for the speaker", Toast.LENGTH_SHORT).show();
+            return;
+        }
         startActivity(new Intent(this, SpeakerDetailsActivity.class)
                 .putExtra(SpeakersFragment.PRESENTER_ID, presenter.getId()));
     }

@@ -17,6 +17,7 @@ import java.util.Map;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_AWAYDAY_WRITEUP;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION2;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
+import static com.twi.awayday2014.utils.Constants.Parse.COL_IS_LISTABLE;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_LINKS;
 import static com.twi.awayday2014.utils.Constants.Parse.COL_NAME;
 import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
@@ -80,7 +81,8 @@ public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
                         String image = d.getString(COL_IMAGE);
                         String link = d.getString(COL_LINKS);
                         boolean isGuest = d.getBoolean(Constants.Parse.COL_IS_GUEST);
-                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp, isGuest);
+                        boolean isListable = d.getBoolean(COL_IS_LISTABLE);
+                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp, isGuest, isListable);
 
                         if(image != null){
                             imageObjectIds.add(image);

@@ -18,13 +18,12 @@ import com.twi.awayday2014.utils.Fonts;
 import java.util.Collections;
 import java.util.List;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import static com.twi.awayday2014.models.Presenter.PresenterComparator.NAME_SORT;
 import static com.twi.awayday2014.models.Presenter.PresenterComparator.TYPE_SORT;
 import static com.twi.awayday2014.models.Presenter.PresenterComparator.getComparator;
 
-public class SpeakersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
+public class SpeakersAdapter extends BaseAdapter{
 
     private Context context;
     private List<Presenter> presenters;
@@ -83,29 +82,6 @@ public class SpeakersAdapter extends BaseAdapter implements StickyListHeadersAda
         this.presenters = presenters;
         Collections.sort(presenters, getComparator(TYPE_SORT, NAME_SORT));
         notifyDataSetChanged();
-    }
-
-    @Override
-    public View getHeaderView(int position, View convertView, ViewGroup viewGroup) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.view_sticky_header, viewGroup, false);
-            ((TextView) convertView).setTypeface(Fonts.openSansRegular(context));
-        }
-        if(presenters.get(position).isGuest()){
-            ((TextView) convertView).setText("Guests");
-        }else{
-            ((TextView) convertView).setText("ThoughtWorkers");
-        }
-        return convertView;
-    }
-
-    @Override
-    public long getHeaderId(int i) {
-        if (presenters.get(i).isGuest()) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
     private class ViewSource {

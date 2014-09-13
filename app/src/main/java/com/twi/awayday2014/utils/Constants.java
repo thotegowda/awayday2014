@@ -34,6 +34,7 @@ public class Constants {
         public static final String COL_SPEAKERS = "speakers";
         public static final String COL_CAN_ASK_QUESTIONS = "canAskQuestions";
         public static final String COL_IMAGE = "image";
+        public static final String COL_IS_LISTABLE = "isListable";
         public static final String COL_DESCRIPTION = "description";
         public static final String COL_DESCRIPTION2 = "Description";
         public static final String COL_AWAYDAY_WRITEUP = "awaydayWriteup";
