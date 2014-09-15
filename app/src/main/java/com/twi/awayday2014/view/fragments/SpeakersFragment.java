@@ -115,7 +115,7 @@ public class SpeakersFragment extends BaseListFragment {
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
-        if(presenter != null && presenter.getWriteUp() == null
+        if(presenter != null || presenter.getWriteUp() == null
                 || presenter.getWriteUp().isEmpty() || !presenter.isListable()){
             Toast.makeText(getActivity(), "No details are available for the speaker", Toast.LENGTH_SHORT).show();
             return;
