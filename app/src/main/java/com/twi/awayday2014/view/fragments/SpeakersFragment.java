@@ -24,6 +24,8 @@ import com.twi.awayday2014.view.HomeActivity;
 import com.twi.awayday2014.view.SpeakerDetailsActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -113,7 +115,8 @@ public class SpeakersFragment extends BaseListFragment {
     @Override
     protected void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         Presenter presenter = (Presenter) getListView().getAdapter().getItem(position);
-        if(presenter.getWriteUp() == null || presenter.getWriteUp().isEmpty() || !presenter.isListable()){
+        if(presenter != null && presenter.getWriteUp() == null
+                || presenter.getWriteUp().isEmpty() || !presenter.isListable()){
             Toast.makeText(getActivity(), "No details are available for the speaker", Toast.LENGTH_SHORT).show();
             return;
         }

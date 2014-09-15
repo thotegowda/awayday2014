@@ -14,15 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.twi.awayday2014.utils.Constants.Parse.COL_AWAYDAY_WRITEUP;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_DESCRIPTION2;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_IMAGE;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_IS_LISTABLE;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_LINKS;
-import static com.twi.awayday2014.utils.Constants.Parse.COL_NAME;
-import static com.twi.awayday2014.utils.Constants.Parse.ERROR_EXCEPTION_THROWN;
-import static com.twi.awayday2014.utils.Constants.Parse.ERROR_NO_DATA_FOUND;
-import static com.twi.awayday2014.utils.Constants.Parse.TABLE_SPEAKERS;
+import static com.twi.awayday2014.utils.Constants.Parse.*;
 
 public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
     private static final String TAG = "PresenterParseDataFetcher";
@@ -82,7 +74,8 @@ public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
                         String link = d.getString(COL_LINKS);
                         boolean isGuest = d.getBoolean(Constants.Parse.COL_IS_GUEST);
                         boolean isListable = d.getBoolean(COL_IS_LISTABLE);
-                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp, isGuest, isListable);
+                        int sortOrder = d.getInt(COL_SORT_ORDER);
+                        Presenter presenter = new Presenter(id, name, awayDayWriteup, link, writeUp, isGuest, isListable, sortOrder);
 
                         if(image != null){
                             imageObjectIds.add(image);

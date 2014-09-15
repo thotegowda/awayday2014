@@ -16,11 +16,13 @@ public class Presenter{
     private String name;
     private boolean isGuest;
     private boolean isListable;
+    private int sortOrder;
 
     public Presenter() {
     }
 
-    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp, boolean isGuest, boolean isListable) {
+    public Presenter(String id, String name, String awayDayWriteup, String link, String writeUp,
+                     boolean isGuest, boolean isListable, int sortOrder) {
         this.id = id;
         this.name = name;
         this.awayDayWriteup = awayDayWriteup;
@@ -28,6 +30,7 @@ public class Presenter{
         this.writeUp = writeUp;
         this.isGuest = isGuest;
         this.isListable = isListable;
+        this.sortOrder = sortOrder;
     }
 
     public int profileResource() {
@@ -86,6 +89,10 @@ public class Presenter{
         return isListable;
     }
 
+    public int compareBySortOrder(Presenter other) {
+        return this.sortOrder == other.sortOrder ? 0 : sortOrder >= other.sortOrder ? 1 : -1;
+    }
+
     public enum PresenterComparator implements Comparator<Presenter>{
         TYPE_SORT {
             @Override
@@ -103,6 +110,13 @@ public class Presenter{
             public int compare(Presenter lhs, Presenter rhs) {
                 return lhs.name.compareTo(rhs.name);
             }
+        },
+
+        SORT_BY_PRIORITY_ORDER {
+            @Override
+            public int compare(Presenter presenter, Presenter otherPresenter) {
+                return presenter.compareBySortOrder(otherPresenter);
+            }
         };
 
         public static Comparator<Presenter> getComparator(final PresenterComparator... multipleComparators) {
@@ -119,6 +133,9 @@ public class Presenter{
             };
         }
 
+
+
     }
+
 
 }

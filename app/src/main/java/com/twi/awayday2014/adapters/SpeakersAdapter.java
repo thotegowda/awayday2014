@@ -18,10 +18,7 @@ import com.twi.awayday2014.utils.Fonts;
 import java.util.Collections;
 import java.util.List;
 
-
-import static com.twi.awayday2014.models.Presenter.PresenterComparator.NAME_SORT;
-import static com.twi.awayday2014.models.Presenter.PresenterComparator.TYPE_SORT;
-import static com.twi.awayday2014.models.Presenter.PresenterComparator.getComparator;
+import static com.twi.awayday2014.models.Presenter.PresenterComparator.*;
 
 public class SpeakersAdapter extends BaseAdapter{
 
@@ -80,7 +77,7 @@ public class SpeakersAdapter extends BaseAdapter{
 
     public void onDataChange(List<Presenter> presenters) {
         this.presenters = presenters;
-        Collections.sort(presenters, getComparator(TYPE_SORT, NAME_SORT));
+        Collections.sort(this.presenters, getComparator(SORT_BY_PRIORITY_ORDER, NAME_SORT));
         notifyDataSetChanged();
     }
 
