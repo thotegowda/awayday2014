@@ -129,7 +129,7 @@ public class AgendaParseDataFetcher extends BaseParseDataFetcher<Session> {
                 isFetched = true;
                 AgendaParseDataFetcher.this.sessions = sessions;
                 for (ParseDataListener dataListener : listeners) {
-                    dataListener.onDataFetched(sessions);
+                    dataListener.onDataFetched(sessions, true);
                 }
             }
         });

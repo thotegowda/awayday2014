@@ -127,7 +127,7 @@ public class PresenterParseDataFetcher extends BaseParseDataFetcher<Presenter> {
                 isDataFetched = true;
                 PresenterParseDataFetcher.this.presenters = presenters;
                 for (ParseDataListener dataListener : listeners) {
-                    dataListener.onDataFetched(presenters);
+                    dataListener.onDataFetched(presenters, true);
                 }
             }
         });

@@ -91,6 +91,7 @@ public class BreakoutSessionsParseDataFetcher extends BaseParseDataFetcher<Break
                                 e1.printStackTrace();
                             }
                         }
+
                         sessions.add(new BreakoutSession(id, presenters, title, startTime,
                                 endTime, date, description, location,
                                 image,stream, trackColor));
@@ -142,7 +143,7 @@ public class BreakoutSessionsParseDataFetcher extends BaseParseDataFetcher<Break
                 isFetched = true;
                 BreakoutSessionsParseDataFetcher.this.sessions = sessions;
                 for (ParseDataListener dataListener : listeners) {
-                    dataListener.onDataFetched(sessions);
+                    dataListener.onDataFetched(sessions, true);
                 }
             }
         });

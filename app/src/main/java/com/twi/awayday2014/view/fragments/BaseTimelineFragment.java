@@ -16,6 +16,7 @@ import com.twi.awayday2014.AwayDayApplication;
 import com.twi.awayday2014.R;
 import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Presenter;
+import com.twi.awayday2014.models.SavedSession;
 import com.twi.awayday2014.models.Session;
 import com.twi.awayday2014.services.parse.ParseDataListener;
 import com.twi.awayday2014.services.parse.PresenterParseDataFetcher;
@@ -52,7 +53,7 @@ public abstract class BaseTimelineFragment extends BaseListFragment{
         presenterParseDataFetcher.addListener(speakersDataListener);
         if(presenterParseDataFetcher.isDataFetched()){
             List<Presenter> fetchedData = presenterParseDataFetcher.getFetchedData();
-            speakersDataListener.onDataFetched(fetchedData);
+            speakersDataListener.onDataFetched(fetchedData, false);
         }else {
             presenterParseDataFetcher.fetchData();
         }
@@ -127,7 +128,7 @@ public abstract class BaseTimelineFragment extends BaseListFragment{
         }
 
         @Override
-        public void onDataFetched(List<Presenter> presenters) {
+        public void onDataFetched(List<Presenter> presenters, boolean actuallyFetched) {
             onPresentersFetched(presenters);
         }
 

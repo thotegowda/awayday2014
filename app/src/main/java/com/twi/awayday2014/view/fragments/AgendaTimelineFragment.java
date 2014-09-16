@@ -55,7 +55,7 @@ public class AgendaTimelineFragment extends BaseTimelineFragment {
         agendaParseDataFetcher.addListener(agendaDataListener);
         if(agendaParseDataFetcher.isDataFetched()){
             List<Session> fetchedData = agendaParseDataFetcher.getFetchedData();
-            agendaDataListener.onDataFetched(fetchedData);
+            agendaDataListener.onDataFetched(fetchedData, false);
         }else {
             agendaParseDataFetcher.fetchData();
         }
@@ -96,7 +96,7 @@ public class AgendaTimelineFragment extends BaseTimelineFragment {
         }
 
         @Override
-        public void onDataFetched(List<Session> data) {
+        public void onDataFetched(List<Session> data, boolean actuallyFetched) {
             placeHolderView.setVisibility(View.INVISIBLE);
             listView.setVisibility(VISIBLE);
             agendaAdapter.onDataChange(getSortedSessionsForDay(data, getArguments().getString(DAY)));

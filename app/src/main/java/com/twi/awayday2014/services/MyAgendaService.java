@@ -1,10 +1,8 @@
 package com.twi.awayday2014.services;
 
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.twi.awayday2014.adapters.BreakoutAdapter;
 import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.SavedSession;
 import com.twi.awayday2014.models.Session;
@@ -47,6 +45,16 @@ public class MyAgendaService {
                 }
             }
         }.execute();
+    }
+
+    public void invalidateSavedSessions(List<String> breakoutSessionIds) {
+        List<SavedSession> savedSessionList = SavedSession.listAll(SavedSession.class);
+        for (SavedSession savedSession : savedSessionList) {
+            if(!breakoutSessionIds.contains(savedSession.sessionId)){
+                Log.e(TAG, "SavedSession with id " + savedSession.sessionId + " is deleted from server.");
+                savedSession.delete();
+            }
+        }
     }
 
     public void addSessionToAgenda(final Session session, final MyAgendaServiceListener caller) {
@@ -129,6 +137,10 @@ public class MyAgendaService {
         List<SavedSession> allSavedSessions = SavedSession.listAll(SavedSession.class);
         for (SavedSession savedSession : allSavedSessions) {
             BreakoutSession breakoutSession = allBreakoutSessionsMap.get(savedSession.sessionId);
+            if(breakoutSession == null){
+                Log.e(TAG, "Saved session " + savedSession.sessionId + " is deleted from the server");
+                continue;
+            }
             DateTime startTime1 = dateTimeParser.parseDateTime(breakoutSession.getStartTime());
             DateTime endTime1 = dateTimeParser.parseDateTime(breakoutSession.getEndTime());
             DateTime startTime2 = dateTimeParser.parseDateTime(session.getStartTime());

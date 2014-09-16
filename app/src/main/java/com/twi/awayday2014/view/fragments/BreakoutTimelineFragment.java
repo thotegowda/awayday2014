@@ -8,6 +8,7 @@ import com.twi.awayday2014.adapters.BreakoutAdapter;
 import com.twi.awayday2014.models.BreakoutSession;
 import com.twi.awayday2014.models.Presenter;
 import com.twi.awayday2014.models.Session;
+import com.twi.awayday2014.services.MyAgendaService;
 import com.twi.awayday2014.services.parse.BreakoutSessionsParseDataFetcher;
 import com.twi.awayday2014.services.parse.ParseDataListener;
 
@@ -54,7 +55,7 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         breakoutSessionsParseDataFetcher.addListener(breakoutDataListener);
         if(breakoutSessionsParseDataFetcher.isDataFetched()){
             List<BreakoutSession> fetchedData = breakoutSessionsParseDataFetcher.getFetchedData();
-            breakoutDataListener.onDataFetched(fetchedData);
+            breakoutDataListener.onDataFetched(fetchedData, false);
         }else {
             breakoutSessionsParseDataFetcher.fetchData();
         }
@@ -85,7 +86,12 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         }
 
         @Override
-        public void onDataFetched(List<BreakoutSession> data) {
+        public void onDataFetched(List<BreakoutSession> data, boolean actuallyFetched) {
+            if(actuallyFetched){
+                AwayDayApplication application = (AwayDayApplication) getActivity().getApplication();
+                MyAgendaService myAgendaService = application.getMyAgendaService();
+                myAgendaService.invalidateSavedSessions(getSessionIds(data));
+            }
             placeHolderView.setVisibility(View.INVISIBLE);
             listView.setVisibility(VISIBLE);
             breakoutAdapter.onDataChange(getSortedSessionsForStream(data, getArguments().getString(STREAM)));
@@ -117,6 +123,14 @@ public class BreakoutTimelineFragment extends BaseTimelineFragment {
         public void dataIsOutdated() {
 
         }
+    }
+
+    private List<String> getSessionIds(List<BreakoutSession> data) {
+        ArrayList<String> result = new ArrayList<String>();
+        for (BreakoutSession breakoutSession : data) {
+            result.add(breakoutSession.getId());
+        }
+        return result;
     }
 
     private List<Session> getSortedSessionsForStream(List<BreakoutSession> sessions, String stream) {

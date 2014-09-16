@@ -139,7 +139,7 @@ public class SpeakersFragment extends BaseListFragment {
         }
 
         @Override
-        public void onDataFetched(List<Presenter> presenters) {
+        public void onDataFetched(List<Presenter> presenters, boolean actuallyFetched) {
             speakersAdapter.onDataChange(getListableSpeakers(presenters));
         }
 

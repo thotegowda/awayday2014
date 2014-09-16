@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ParseDataListener<T>{
     void onDataValidation(boolean status);
-    void onDataFetched(List<T> data);
+    void onDataFetched(List<T> data, boolean actuallyFetched);
     void onDataFetchError(int errorStatus);
     void fetchingFromNetwork();
     void fetchingFromCache();
