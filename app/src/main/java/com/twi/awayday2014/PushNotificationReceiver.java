@@ -6,6 +6,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -18,14 +19,16 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class PushNotificationReceiver extends BroadcastReceiver {
     private static final String TAG = "PushNotification";
     public static final String NOTIFICATION_RECEIVED = "notificationReceived";
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         try {
             String action = intent.getAction();
             String channel = intent.getExtras().getString("com.parse.Channel");
@@ -50,14 +53,40 @@ public class PushNotificationReceiver extends BroadcastReceiver {
                 Log.d(TAG, "..." + key + " => " + json.getString(key));
             }
 
-            AwayDayNotification awayDayNotification = new AwayDayNotification(title, DateTime.now(), message, type);
-            awayDayNotification.save();
+            final AwayDayNotification awayDayNotification = new AwayDayNotification(title, DateTime.now(), message, type);
+
+            saveInBackground(context, awayDayNotification);
             showNotification(awayDayNotification, context);
-            notifyActivity(context);
 
         } catch (JSONException e) {
             Log.d(TAG, "JSONException: " + e.getMessage());
         }
+    }
+
+    private void saveInBackground(final Context context, final AwayDayNotification awayDayNotification) {
+        new AsyncTask<Void, Void, AwayDayNotification>(){
+            @Override
+            protected AwayDayNotification doInBackground(Void... params) {
+                List<AwayDayNotification> awayDayNotifications = AwayDayNotification.listAll(AwayDayNotification.class);
+                Collections.sort(awayDayNotifications, Collections.reverseOrder(new AwayDayNotification.NotificatonsComparator()));
+
+                //don't save notification if you have already received it more then once
+                if(awayDayNotifications.size() > 0 && awayDayNotifications.get(0).getDescription().equals(awayDayNotification.getDescription())){
+                    Log.e(TAG, "Notification received multiple times, not saving it");
+                    return null;
+                }
+
+                awayDayNotification.save();
+                return awayDayNotification;
+            }
+
+            @Override
+            protected void onPostExecute(AwayDayNotification notification) {
+                if(notification != null){
+                    notifyActivity(context);
+                }
+            }
+        }.execute();
     }
 
     private void notifyActivity(Context context) {
