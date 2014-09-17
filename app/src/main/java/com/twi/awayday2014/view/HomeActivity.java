@@ -115,10 +115,12 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
         currentVisibleHeaderHeight = scrollableHeaderHeight + headerActionbarHeight;
 
         headerPicture = (KenBurnsView) findViewById(R.id.header_picture);
+        final int width = (int) getResources().getDimension(R.dimen.carousel_image_width);
+        final int height = (int) getResources().getDimension(R.dimen.carousel_image_height);
         final Bitmap[] bitmaps = new Bitmap[1];
         bitmaps[0] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
                 R.drawable.awayday_2014_carousel1,
-                new ImageSize(800,600),
+                new ImageSize(width,height),
                 EXACT);
         headerPicture.setBitmaps(bitmaps);
 
@@ -130,15 +132,15 @@ public class HomeActivity extends FragmentActivity implements ScrollListener {
                 result[0] = bitmaps[0];
                 result[1] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
                         R.drawable.awayday_2014_carousel2,
-                        new ImageSize(800,600),
+                        new ImageSize(width,height),
                         EXACT);
                 result[2] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
                         R.drawable.awayday_2014_carousel3,
-                        new ImageSize(800,600),
+                        new ImageSize(width,height),
                         EXACT);
                 result[3] = BitmapUtils.decodeSampledBitmapFromResource(getResources(),
                         R.drawable.awayday_2014_background,
-                        new ImageSize(800,600),
+                        new ImageSize(width,height),
                         EXACT);
                 return result;
             }
