@@ -218,9 +218,11 @@ public class AsyncTweeterTasks {
                     return SUCCESS;
                 } catch (TwitterException e) {
                     e.printStackTrace();
-                    Log.d(TAG, "Failed to tweet ex: " + e.getMessage());
+                    Log.e(TAG, "Failed to tweet ex: " + e.getMessage());
                 } catch (IOException e) {
-                    Log.d(TAG, "Failed to sample image to smaller size: " + e.getMessage());
+                    Log.e(TAG, "Failed to sample image to smaller size: " + e.getMessage());
+                }catch (Exception e){
+                    Log.e(TAG, "Something went terribly wrong" + e.getMessage());
                 }
                 return ERROR;
             }

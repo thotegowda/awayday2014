@@ -34,6 +34,8 @@
                 android:background="@color/transparent_medium_black"
                 android:gravity="center"
                 android:padding="@dimen/padding_large"
+                android:maxLines="3"
+                android:ellipsize="end"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
