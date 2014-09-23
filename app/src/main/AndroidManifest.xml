@@ -31,8 +31,6 @@
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
                 android:value="AIzaSyCxTiSWZmwVkud2xY8El0ePCSkJ_v3y4CI"/>
 
-        <meta-data android:name="com.google.android.gms.version"
-                android:value="@integer/google_play_services_version"/>
 
         <meta-data android:name="DATABASE" android:value="sugar_awayday.db"/>
         <meta-data android:name="VERSION" android:value="2"/>
